@@ -1,4 +1,5 @@
 #include "game.h"
+#include <iostream>
 
 Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_MENU) {
