@@ -6,6 +6,7 @@
 #include "FilePath.h"
 
 #include "game.h"
+#include "map.h"
 
 using namespace glimac;
 
@@ -15,10 +16,10 @@ using namespace glimac;
 };*/
 
 int main(int argc, char **argv)
-{   
+{
    /* // Notre fenêtre
     SDL_Window* fenetre(0);
-    SDL_GLContext contexteOpenGL(0);    
+    SDL_GLContext contexteOpenGL(0);
 
     SDL_Event evenements;
 
@@ -35,11 +36,11 @@ int main(int argc, char **argv)
     // Version d'OpenGL
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    
+
     // Double Buffer
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    
+
     // Création de la fenêtre
     fenetre = SDL_CreateWindow("Dungeon Master", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
@@ -59,21 +60,21 @@ int main(int argc, char **argv)
         SDL_Quit();
         return -1;
     }
-    
+
         // Initialize glew for OpenGL3+ support
-        glewExperimental = GL_TRUE; 
+        glewExperimental = GL_TRUE;
     GLenum glewInitError = glewInit();
     if(GLEW_OK != glewInitError) {
         std::cerr << glewGetErrorString(glewInitError) << std::endl;
         return EXIT_FAILURE;
     }
-    
-    
+
+
     FilePath applicationPath(argv[0]);
     Program program = loadProgram(applicationPath.dirPath() + "../res/shaders/triangle.vs.glsl",
                                   applicationPath.dirPath() + "../res/shaders/triangle.fs.glsl");
     program.use();
-    
+
     // Creation du VBO pour stocker les données
     GLuint vbo;
     glGenBuffers(1, &vbo);
@@ -95,8 +96,8 @@ int main(int argc, char **argv)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
-    
-    
+
+
     // Boucle principale
     while(!terminer)
     {
@@ -104,27 +105,30 @@ int main(int argc, char **argv)
 
         if(evenements.window.event == SDL_WINDOWEVENT_CLOSE)
             terminer = true;
-        
+
         glClear(GL_COLOR_BUFFER_BIT);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
-        
+
         // Update the display
         //windowManager.swapBuffers();
         SDL_GL_SwapWindow(fenetre);
     }
-    
+
         // Débinder VBO et VAO
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
-    
+
     // On quitte la SDL
     SDL_GL_DeleteContext(contexteOpenGL);
     SDL_DestroyWindow(fenetre);
     SDL_Quit();
     return 0;*/
-   
+
+    Map map;
+    map.loadTerrain("test.ppm");
+
    Game game(argv[0]);
    return game.run();
 }

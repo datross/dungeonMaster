@@ -1,0 +1,6 @@
+#Test
+test.ppm
+1
+17:2:Button1:1:TREASURE:-1:button0.obj
+1
+12:2:1:spider:3:0:1:5:monster0.obj

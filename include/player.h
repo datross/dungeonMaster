@@ -23,12 +23,16 @@ private :
   Camera cam;
 
 public :
+  Player();
+  ~Player();
+
   void openMenu(MenuType type);
   void addToInventory(Item item);
   void equip(Item item);
   void unequip(Item item);
   int isNextDoor();
   void use (Item* item);
+  void attack(Character* enemy);
 };
 
 #endif

@@ -16,6 +16,8 @@ enum ItemType {
 
 class Item {
 private:
+  glm::ivec2 position;
+  glm::vec3 orientation;
   std::string id;
   int value;
   ItemType type;

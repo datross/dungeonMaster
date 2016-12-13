@@ -1,0 +1,17 @@
+#Level name
+.ppm file's path
+Number of items
+posX:posY:id:value:Itemtype:durability:mesh_name
+.
+.
+.
+Number of monsters
+posX:posY:scale:id:life:defense:power:detect_range:mesh_name
+.
+.
+.
+Number of traps
+posX:posY:id:damages:Timing:mesh_name
+.
+.
+.

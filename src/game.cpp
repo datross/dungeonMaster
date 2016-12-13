@@ -6,23 +6,23 @@ Game::Game(char* _application_path)
 }
 
 Game::~Game() {
-    
+
 }
 
 int Game::run() {
     while(game_state != STATE_QUIT) {
-        
+
         view.update();
-        
+
         if(game_state == STATE_MENU) {
             menu();
         } else if(game_state == STATE_GAMEPLAY) {
             gameplay();
         }
-        
+
         view.render();
     }
-    
+
     return 0;
 }
 

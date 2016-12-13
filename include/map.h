@@ -13,7 +13,8 @@
 
 class Map {
 private :
-  std::vector<std::vector<int>> datas;
+  std::string name;
+  std::vector< std::vector<int> > datas;
   std::list<Character> characters;
   std::list<Item> items;
   std::vector<Trap> traps;
