@@ -17,7 +17,6 @@ public:
     FilePath() = default;
 
     FilePath(const char* filepath): m_FilePath(filepath) {
-std::cout << "COUCOU" << std::endl;
         format();
     }
 

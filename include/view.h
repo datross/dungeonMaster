@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
+#include "mesh.h"
+
 enum Player_input {
     INPUT_NONE,
     INPUT_QUIT 

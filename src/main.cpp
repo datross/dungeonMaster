@@ -10,11 +10,6 @@
 
 using namespace glimac;
 
-/*enum ATTRIBUTE {
-    VERTEX_ATTR_POSITION = 3,
-    VERTEX_ATTR_COLOR = 8
-};*/
-
 int main(int argc, char **argv)
 {
    /* // Notre fenêtre
@@ -128,7 +123,6 @@ int main(int argc, char **argv)
 
     Map map;
     map.loadTerrain("test.ppm");
-
    Game game(argv[0]);
    return game.run();
 }
