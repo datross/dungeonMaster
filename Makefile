@@ -4,9 +4,9 @@ CXXFLAGS = -Wall -Iinclude/ -std=c++11 -fdiagnostics-color
 SRC = $(wildcard src/*.cpp)
 OBJ = $(SRC:src/%.cpp=obj/%.o)
 
-#.PHONY: lib linking
+.PHONY: lib
 
-all: lib linking
+all: linking
 
 lib:
 	@# build ASSIMP
