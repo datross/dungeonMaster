@@ -6,8 +6,8 @@
 
 class Camera {
 private:
-  std::vector<float> position;
-  std::vector<float> orientation;
+  glm::vec3 position;
+  glm::vec3 direction;
   float focal;
 public:
   glm::mat4 getMatrix();
