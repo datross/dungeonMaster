@@ -2,6 +2,7 @@
 #define FILE_PATH
 
 #include <string>
+#include <iostream>
 
 namespace glimac {
 
@@ -16,6 +17,7 @@ public:
     FilePath() = default;
 
     FilePath(const char* filepath): m_FilePath(filepath) {
+std::cout << "COUCOU" << std::endl;
         format();
     }
 
