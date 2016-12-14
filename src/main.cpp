@@ -123,6 +123,7 @@ int main(int argc, char **argv)
 
     Map map;
     map.loadTerrain("test.ppm");
+
    Game game(argv[0]);
    return game.run();
 }

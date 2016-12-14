@@ -18,10 +18,12 @@ private:
 public:
   Trap();
   ~Trap();
-  
+
   void activate();
   void reset();
   bool detect();
+
+  void print();
 };
 
 #endif //TRAP_H

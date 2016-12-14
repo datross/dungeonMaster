@@ -27,6 +27,8 @@ public:
   void loadTerrain(std::string pathFile);
   void loadEntities(std::string pathFile);
   bool isCaseEmpty();
+
+  void print();
 };
 
 #endif // MAP_H

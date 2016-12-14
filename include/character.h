@@ -31,7 +31,7 @@ protected:
   unsigned int life;
   unsigned int defense;
   unsigned int power;
-  //Mesh mesh;
+  //Mesh *mesh;
 
 public:
   Character();
@@ -52,6 +52,8 @@ public:
   void attack (Character* enemy);
   void defend (unsigned int amountAttack);
   void death();
+
+  void print();
 };
 
 #endif // CHARACTER_H

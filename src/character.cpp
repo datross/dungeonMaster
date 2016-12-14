@@ -1,7 +1,12 @@
 #include "character.h"
+
+#include <iostream>
+
+using namespace std;
+
 Character::Character(){}
 Character::Character(glm::ivec2 position, glm::vec3 orientation,
-                    float scale, std::string id,
+                    float scale, string id,
                     unsigned int life, unsigned int defense, unsigned int power) :
                     position(position),
                     orientation(orientation),
@@ -32,4 +37,12 @@ void Character::defend (unsigned int amountAttack){
 }
 void Character::death() {
   return;
+}
+
+void Character::print(){
+  cout << "******Character******" << '\n';
+  cout << "Id : " << id << endl;
+  cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
+  cout << "life/defense/power : (" << life << ";" << defense << ";" << power <<")" <<'\n';
+  cout << "******Character - end******" << '\n';
 }

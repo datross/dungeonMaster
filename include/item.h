@@ -29,6 +29,8 @@ public:
   Item(std::string id = "", int value = 0, ItemType type = TREASURE, int durability = -1);
   ~Item();
 
+  void print();
+
 };
 
 #endif //ITEM_H
