@@ -1,4 +1,6 @@
 #include "enemy.h"
+#include <iostream>
+#include "utils.h"
 
 Enemy::Enemy(glm::ivec2 position, glm::vec3 orientation,
             float scale, std::string id,
@@ -18,7 +20,38 @@ bool Enemy::detect(Character* other){
   else
     return true;
 }
+
 std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target, Map* map) {
   std::vector<glm::ivec2> path;
+  map->print();
+
+  float totalDist = Utils::distance(position, target);
+  std::cout << "Distance : " << totalDist << std::endl;
+
+  //Find where he can move
+  int i = 0;
+  while (totalDist > 0) {
+    cout << "Tour : " << i << endl;
+
+    float newDist = Utils::distance(glm::ivec2(position.x-1, position.y), target);
+    if (map->isCaseEmpty(position.x-1, position.y) && newDist < totalDist)
+      std::cout << "Can move left. New dist : " << newDist << std::endl;
+
+    newDist = Utils::distance(glm::ivec2(position.x+1, position.y), target);
+    if (map->isCaseEmpty(position.x+1, position.y) && newDist < totalDist)
+      std::cout << "Can move right. New dist : " << newDist << std::endl;
+
+    newDist = Utils::distance(glm::ivec2(position.x, position.y-1), target);
+    if (map->isCaseEmpty(position.x, position.y-1) && newDist < totalDist)
+        std::cout << "Can move top. New dist : " << newDist << std::endl;
+
+    newDist = Utils::distance(glm::ivec2(position.x, position.y+1), target);
+    if (map->isCaseEmpty(position.x, position.y+1) && newDist < totalDist)
+        std::cout << "Can move bot. New dist : " << newDist << std::endl;
+
+    totalDist = newDist;
+    i++;
+  }
+
   return path;
 }

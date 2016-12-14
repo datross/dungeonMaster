@@ -76,8 +76,8 @@ void Map::loadEntities(string pathFile){
     cerr << "Cannot open " << pathFile << endl;
 }
 
-bool Map::isCaseEmpty(){
-  return false;
+bool Map::isCaseEmpty(int x, int y){
+	return datas[x][y] == 0;
 }
 
 

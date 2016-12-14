@@ -26,7 +26,7 @@ public:
   void save(std::string pathFile);
   void loadTerrain(std::string pathFile);
   void loadEntities(std::string pathFile);
-  bool isCaseEmpty();
+  bool isCaseEmpty(int x, int y);
 
   void print();
 };
