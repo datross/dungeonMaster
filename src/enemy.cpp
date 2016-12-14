@@ -31,7 +31,7 @@ std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target, Map* map) {
   //Find where he can move
   int i = 0;
   while (totalDist > 0) {
-    cout << "Tour : " << i << endl;
+    std::cout << "Tour : " << i << std::endl;
 
     float newDist = Utils::distance(glm::ivec2(position.x-1, position.y), target);
     if (map->isCaseEmpty(position.x-1, position.y) && newDist < totalDist)
