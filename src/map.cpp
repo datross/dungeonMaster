@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "enemy.h"
+
 using namespace std;
 
 Map::Map(){}
@@ -19,8 +21,8 @@ void Map::loadTerrain(string pathFile){
   unsigned int maxValue;
 
   ifstream file;
-  file.open("res/levels/" + pathFile, ios::in);
-  cout << "res/levels/" + pathFile << endl;
+  file.open(pathFile, ios::in);
+
   if(file){
     string line, line2, line3;
     getline(file, line);
@@ -67,19 +69,61 @@ void Map::loadTerrain(string pathFile){
 
 void Map::loadEntities(string pathFile){
   ifstream file;
-  file.open("res/levels/" + pathFile, ios::in);
-  cout << "res/levels/" + pathFile << endl;
+  file.open(pathFile, ios::in);
+
+  unsigned int nb_Item, nb_Enemy, nb_Traps;
+  string line;
+  string delimiter = ":";
   if(file){
+
+    getline(file, line);
+    name = line;
+
+    int posX, posY, value, type, durability;
+    unsigned int life, defense, power, detectRange, damages, timing;
+    string id, mesh_path;
+    float scale;
+
+    file >> nb_Item;
+    for (unsigned int i = 0; i < nb_Item; i++) {
+      file >> posX >> posY >> id >>  value >>  type >>  durability >>  mesh_path;
+      getline(file, line);
+      glm::ivec2 position = glm::ivec2(posX, posY);
+      items.push_back(Item(position, id, value, (ItemType)type, durability));
+    }
+
+    file >> nb_Enemy;
+    for (unsigned int i = 0; i < nb_Enemy; i++) {
+      file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >>  detectRange >>  mesh_path;
+      getline(file, line);
+      glm::ivec2 position = glm::ivec2(posX, posY);
+      characters.push_back(Enemy(position, glm::vec3(0,0,0), scale, id, life, defense, power, detectRange));
+    }
+
+    file >> nb_Traps;
+    for (unsigned int i = 0; i < nb_Traps; i++) {
+      file >> posX >> posY >> id >>  damages >>  timing >>  mesh_path;
+      getline(file, line);
+      glm::ivec2 position = glm::ivec2(posX, posY);
+      traps.push_back(Trap(position, id, damages, timing));
+    }
 
     file.close();
   } else
     cerr << "Cannot open " << pathFile << endl;
 }
 
+
 bool Map::isCaseEmpty(int x, int y){
 	return datas[x][y] == 0;
 }
 
+void Map::load(string file_name){
+  string path = "res/levels/";
+
+  loadTerrain(path + file_name + ".ppm");
+  loadEntities(path + file_name + ".txt");
+}
 
 
 void Map::print() {

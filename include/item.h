@@ -7,11 +7,11 @@
 #include "character.h"
 
 enum ItemType {
-  TREASURE,
-  WEAPON,
-  ARMOR,
-  HEALTH,
-  KEY
+  TREASURE = 0,
+  WEAPON = 1,
+  ARMOR = 2,
+  HEALTH = 3,
+  KEY = 4
 };
 
 class Item {
@@ -26,7 +26,7 @@ private:
 
 public:
   Item();
-  Item(std::string id = "", int value = 0, ItemType type = TREASURE, int durability = -1);
+  Item(glm::ivec2 position = glm::ivec2(0,0), std::string id = "", int value = 0, ItemType type = TREASURE, int durability = -1);
   ~Item();
 
   void print();
