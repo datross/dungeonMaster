@@ -153,3 +153,59 @@ void Map::print() {
 
   std::cout << "MAP END." << endl;
 }
+
+bool Map::isCaseAccessible(int x, int y) {
+    return datas[y][x] == -1 ||
+            datas[y][x] == 1 || 
+            datas[y][x] == 2 || 
+            datas[y][x] == 0;
+}
+
+std::vector<std::vector<unsigned int>> Map::getDistance() {
+    std::vector<glm::ivec2> link;
+    int nbCorridors = 0;
+    int sourceIndex = -1;
+    for (int i = 0; i < datas.size(); i++) {
+        for (int j = 0; j < datas[0].size(); j++) {
+            // Get the player index
+            if (characters[0].getPosition().x == i && characters[0].getPosition().y == j) {
+                sourceIndex = nbCorridors;
+            }
+            
+            if (isCaseAccessible(j,i)) {
+                link.push_back(glm::ivec2(i, j));
+                nbCorridors++;
+            }
+        }
+    }
+    
+    // Initialisation
+    std::vector<int> dist;
+    for (int i = 0; i < nbCorridors; i++) {
+        if (i == sourceIndex) 
+            dist.push_back(0);
+        else
+            dist.push_back(255);
+    }
+    
+    std::vector<int> q;
+    while (q.size() < nbCorridors) {
+        int s = trouverMin(q, dist, nbCorridors);
+        q.push_back(s);
+        for (int i = 0; i < nbCorridors; i++) {
+            if (voisins(link[s], link[i])) {
+                if (dist[i] > dist[s] + 1) {
+                    dist[i] = dist[s]+1;   
+                }
+            }
+        }
+    }
+    
+    cout << "DIST" << endl;
+    for (int i = 0; i < dist.size(); i++) {
+        cout << dist[i] << endl;
+    }
+    
+    std::vector<std::vector<unsigned int>> path;
+    return path;
+}
