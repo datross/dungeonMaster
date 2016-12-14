@@ -18,7 +18,7 @@ bool Enemy::detect(Character* other){
   else
     return true;
 }
-std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target) {
+std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target, Map* map) {
   std::vector<glm::ivec2> path;
   return path;
 }

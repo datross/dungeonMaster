@@ -4,6 +4,7 @@
 #include "glm.h"
 
 #include "character.h"
+#include "map.h"
 
 class Enemy : public Character {
 private:
@@ -18,7 +19,7 @@ public:
   ~Enemy();
 
   bool detect(Character* other);
-  std::vector<glm::ivec2> reach(glm::ivec2 target);
+  std::vector<glm::ivec2> reach(glm::ivec2 target, Map* map);
 };
 
 #endif

@@ -64,12 +64,23 @@ void Map::loadTerrain(string pathFile){
   } else
     cerr << "Cannot open " << pathFile << endl;
 }
-void Map::loadEntities(string pathFile){
 
+void Map::loadEntities(string pathFile){
+  ifstream file;
+  file.open("res/levels/" + pathFile, ios::in);
+  cout << "res/levels/" + pathFile << endl;
+  if(file){
+
+    file.close();
+  } else
+    cerr << "Cannot open " << pathFile << endl;
 }
+
 bool Map::isCaseEmpty(){
   return false;
 }
+
+
 
 void Map::print() {
   std::cout << "MAP : " << endl;
