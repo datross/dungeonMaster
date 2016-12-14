@@ -15,7 +15,7 @@
 class Map {
 private :
   std::string name;
-  std::vector< std::vector<int> > datas;
+  std::vector<std::vector<int>> datas;
   std::list<Player> players;
   std::list<Character> characters;
   std::list<Item> items;
@@ -31,7 +31,7 @@ public:
   void load(std::string fileName);
   void save(std::string pathFile);
   bool isCaseAccessible(int x, int y);
-  std::vector<std::vector<unsigned int>> getDistance();
+  std::vector<std::vector<unsigned int>> getDistance(int numPlayer);
 
   void print();
 };
