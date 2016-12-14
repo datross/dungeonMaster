@@ -1,17 +1,15 @@
 #Level name
-.ppm file's path
+Number of players
+posX posY scale id life defense power nb_items_inventory score mesh_name
+	id value Itemtype durability isEquiped mesh_name
+	...
+...
 Number of items
-posX:posY:id:value:Itemtype:durability:mesh_name
-.
-.
-.
+posX posY id value Itemtype durability mesh_name
+...
 Number of monsters
-posX:posY:scale:id:life:defense:power:detect_range:mesh_name
-.
-.
-.
+posX posY scale id life defense power detect_range mesh_name
+...
 Number of traps
-posX:posY:id:damages:Timing:mesh_name
-.
-.
-.
+posX posY id damages timing mesh_name
+...

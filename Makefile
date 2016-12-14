@@ -16,6 +16,7 @@ lib:
 	cd ../../
 	
 linking: $(OBJ)
+	@mkdir -p bin
 	g++ -o bin/dm $^ $(LDFLAGS)
 
 obj/%.o: src/%.cpp

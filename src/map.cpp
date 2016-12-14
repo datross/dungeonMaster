@@ -71,7 +71,7 @@ void Map::loadEntities(string pathFile){
   ifstream file;
   file.open(pathFile, ios::in);
 
-  unsigned int nb_Item, nb_Enemy, nb_Traps;
+  unsigned int nb_Player, nb_Item, nb_Enemy, nb_Traps;
   string line;
   string delimiter = ":";
   if(file){
@@ -79,10 +79,29 @@ void Map::loadEntities(string pathFile){
     getline(file, line);
     name = line;
 
-    int posX, posY, value, type, durability;
-    unsigned int life, defense, power, detectRange, damages, timing;
-    string id, mesh_path;
+    int posX, posY, value, value_inventory, type, type_inventory, durability, durability_inventory;
+    unsigned int life, defense, power, detectRange, damages, timing, nb_items_inventory, score, isEquiped;
+    string id, id_inventory, mesh_path;
     float scale;
+
+    file >> nb_Player;
+    for (unsigned int i = 0; i < nb_Player; i++) {
+      file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >> nb_items_inventory >> score >> mesh_path;
+      getline(file, line);
+      glm::ivec2 position = glm::ivec2(posX, posY);
+      Player tmp_player = Player(position, glm::vec3(0,0,0), scale, id, life, defense, power, score);
+
+      for (unsigned int j = 0; j < nb_items_inventory; j++) {
+        file >> id_inventory >>  value_inventory >> type_inventory >>  durability_inventory >> isEquiped >> mesh_path;
+        getline(file, line);
+        position = glm::ivec2(0, 0);
+        if(isEquiped)
+          tmp_player.equip(Item(position, id_inventory, value_inventory, (ItemType)type_inventory, durability_inventory));
+        else
+          tmp_player.addItem(Item(position, id_inventory, value_inventory, (ItemType)type_inventory, durability_inventory));
+      }
+      players.push_back(tmp_player);
+    }
 
     file >> nb_Item;
     for (unsigned int i = 0; i < nb_Item; i++) {
@@ -138,6 +157,10 @@ void Map::print() {
     cout << "|" << endl;
   }
   std::cout << "***********************************" << '\n';
+  std::cout << "/* Players : */" << endl;
+  for (std::list<Player>::iterator it=players.begin(); it != players.end(); ++it) {
+   it->print();
+  }
   std::cout << "/* Characters : */" << endl;
   for (std::list<Character>::iterator it=characters.begin(); it != characters.end(); ++it) {
    it->print();
