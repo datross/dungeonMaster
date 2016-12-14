@@ -132,17 +132,17 @@ void Map::loadEntities(string pathFile){
     cerr << "Cannot open " << pathFile << endl;
 }
 
+
+bool Map::isCaseEmpty(int x, int y){
+	return datas[x][y] == 0;
+}
+
 void Map::load(string file_name){
   string path = "res/levels/";
 
   loadTerrain(path + file_name + ".ppm");
   loadEntities(path + file_name + ".txt");
 }
-
-bool Map::isCaseEmpty(){
-  return false;
-}
-
 
 
 void Map::print() {

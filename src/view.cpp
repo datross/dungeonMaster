@@ -71,10 +71,10 @@ void View::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     Mesh mesh;
-    //mesh.loadFromFile("/home/datross/Programmation/C-C++/dungeonMaster/res/fauteuil.obj");
-    //mesh.loadShader("/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/triangle.vs.glsl",
-    //                "/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/triangle.fs.glsl");
-    //mesh.render();
+    mesh.loadFromFile("/home/datross/Programmation/C-C++/dungeonMaster/res/fauteuil.obj");
+    mesh.loadShader("/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/triangle.vs.glsl",
+                    "/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/triangle.fs.glsl");
+    mesh.render();
 
     SDL_GL_SwapWindow(window);
 }
