@@ -7,7 +7,7 @@
 //#include "mesh.h"
 
 class Trap {
-private:
+public:
   glm::ivec2 position;
   glm::vec3 orientation;
   std::string id;
@@ -15,7 +15,6 @@ private:
   unsigned int activationTiming;
   //Mesh mesh
 
-public:
   Trap();
   Trap(glm::ivec2 position = glm::ivec2(0,0), std::string id = "Default", int damages = 0, unsigned int timing = 1000);
   ~Trap();

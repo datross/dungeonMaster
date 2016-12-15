@@ -15,23 +15,17 @@ enum MenuType {
 };
 
 class Player : public Character {
-private :
+public :
   std::vector<Item> inventory;
   std::vector<Item> equiped;
   unsigned int score;
   Camera cam;
 
-public :
   Player(glm::ivec2 position = glm::ivec2(0,0), glm::vec3 orientation = glm::vec3(0,0,0),
         float scale = 1, std::string id = "Default",
         unsigned int life = 0, unsigned int defense = 0, unsigned int power = 0,
         unsigned int score = 0);
   ~Player();
-
-  std::vector<Item> getInventory();
-  std::vector<Item> getStuff();
-  void setInventory(std::vector<Item> inv);
-  void setStuff(std::vector<Item> inv);
 
   void openMenu(MenuType type);
   void addItem(Item item);

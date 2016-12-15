@@ -14,7 +14,7 @@
 
 class Map {
 public:
-//private: // TODO temporaire
+	
   std::string name;
   std::vector< std::vector<int> > datas;
   std::list<Player> players;
@@ -22,7 +22,6 @@ public:
   std::list<Item> items;
   std::vector<Trap> traps;
 
-public:
   Map();
   ~Map();
 

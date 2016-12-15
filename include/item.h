@@ -15,7 +15,7 @@ enum ItemType {
 };
 
 class Item {
-private:
+public:
   glm::ivec2 position;
   glm::vec3 orientation;
   std::string id;
@@ -24,15 +24,9 @@ private:
   int durability;
   //Mesh mesh;
 
-public:
   Item();
   Item(glm::ivec2 position = glm::ivec2(0,0), std::string id = "", int value = 0, ItemType type = TREASURE, int durability = -1);
   ~Item();
-
-  std::string getId() const;
-  int getValue() const;
-  ItemType getType() const;
-  int getDurability() const;
 
   void print();
   bool operator==(const Item & b);

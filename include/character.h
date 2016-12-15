@@ -17,7 +17,7 @@ enum Movement {
 };
 
 class Character {
-protected:
+public:
   glm::ivec2 position;
   glm::vec3 orientation;
   float anim_start_time, anim_time_normalized;
@@ -28,7 +28,6 @@ protected:
   unsigned int power;
   //Mesh *mesh;
 
-public:
   Character();
   Character(glm::ivec2 position = glm::ivec2(0,0) ,
             glm::vec3 orientation = glm::vec3(0,0,0),
@@ -39,10 +38,7 @@ public:
             unsigned int power = 0 );
   ~Character();
 
-  void setPosition(glm::ivec2 pos);
-  glm::ivec2 getPosition() const;
   glm::vec3 getVisualPosition();
-
   void move (Movement movement, Uint32 time);
   void attack (Character* enemy);
   void defend (unsigned int amountAttack);
