@@ -13,9 +13,10 @@
 #include "trap.h"
 
 class Map {
-private :
+public:
+//private: // TODO temporaire
   std::string name;
-  std::vector<std::vector<int>> datas;
+  std::vector< std::vector<int> > datas;
   std::list<Player> players;
   std::list<Character> characters;
   std::list<Item> items;

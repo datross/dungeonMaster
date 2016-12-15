@@ -5,6 +5,7 @@
 
 #include "FilePath.h"
 #include "view.h"
+#include "map.h"
 
 enum Game_state {
     STATE_MENU,
@@ -26,6 +27,7 @@ public:
     // leu jeu est dans l'état 'gameplay'
     void gameplay();
 private:
+    Map map;
     View view;
     glimac::FilePath application_path;
     

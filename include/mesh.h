@@ -44,8 +44,8 @@ public:
     void setShininess(float);
     void setLightDir_vs(glm::vec3);
     void setLightIntensity(glm::vec3);
-    void setKs(float);
-    void setKd(float);
+    void setKs(glm::vec3);
+    void setKd(glm::vec3);
 private:
     GLuint vbo, ibo, vao;
     unsigned numFaces;

@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec3 vFragPos;
+in vec3 vFragPosition;
 in vec3 vFragNormal;
 in vec2 vTexCoords;
 
@@ -16,9 +16,10 @@ out vec4 fFragColor;
 
 vec3 blinnPhong() {
     return uLightIntensity*(uKd*dot(normalize(uLightDir_vs), vFragNormal)
-            + uKs * pow(dot(normalize((-vFragPos+uLightDir_vs)/2), vFragNormal),uShininess));
+            + uKs * pow(dot(normalize((-vFragPosition+uLightDir_vs)/2), vFragNormal),uShininess));
 }
 
 void main() {
-  fFragColor = vec4(vFragNormal, 1);//vec4(1,1,1,1);//(blinnPhong().xyz,1);
+  //fFragColor = vec4(uKd, 1);//vec4(1,1,1,1);//(blinnPhong().xyz,1);
+  fFragColor = vec4(blinnPhong().xyz,1);
 }

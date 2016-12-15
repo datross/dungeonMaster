@@ -60,11 +60,26 @@ View::~View() {
 }
 
 void View::update() {
+    updateEvent();
+}
+
+void View::updateEvent() {
     player_input = INPUT_NONE;
-    if(SDL_PollEvent(&event))
+    while(SDL_PollEvent(&event))
     {
-        if(event.window.event == SDL_WINDOWEVENT_CLOSE)
+        if(event.type == SDL_QUIT) {
             player_input = INPUT_QUIT;
+        } else if(event.type == SDL_KEYDOWN) {
+            if(event.key.keysym.sym == SDLK_z) {
+                player_input = INPUT_MOVE_FORWARD;
+            } else if(event.key.keysym.sym == SDLK_q) {
+                player_input = INPUT_MOVE_LEFT;
+            } else if(event.key.keysym.sym == SDLK_s) {
+                player_input = INPUT_MOVE_BACKWARD;
+            } else if(event.key.keysym.sym == SDLK_d) {
+                player_input = INPUT_MOVE_RIGHT;
+            }
+        }
     }
 }
 
@@ -72,12 +87,12 @@ void View::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     Mesh mesh;
-    mesh.loadFromFile("/home/datross/Programmation/C-C++/dungeonMaster/res/fauteuil.obj");
+    mesh.loadFromFile("/home/datross/Programmation/C-C++/dungeonMaster/res/tete.obj");
     mesh.loadShader("/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/3D.vs.glsl",
                     "/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/directionallight.fs.glsl");
     Camera camera;
     camera.init(70, 1.);
-    camera.position = glm::vec3(-4,8,10);
+    camera.position = glm::vec3(map_ptr->players.begin()->getPosition().x, 0.5, map_ptr->players.begin()->getPosition().y);
     camera.direction = glm::vec3(0.5,-0.5,-1);
     
     glm::mat4 v = camera.getVMatrix();
@@ -89,17 +104,14 @@ void View::render() {
     mesh.activateShader();
     
     mesh.setMVMatrix(mv);
-//     std::cout << camera.getPMatrix() * mv << std::endl;
-//     mesh.setMVPMatrix(mv);
     mesh.setMVPMatrix(camera.getPMatrix() * mv);
-    //mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+    mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
     mesh.setNormalMatrix(glm::mat4(1.));
-    //std::cout << glm::mat4(1.) << std::endl;
     mesh.setShininess(1.);
-    mesh.setLightDir_vs(glm::vec3(1,0,0));
+    mesh.setLightDir_vs(glm::vec3(1,1,1));
     mesh.setLightIntensity(glm::vec3(1,1,1));
-    mesh.setKs(1.);
-    mesh.setKd(1.);
+    mesh.setKs(glm::vec3(1,1,1));
+    mesh.setKd(glm::vec3(1,1,1));
     mesh.render();
 
     SDL_GL_SwapWindow(window);
@@ -107,4 +119,8 @@ void View::render() {
 
 Player_input View::get_input() {
     return player_input;
+}
+
+void View::setMap(Map& _map_ptr) {
+    map_ptr = std::shared_ptr<Map>(&_map_ptr);
 }

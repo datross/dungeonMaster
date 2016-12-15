@@ -11,7 +11,7 @@ Mesh::~Mesh() {
 
 bool Mesh::loadFromFile(std::string file) {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate | aiProcess_GenSmoothNormals);
+    const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate/* | aiProcess_GenNormals*/);
     
     if(!scene) {
         std::cout << "Error loading: " << file << " : " << importer.GetErrorString() << std::endl;
@@ -36,8 +36,8 @@ bool Mesh::loadFromFile(std::string file) {
         vertex.normal = glm::vec3(mesh->mNormals[v].x,
                                   mesh->mNormals[v].y,
                                   mesh->mNormals[v].z);
-//         vertex.texCoord = glm::vec2(mesh->mTextureCoords[0]->x,
-//                                     mesh->mTextureCoords[0]->y);
+        vertex.texCoord = glm::vec2(mesh->mTextureCoords[0]->x,
+                                    mesh->mTextureCoords[0]->y);
         vertex.texCoord = glm::vec2(0, 0);
         vertices.push_back(vertex);
     }
@@ -83,6 +83,7 @@ bool Mesh::loadShader(std::string vertexShader, std::string fragmentShader) {
     shader = glimac::loadProgram(vertexShader, fragmentShader);
     
     uMVPMatrix = glGetUniformLocation(shader.getGLId(), "uMVPMatrix");
+    uMVMatrix = glGetUniformLocation(shader.getGLId(), "uMVMatrix");
     uNormalMatrix = glGetUniformLocation(shader.getGLId(), "uNormalMatrix");
     uTexture = glGetUniformLocation(shader.getGLId(), "uTexture");
     uShininess = glGetUniformLocation(shader.getGLId(), "uShininess");
@@ -129,9 +130,9 @@ void Mesh::setShininess(float value) {
     glUniform1f(uShininess, value);
 }
 
-void Mesh::setKs(float value) {
-    glUniform1f(uKs, value);
+void Mesh::setKs(glm::vec3 value) {
+    glUniform3fv(uKs, 1, glm::value_ptr(value));
 }
-void Mesh::setKd(float value) {
-    glUniform1f(uKd, value);
+void Mesh::setKd(glm::vec3 value) {
+    glUniform3fv(uKd, 1, glm::value_ptr(value));
 };
