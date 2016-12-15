@@ -124,7 +124,7 @@ int main(int argc, char **argv)
     Map map;
     map.load("test");
 
-    map.print();
+    map.getDistance(0);
 
    Game game(argv[0]);
    return game.run();

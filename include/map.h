@@ -8,13 +8,15 @@
 #include <string>
 
 #include "character.h"
+#include "player.h"
 #include "item.h"
 #include "trap.h"
 
 class Map {
 private :
   std::string name;
-  std::vector< std::vector<int> > datas;
+  std::vector<std::vector<int>> datas;
+  std::list<Player> players;
   std::list<Character> characters;
   std::list<Item> items;
   std::vector<Trap> traps;
@@ -28,7 +30,8 @@ public:
   bool isCaseEmpty(int x, int y);
   void load(std::string fileName);
   void save(std::string pathFile);
-  bool isCaseEmpty();
+  bool isCaseAccessible(int x, int y);
+  std::vector<std::vector<unsigned int>> getDistance(int numPlayer);
 
   void print();
 };
