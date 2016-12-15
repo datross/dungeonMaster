@@ -23,7 +23,7 @@ enum Movement {
 };
 
 class Character {
-protected:
+public:
   glm::ivec2 position;
   glm::vec3 orientation;
   float scale;
@@ -33,7 +33,6 @@ protected:
   unsigned int power;
   //Mesh *mesh;
 
-public:
   Character();
   Character(glm::ivec2 position = glm::ivec2(0,0) ,
             glm::vec3 orientation = glm::vec3(0,0,0),
@@ -43,9 +42,6 @@ public:
             unsigned int defense = 0,
             unsigned int power = 0 );
   ~Character();
-
-  void setPosition(glm::ivec2 pos);
-  glm::ivec2 getPosition() const;
 
   void move (Movement movement, Uint32 time);
   void orient (Direction direction, Uint32 time);

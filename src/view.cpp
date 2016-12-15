@@ -92,7 +92,7 @@ void View::render() {
                     "res/shaders/directionallight.fs.glsl");
     Camera camera;
     camera.init(70, 1.);
-    camera.position = glm::vec3(map_ptr->players.begin()->getPosition().x, 0.5, map_ptr->players.begin()->getPosition().y);
+    camera.position = glm::vec3(map_ptr->players.begin()->position.x, 0.5, map_ptr->players.begin()->position.y);
     camera.direction = glm::vec3(0.5,-0.5,-1);
 
     glm::mat4 v = camera.getVMatrix();

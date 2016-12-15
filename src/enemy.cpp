@@ -12,7 +12,7 @@ Enemy::Enemy(glm::ivec2 position, glm::vec3 orientation,
 Enemy::~Enemy(){}
 
 bool Enemy::detect(Character* other){
-  glm::ivec2 target = other->getPosition();
+  glm::ivec2 target = other->position;
   if(abs(target[0] - position[0]) > 5)
     return false;
   else if ((abs(target[0] - position[0]) + abs(target[1] - position[1])) > 5)

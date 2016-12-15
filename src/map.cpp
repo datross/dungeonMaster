@@ -12,18 +12,28 @@ Map::Map(){}
 Map::~Map(){}
 
 void Map::save(string pathFile){
-    
+	/*ifstream file;
+	file.open(pathFile, ios::out | ios::trunc);
+
+	if(file){
+		file << name << endl;
+		file << players.size() << endl;
+		for (list<Player>::iterator it = players.begin(); it != players.end(); ++it)
+			file << (*it).x << " " << (*it).y << " " <<endl;
+	} else
+		cerr << "Cannot open or create " << pathFile << endl;
+	*/
 }
 
 void Map::loadTerrain(string pathFile){
-    
+
     unsigned int width;
     unsigned int height;
     unsigned int maxValue;
-    
+
     ifstream file;
     file.open(pathFile, ios::in);
-    
+
     if(file){
         string line, line2, line3;
         getline(file, line);
@@ -35,12 +45,12 @@ void Map::loadTerrain(string pathFile){
         file >> width >> height >> maxValue;
         getline(file, line);
         vector< vector<int> > F_datas (height, vector<int>(width));
-        
+
         unsigned int i = 0,j = 0, nb_door = 0;
         while(getline(file, line) && j*width + i < width*height){
             getline(file, line2);
             getline(file, line3);
-            
+
             if(!line.compare("0") && !line2.compare("0") && !line3.compare("255")){
                 F_datas[j][i] = -3;   // WATER
             } else if(!line.compare("0") && !line2.compare("0") && !line3.compare("0")){
@@ -55,7 +65,7 @@ void Map::loadTerrain(string pathFile){
                 F_datas[j][i] = 3 + nb_door; //DOORS
                 nb_door++;
             }
-            
+
             ++i;
             if(i>=width){
                 i=0;
@@ -71,27 +81,27 @@ void Map::loadTerrain(string pathFile){
 void Map::loadEntities(string pathFile){
     ifstream file;
     file.open(pathFile, ios::in);
-    
+
     unsigned int nb_Player, nb_Item, nb_Enemy, nb_Traps;
     string line;
     string delimiter = ":";
     if(file){
-        
+
         getline(file, line);
         name = line;
-        
+
         int posX, posY, value, value_inventory, type, type_inventory, durability, durability_inventory;
         unsigned int life, defense, power, detectRange, damages, timing, nb_items_inventory, score, isEquiped;
         string id, id_inventory, mesh_path;
         float scale;
-        
+
         file >> nb_Player;
         for (unsigned int i = 0; i < nb_Player; i++) {
             file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >> nb_items_inventory >> score >> mesh_path;
             getline(file, line);
             glm::ivec2 position = glm::ivec2(posX, posY);
             Player tmp_player = Player(position, glm::vec3(0,0,0), scale, id, life, defense, power, score);
-            
+
             for (unsigned int j = 0; j < nb_items_inventory; j++) {
                 file >> id_inventory >>  value_inventory >> type_inventory >>  durability_inventory >> isEquiped >> mesh_path;
                 getline(file, line);
@@ -103,7 +113,7 @@ void Map::loadEntities(string pathFile){
             }
             players.push_back(tmp_player);
         }
-        
+
         file >> nb_Item;
         for (unsigned int i = 0; i < nb_Item; i++) {
             file >> posX >> posY >> id >>  value >>  type >>  durability >>  mesh_path;
@@ -111,7 +121,7 @@ void Map::loadEntities(string pathFile){
             glm::ivec2 position = glm::ivec2(posX, posY);
             items.push_back(Item(position, id, value, (ItemType)type, durability));
         }
-        
+
         file >> nb_Enemy;
         for (unsigned int i = 0; i < nb_Enemy; i++) {
             file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >>  detectRange >>  mesh_path;
@@ -119,7 +129,7 @@ void Map::loadEntities(string pathFile){
             glm::ivec2 position = glm::ivec2(posX, posY);
             characters.push_back(Enemy(position, glm::vec3(0,0,0), scale, id, life, defense, power, detectRange));
         }
-        
+
         file >> nb_Traps;
         for (unsigned int i = 0; i < nb_Traps; i++) {
             file >> posX >> posY >> id >>  damages >>  timing >>  mesh_path;
@@ -127,7 +137,7 @@ void Map::loadEntities(string pathFile){
             glm::ivec2 position = glm::ivec2(posX, posY);
             traps.push_back(Trap(position, id, damages, timing));
         }
-        
+
         file.close();
     } else
         cerr << "Cannot open " << pathFile << endl;
@@ -140,7 +150,7 @@ bool Map::isCaseEmpty(int x, int y){
 
 void Map::load(string file_name){
     string path = "res/levels/";
-    
+
     loadTerrain(path + file_name + ".ppm");
     loadEntities(path + file_name + ".txt");
 }
@@ -174,23 +184,23 @@ void Map::print() {
     for (std::vector<Trap>::iterator it=traps.begin(); it != traps.end(); ++it) {
         it->print();
     }
-    
+
     std::cout << "MAP END." << endl;
 }
 
 bool Map::isCaseAccessible(int x, int y) {
     return datas[y][x] == -1 ||
-    datas[y][x] == 1 || 
-    datas[y][x] == 2 || 
+    datas[y][x] == 1 ||
+    datas[y][x] == 2 ||
     datas[y][x] == 0;
 }
 
 int findMin(std::vector<int> q, std::vector<int> dist, int ordre) {
 	int min = 255;
 	int sommet = -1;
-	
+
 	std::vector<int>::iterator it;
-	
+
 	int i;
 	for (i = 0; i < ordre; i++) {
 		it = find(q.begin(), q.end(), i);
@@ -201,7 +211,7 @@ int findMin(std::vector<int> q, std::vector<int> dist, int ordre) {
 			}
 		}
 	}
-	
+
 	return sommet;
 }
 
@@ -221,7 +231,7 @@ std::vector<std::vector<unsigned int>> Map::getDistance(int numPlayer) {
     std::vector<glm::ivec2> link;
     unsigned int nbCorridors = 0;
     unsigned int sourceIndex;
-	
+
 	// Attributing node number to coordinates
     for (unsigned int i = 0; i < datas.size(); i++) {
         for (unsigned int j = 0; j < datas[0].size(); j++) {
@@ -230,26 +240,26 @@ std::vector<std::vector<unsigned int>> Map::getDistance(int numPlayer) {
 			for (int i = 0; i < numPlayer; i++) {
 					++pit;
 			}
-            if ((unsigned int) pit->getPosition().x == j && (unsigned int) pit->getPosition().y == i) {
+            if ((unsigned int) pit->position.x == j && (unsigned int) pit->position.y == i) {
                 sourceIndex = nbCorridors;
             }
-            
+
             if (isCaseAccessible(j,i)) {
                 link.push_back(glm::ivec2(i, j));
                 nbCorridors++;
             }
         }
     }
-    
+
     // Initialisation
     std::vector<int> dist;
     for (unsigned int i = 0; i < nbCorridors; i++) {
-        if (i == sourceIndex) 
+        if (i == sourceIndex)
             dist.push_back(0);
         else
             dist.push_back(255);
     }
-    
+
     std::vector<int> q;
     while (q.size() < nbCorridors) {
         int s = findMin(q, dist, nbCorridors);
@@ -257,12 +267,12 @@ std::vector<std::vector<unsigned int>> Map::getDistance(int numPlayer) {
         for (unsigned int i = 0; i < nbCorridors; i++) {
             if (isVoisin(link[s], link[i])) {
                 if (dist[i] > dist[s] + 1) {
-                    dist[i] = dist[s]+1;   
+                    dist[i] = dist[s]+1;
                 }
             }
         }
     }
-    
+
     // Creation of the distance matrix, linking between coordinates and minimal distances
     std::vector<std::vector<unsigned int>> distances(datas.size(), vector<unsigned int>(datas[0].size()));
 	for (unsigned int i = 0; i < datas.size(); i++) {
@@ -270,17 +280,17 @@ std::vector<std::vector<unsigned int>> Map::getDistance(int numPlayer) {
 			distances[i][j] = 255;
 		}
 	}
-	
+
 	for (unsigned int i = 0; i < nbCorridors; i++) {
 		distances[link[i].x][link[i].y] = dist[i];
 	}
-	
+
 	for (unsigned int i = 0; i < datas.size(); i++) {
 		for (unsigned int j = 0; j < datas[0].size(); j++) {
 			cout << distances[i][j] << " ";
 		}
 		cout << endl;
 	}
-	
+
     return distances;
 }

@@ -18,14 +18,6 @@ Character::Character(glm::ivec2 position, glm::vec3 orientation,
 Character::~Character(){}
 
 
-glm::ivec2 Character  ::getPosition() const {
-  return position;
-}
-
-void Character::setPosition(glm::ivec2 pos) {
-        position = pos;
-}
-
 void Character::move (Movement movement, Uint32 time){
   return;
 }

@@ -12,18 +12,6 @@ Player::Player(glm::ivec2 position, glm::vec3 orientation,
                     {}
 Player::~Player(){}
 
-std::vector<Item> Player::getInventory(){
-  return inventory;
-}
-std::vector<Item> Player::getStuff(){
-  return equiped;
-}
-void Player::setInventory(std::vector<Item> inv){
-  inventory = inv;
-}
-void Player::setStuff(std::vector<Item> inv){
-  equiped = inv;
-}
 
 void Player::openMenu(MenuType type){
   return;
