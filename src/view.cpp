@@ -87,22 +87,22 @@ void View::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     Mesh mesh;
-    mesh.loadFromFile("/home/datross/Programmation/C-C++/dungeonMaster/res/tete.obj");
-    mesh.loadShader("/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/3D.vs.glsl",
-                    "/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/directionallight.fs.glsl");
+    mesh.loadFromFile("res/tete.obj");
+    mesh.loadShader("res/shaders/3D.vs.glsl",
+                    "res/shaders/directionallight.fs.glsl");
     Camera camera;
     camera.init(70, 1.);
     camera.position = glm::vec3(map_ptr->players.begin()->getPosition().x, 0.5, map_ptr->players.begin()->getPosition().y);
     camera.direction = glm::vec3(0.5,-0.5,-1);
-    
+
     glm::mat4 v = camera.getVMatrix();
     glm::mat4 mv = v;
     //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
     mv = glm::translate(mv, glm::vec3(0,0,0));
 //     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
-    
+
     mesh.activateShader();
-    
+
     mesh.setMVMatrix(mv);
     mesh.setMVPMatrix(camera.getPMatrix() * mv);
     mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
