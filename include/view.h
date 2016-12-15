@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include "mesh.h"
+#include "camera.h"
 
 enum Player_input {
     INPUT_NONE,

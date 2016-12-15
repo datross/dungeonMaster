@@ -13,7 +13,18 @@
 
 enum VertexAttribute {
     VERTEX_ATTR_POSITION = 0,
-    VERTEX_ATTR_COLOR = 1
+    VERTEX_ATTR_NORMAL = 1,
+    VERTEX_ATTR_TEXCOORD = 2
+};
+
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoord;
+    
+    Vertex(){}
+    Vertex(glm::vec3 _position, glm::vec3 _normal, glm::vec2 _texCoord)
+        : position(_position), normal(_normal), texCoord(_texCoord) {}
 };
 
 class Mesh {
@@ -24,10 +35,32 @@ public:
     bool loadFromFile(std::string file);
     bool loadShader(std::string vertexShader, std::string fragmentShader);
     void render();
+    
+    void activateShader();
+    
+    void setMVMatrix(glm::mat4);
+    void setMVPMatrix(glm::mat4);
+    void setNormalMatrix(glm::mat4);
+    void setShininess(float);
+    void setLightDir_vs(glm::vec3);
+    void setLightIntensity(glm::vec3);
+    void setKs(float);
+    void setKd(float);
 private:
     GLuint vbo, ibo, vao;
     unsigned numFaces;
     glimac::Program shader;
+    
+    // uniform
+    GLint uMVMatrix;
+    GLint uMVPMatrix;
+    GLint uNormalMatrix;
+    GLint uTexture;
+    GLint uShininess;
+    GLint uLightDir_vs;
+    GLint uLightIntensity;
+    GLint uKs;
+    GLint uKd;
 };
 
 #endif

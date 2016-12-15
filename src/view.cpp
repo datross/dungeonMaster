@@ -19,6 +19,7 @@ View::View()
     // Double Buffer
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    glEnable(GL_DEPTH_TEST);
 
     // taille de la fenêtre par défaut
     window_width = 1024;
@@ -72,8 +73,33 @@ void View::render() {
 
     Mesh mesh;
     mesh.loadFromFile("/home/datross/Programmation/C-C++/dungeonMaster/res/fauteuil.obj");
-    mesh.loadShader("/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/triangle.vs.glsl",
-                    "/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/triangle.fs.glsl");
+    mesh.loadShader("/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/3D.vs.glsl",
+                    "/home/datross/Programmation/C-C++/dungeonMaster/res/shaders/directionallight.fs.glsl");
+    Camera camera;
+    camera.init(70, 1.);
+    camera.position = glm::vec3(-4,8,10);
+    camera.direction = glm::vec3(0.5,-0.5,-1);
+    
+    glm::mat4 v = camera.getVMatrix();
+    glm::mat4 mv = v;
+    //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
+    mv = glm::translate(mv, glm::vec3(0,0,0));
+//     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
+    
+    mesh.activateShader();
+    
+    mesh.setMVMatrix(mv);
+//     std::cout << camera.getPMatrix() * mv << std::endl;
+//     mesh.setMVPMatrix(mv);
+    mesh.setMVPMatrix(camera.getPMatrix() * mv);
+    //mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+    mesh.setNormalMatrix(glm::mat4(1.));
+    //std::cout << glm::mat4(1.) << std::endl;
+    mesh.setShininess(1.);
+    mesh.setLightDir_vs(glm::vec3(1,0,0));
+    mesh.setLightIntensity(glm::vec3(1,1,1));
+    mesh.setKs(1.);
+    mesh.setKd(1.);
     mesh.render();
 
     SDL_GL_SwapWindow(window);

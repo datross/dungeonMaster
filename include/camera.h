@@ -6,11 +6,15 @@
 
 class Camera {
 private:
-  glm::vec3 position;
-  glm::vec3 direction;
-  float focal;
+    glm::mat4 projection;
 public:
-  glm::mat4 getMatrix();
+    Camera();
+    void init(float fov, float aspectRatio);
+    glm::mat4 getPMatrix();
+    glm::mat4 getVMatrix();
+    
+    glm::vec3 position;
+    glm::vec3 direction;
 };
 
 #endif
