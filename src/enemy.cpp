@@ -2,6 +2,8 @@
 #include <iostream>
 #include "utils.h"
 
+#include "map.h"
+
 Enemy::Enemy(glm::ivec2 position, glm::vec3 orientation,
             float scale, std::string id,
             unsigned int life, unsigned int defense, unsigned int power,

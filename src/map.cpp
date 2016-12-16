@@ -12,17 +12,49 @@ Map::Map(){}
 Map::~Map(){}
 
 void Map::save(string pathFile){
-	/*ifstream file;
+	ofstream file;
 	file.open(pathFile, ios::out | ios::trunc);
 
 	if(file){
 		file << name << endl;
 		file << players.size() << endl;
-		for (list<Player>::iterator it = players.begin(); it != players.end(); ++it)
-			file << (*it).x << " " << (*it).y << " " <<endl;
+		for (list<Player>::iterator it = players.begin(); it != players.end(); ++it) {
+			file << (*it).position.x << " " << (*it).position.y << " " << (*it).scale << " " << (*it).id;
+			file << " " << (*it).life << " " << (*it).defense << " " << (*it).power;
+			file << " " << (*it).inventory.size()+(*it).equiped.size();
+			file << " " << (*it).score << " " << /*(*it).mesh.path << */ endl;
+
+			for (vector<Item>::iterator item = (*it).inventory.begin(); item != (*it).inventory.end(); ++item) {
+				file << '\t' << (*item).id << " " << (*item).value << " " << (*item).type;
+				file << " " << (*item).durability << " " << 0 << " " << /*(*it).mesh.path << */ endl;
+			}
+		}
+
+		file << items.size() << endl;
+		for (list<Item>::iterator it = items.begin(); it != items.end(); ++it) {
+			file << (*it).position.x << " " << (*it).position.y << " " << (*it).id;
+			file << " " << (*it).value << " " << (*it).type << " " << (*it).durability;
+			file << " " << /*(*it).mesh.path << */ endl;
+		}
+
+		file << characters.size() << endl;
+		for (list<Enemy>::iterator it = characters.begin(); it != characters.end(); ++it) {
+			file << (*it).position.x << " " << (*it).position.y << " " << (*it).scale << " " << (*it).id;
+			file << " " << (*it).life << " " << (*it).defense << " " << (*it).power;
+			file << " " << (*it).detectRange;
+			file << " " << /*(*it).mesh.path << */ endl;
+		}
+
+		file << traps.size() << endl;
+		for (vector<Trap>::iterator it = traps.begin(); it != traps.end(); ++it) {
+			file << (*it).position.x << " " << (*it).position.y << " " << (*it).id;
+			file << " " << (*it).damages << " " << (*it).activationTiming;
+			file << " " << /*(*it).mesh.path << */ endl;
+		}
+
 	} else
 		cerr << "Cannot open or create " << pathFile << endl;
-	*/
+
 }
 
 void Map::loadTerrain(string pathFile){
@@ -173,7 +205,7 @@ void Map::print() {
         it->print();
     }
     std::cout << "/* Characters : */" << endl;
-    for (std::list<Character>::iterator it=characters.begin(); it != characters.end(); ++it) {
+    for (std::list<Enemy>::iterator it=characters.begin(); it != characters.end(); ++it) {
         it->print();
     }
     std::cout << "/* Items : */" << endl;

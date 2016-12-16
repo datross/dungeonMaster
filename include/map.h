@@ -7,18 +7,18 @@
 #include <list>
 #include <string>
 
-#include "character.h"
 #include "player.h"
+#include "enemy.h"
 #include "item.h"
 #include "trap.h"
 
 class Map {
 public:
-	
+
   std::string name;
   std::vector< std::vector<int> > datas;
   std::list<Player> players;
-  std::list<Character> characters;
+  std::list<Enemy> characters;
   std::list<Item> items;
   std::vector<Trap> traps;
 
