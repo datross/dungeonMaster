@@ -130,7 +130,6 @@ int main(int argc, char **argv)
     std::cout << "Enemies" << std::endl;
     std::list<Enemy>::iterator it = map.characters.begin();
     for (; it != map.characters.end(); it++) {
-        it->print();
         it->reach(glm::ivec2(0,0), &map);
     }
 

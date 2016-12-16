@@ -1,4 +1,4 @@
-#Test
+#Tinymap
 1
 2 4 1 Mouse1 10 0 3 1 0 mouse.obj
 	cheese 10 3 -1 0 chees0.obj

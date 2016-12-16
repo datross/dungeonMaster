@@ -23,16 +23,17 @@ bool Enemy::detect(Character* other){
     return true;
 }
 
+
 Movement Enemy::reach(glm::ivec2 target, Map* map) {
-  
+
   std::vector<std::vector<unsigned int>> distances = map->getDistance(0); //TODO Modifier le 0 avec le nombre du bon joueur
-  
-  
+
+
   if (distances[position.y][position.x] == 255) {
         std::cout << "The enemy couldn't reach the player." << std::endl;
         return MOVEMENT_NONE;
   }
-  
+
   // TODO Vérification sortie du mur
   if (position.x-1 >= 0) {
     if (distances[position.y][position.x-1] == distances[position.y][position.x]-1)
