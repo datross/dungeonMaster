@@ -44,9 +44,13 @@ glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
 }
 
 glm::vec3 Character::getVisualPosition(Uint32 time) {
+    if((Uint32)(1./speed) + anim_start_time < time) { // l'anim de déplacement est terminée
+        return glm::vec3(position.x, 0, position.y);
+    }
+    
     glm::ivec2 direction_i = computeSteppedDirection(orientation);
     glm::vec3 direction = glm::vec3(direction_i.x, 0, direction_i.y);
-    return glm::vec3(position.x, 0, position.y) + direction * anim_time_normalized;
+    return glm::vec3(position.x, 0, position.y) + direction * (float)(speed *(time - anim_start_time));
 }
 
 void Character::move (Movement movement, Uint32 time){

@@ -22,9 +22,9 @@ class Character {
 public:
   glm::ivec2 position;
   glm::vec3 orientation;
-  float anim_start_time, anim_time_normalized;
+  Uint32 anim_start_time;
+  float speed; // inverse du temps d'animation de déplacement d'une case à l'autre
   float scale;
-  float speed; // inverse du temps d'animation de déplacement.
   std::string id;
   unsigned int life;
   unsigned int defense;
