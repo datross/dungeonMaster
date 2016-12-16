@@ -36,17 +36,22 @@ Movement Enemy::reach(glm::ivec2 target, Map* map) {
 
   // TODO Vérification sortie du mur
 
-
-
-  if (distances[position.y][position.x-1] == distances[position.y][position.x]-1)
-      return MOVEMENT_LEFT;
-  if (distances[position.y][position.x+1] == distances[position.y][position.x]-1)
-      return MOVEMENT_RIGHT;
-  if (distances[position.y-1][position.x] == distances[position.y][position.x]-1)
-      return MOVEMENT_FORWARD;
-  if (distances[position.y+1][position.x] == distances[position.y][position.x]-1)
-      return MOVEMENT_BACKWARD;
-
+  if (position.x-1 > 0) {
+    if (distances[position.y][position.x-1] == distances[position.y][position.x]-1)
+        return MOVEMENT_LEFT;
+  }
+  if (position.x+1 < map->datas[0].size()) {
+    if (distances[position.y][position.x+1] == distances[position.y][position.x]-1)
+        return MOVEMENT_RIGHT;
+  }
+  if (position.y-1 > 0) {
+    if (distances[position.y-1][position.x] == distances[position.y][position.x]-1)
+        return MOVEMENT_FORWARD;
+  }
+  if (position.y+1 < map->datas.size()) {
+    if (distances[position.y+1][position.x] == distances[position.y][position.x]-1)
+        return MOVEMENT_BACKWARD;
+  }
 }
 
 void Enemy::print() const {
