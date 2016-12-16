@@ -20,7 +20,6 @@ public:
 
   bool detect(Character* other);
   Movement reach(glm::ivec2 target, Map* map);
-  void print() const;
 };
 
 #endif
