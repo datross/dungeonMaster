@@ -13,9 +13,7 @@ Game::~Game() {
 
 int Game::run() {
     while(game_state != STATE_QUIT) {
-
         view.update();
-
         if(game_state == STATE_MENU) {
             menu();
         } else if(game_state == STATE_GAMEPLAY) {
@@ -24,7 +22,6 @@ int Game::run() {
 
         view.render();
     }
-
     return 0;
 }
 
