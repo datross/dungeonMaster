@@ -33,7 +33,7 @@ public :
   void equip(Item item);
   void unequip(Item item);
   int isNextDoor();
-  void use (Item* item);
+  void use (Item item);
   void attack(Character* enemy);
 };
 

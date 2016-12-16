@@ -17,20 +17,20 @@ class Game {
 public:
     Game(char* application_path);
     ~Game();
-    
+
     // fonction principale
     int run();
-    
+
     // le jeu est dans l'état 'menu'
     void menu();
-    
+
     // leu jeu est dans l'état 'gameplay'
     void gameplay();
-private:
+
     Map map;
     View view;
     glimac::FilePath application_path;
-    
+
     Game_state game_state;
 };
 
