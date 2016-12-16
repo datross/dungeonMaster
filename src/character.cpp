@@ -17,13 +17,42 @@ Character::Character(glm::ivec2 position, glm::vec3 orientation,
                     power(power){}
 Character::~Character(){}
 
+glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
+    glm::ivec2 direction;
+    if(orientation.x > 0 && orientation.z > 0) {
+        if(orientation.x > orientation.z)
+            direction = glm::ivec2(1, 0);
+        else
+            direction = glm::ivec2(0, 1);
+    } else if(orientation.x < 0 && orientation.z > 0) {
+        if(-orientation.x > orientation.z)
+            direction = glm::ivec2(-1, 0);
+        else
+            direction = glm::ivec2(0, 1);
+    } else if(orientation.x < 0 && orientation.z < 0) {
+        if(orientation.x < orientation.z)
+            direction = glm::ivec2(-1, 0);
+        else
+            direction = glm::ivec2(0, -1);
+    } else if(orientation.x > 0 && orientation.z < 0) {
+        if(orientation.x > -orientation.z)
+            direction = glm::ivec2(1, 0);
+        else
+            direction = glm::ivec2(0, -1);
+    }
+    return direction;
+}
+
+glm::vec3 Character::getVisualPosition() {
+    glm::ivec2 direction_i = computeSteppedDirection(orientation);
+    glm::vec3 direction = glm::vec3(direction_i.x, 0, direction_i.y);
+    return glm::vec3(position.x, 0, position.y) + direction * anim_time_normalized;
+}
 
 void Character::move (Movement movement, Uint32 time){
-  return;
+    
 }
-void Character::orient (Direction direction, Uint32 time){
-  return;
-}
+
 void Character::attack (Character* enemy){
   enemy->defend(power);
 }

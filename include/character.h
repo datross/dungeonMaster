@@ -9,12 +9,6 @@
 
 //#include "mesh.h"
 
-enum Direction {
-  NORTH,
-  SOUTH,
-  EAST,
-  WEST
-};
 enum Movement {
   FORWARD,
   BACK,
@@ -26,6 +20,7 @@ class Character {
 public:
   glm::ivec2 position;
   glm::vec3 orientation;
+  float anim_start_time, anim_time_normalized;
   float scale;
   std::string id;
   unsigned int life;
@@ -43,8 +38,8 @@ public:
             unsigned int power = 0 );
   ~Character();
 
+  glm::vec3 getVisualPosition();
   void move (Movement movement, Uint32 time);
-  void orient (Direction direction, Uint32 time);
   void attack (Character* enemy);
   void defend (unsigned int amountAttack);
   void death();
