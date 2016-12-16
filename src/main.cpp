@@ -121,20 +121,6 @@ int main(int argc, char **argv)
     SDL_Quit();
     return 0;*/
 
-     Map map;
-     map.load("tinymap");
-        map.save("res/saves/saveTest.txt");
-        
-        std::cout << "Enemies" << std::endl;
-        std::list<Enemy>::iterator it = map.characters.begin();
-        for (; it != map.characters.end(); it++) {
-        it->print();
-        it->reach(glm::ivec2(0,0), &map);
-        }
-        
-
-     map.getDistance(0);
-
    Game game(argv[0]);
    return game.run();
 }

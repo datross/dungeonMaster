@@ -11,10 +11,11 @@
 #include "mesh.h"
 
 enum Movement {
-  FORWARD,
-  BACK,
-  LEFT,
-  RIGHT
+    MOVEMENT_NONE,
+    MOVEMENT_FORWARD,
+    MOVEMENT_BACK,
+    MOVEMENT_LEFT,
+    MOVEMENT_RIGHT
 };
 
 class Character {
@@ -23,6 +24,7 @@ public:
   glm::vec3 orientation;
   float anim_start_time, anim_time_normalized;
   float scale;
+  float speed; // inverse du temps d'animation de déplacement.
   std::string id;
   unsigned int life;
   unsigned int defense;
@@ -39,7 +41,7 @@ public:
             unsigned int power = 0 );
   ~Character();
 
-  glm::vec3 getVisualPosition();
+  glm::vec3 getVisualPosition(Uint32 time);
   void move (Movement movement, Uint32 time);
   void attack (Character* enemy);
   void defend (unsigned int amountAttack);

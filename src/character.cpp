@@ -43,23 +43,26 @@ glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
     return direction;
 }
 
-glm::vec3 Character::getVisualPosition() {
+glm::vec3 Character::getVisualPosition(Uint32 time) {
     glm::ivec2 direction_i = computeSteppedDirection(orientation);
     glm::vec3 direction = glm::vec3(direction_i.x, 0, direction_i.y);
     return glm::vec3(position.x, 0, position.y) + direction * anim_time_normalized;
 }
 
 void Character::move (Movement movement, Uint32 time){
-    
+    position += computeSteppedDirection(orientation);
+    anim_start_time = time;
 }
 
 void Character::attack (Character* enemy){
   enemy->defend(power);
 }
+
 void Character::defend (unsigned int amountAttack){
   life -= (amountAttack - defense);
   if(!life) death();
 }
+
 void Character::death() {
   return;
 }
