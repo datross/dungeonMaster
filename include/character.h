@@ -1,13 +1,14 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "glm.h"
 
-//#include "mesh.h"
+#include "mesh.h"
 
 enum Movement {
   FORWARD,
@@ -26,7 +27,7 @@ public:
   unsigned int life;
   unsigned int defense;
   unsigned int power;
-  //Mesh *mesh;
+  std::shared_ptr<Mesh> mesh_ptr;
 
   Character();
   Character(glm::ivec2 position = glm::ivec2(0,0) ,
