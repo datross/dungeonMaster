@@ -121,10 +121,11 @@ int main(int argc, char **argv)
     SDL_Quit();
     return 0;*/
 
-//     Map map;
-//     map.load("test");
-// 
-//     map.getDistance(0);
+     Map map;
+     map.load("test");
+	 map.save("res/saves/saveTest.txt");
+
+     map.getDistance(0);
 
    Game game(argv[0]);
    return game.run();

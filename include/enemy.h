@@ -4,7 +4,8 @@
 #include "glm.h"
 
 #include "character.h"
-#include "map.h"
+
+class Map;
 
 class Enemy : public Character {
 public:
