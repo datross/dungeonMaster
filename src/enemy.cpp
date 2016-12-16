@@ -25,7 +25,11 @@ bool Enemy::detect(Character* other){
 
 std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target, Map* map) {
   std::vector<glm::ivec2> path;
-  map->print();
+  
+  std::vector<std::vector<unsigned int>> distances = map->getDistance();
+  std::cout << "Distance between enemy and player : " << distances[position.y][position.x] << std::endl;
+  
+  /*map->print();
 
   float totalDist = Utils::distance(position, target);
   std::cout << "Distance : " << totalDist << std::endl;
@@ -54,6 +58,6 @@ std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target, Map* map) {
     totalDist = newDist;
     i++;
   }
-
+*/
   return path;
 }
