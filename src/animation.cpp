@@ -10,7 +10,7 @@ void Animation::loadAnimation(std::string path){
     if(file){
 		string line;
 		unsigned int steps;
-		file >> time >> steps;
+		file >> duration >> steps;
 		getline(file, line);
 		getline(file, line);
 
@@ -19,7 +19,9 @@ void Animation::loadAnimation(std::string path){
 			file >> anim.first >> tmp_position.x >> tmp_position.y >> tmp_position.z;
 			file >> tmp_rotation.x >> tmp_rotation.y >> tmp_rotation.z;
 			file >> tmp_scale.x >> tmp_scale.y >> tmp_scale.z;
-
+			anim.second.push_back(tmp_position);
+			anim.second.push_back(tmp_rotation);
+			anim.second.push_back(tmp_scale);
 			getline(file, line);
 		}
 

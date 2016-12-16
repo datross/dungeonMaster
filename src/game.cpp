@@ -3,8 +3,19 @@
 
 Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_GAMEPLAY) {
-    map.load("test");
+    map.load("tinymap");
+    map.save("res/saves/saveTest.txt");
     view.setMap(map);
+    
+        
+        
+    std::cout << "Enemies" << std::endl;
+    std::list<Enemy>::iterator it = map.characters.begin();
+    for (; it != map.characters.end(); it++) {
+        it->print();
+        it->reach(glm::ivec2(0,0), &map);
+    }
+    
 }
 
 Game::~Game() {
@@ -13,9 +24,7 @@ Game::~Game() {
 
 int Game::run() {
     while(game_state != STATE_QUIT) {
-
         view.update();
-
         if(game_state == STATE_MENU) {
             menu();
         } else if(game_state == STATE_GAMEPLAY) {
@@ -24,7 +33,6 @@ int Game::run() {
 
         view.render();
     }
-
     return 0;
 }
 

@@ -10,7 +10,7 @@ class Map;
 class Enemy : public Character {
 public:
   unsigned int detectRange;
-  std::vector<glm::ivec2> movePattern;
+  Movement movePattern;
 
   Enemy(glm::ivec2 position = glm::ivec2(0,0), glm::vec3 orientation = glm::vec3(0,0,0),
 		float scale = 1, std::string id = "Default",
@@ -19,7 +19,8 @@ public:
   ~Enemy();
 
   bool detect(Character* other);
-  std::vector<glm::ivec2> reach(glm::ivec2 target, Map* map);
+  Movement reach(glm::ivec2 target, Map* map);
+  void print() const;
 };
 
 #endif
