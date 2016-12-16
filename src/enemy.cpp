@@ -23,37 +23,37 @@ bool Enemy::detect(Character* other){
     return true;
 }
 
-std::vector<glm::ivec2> Enemy::reach(glm::ivec2 target, Map* map) {
-  std::vector<glm::ivec2> path;
-  map->print();
 
-  float totalDist = Utils::distance(position, target);
-  std::cout << "Distance : " << totalDist << std::endl;
+Movement Enemy::reach(glm::ivec2 target, Map* map) {
 
-  //Find where he can move
-  int i = 0;
-  while (totalDist > 0) {
-    std::cout << "Tour : " << i << std::endl;
+  std::vector<std::vector<unsigned int>> distances = map->getDistance(0); //TODO Modifier le 0 avec le nombre du bon joueur
 
-    float newDist = Utils::distance(glm::ivec2(position.x-1, position.y), target);
-    if (map->isCaseEmpty(position.x-1, position.y) && newDist < totalDist)
-      std::cout << "Can move left. New dist : " << newDist << std::endl;
 
-    newDist = Utils::distance(glm::ivec2(position.x+1, position.y), target);
-    if (map->isCaseEmpty(position.x+1, position.y) && newDist < totalDist)
-      std::cout << "Can move right. New dist : " << newDist << std::endl;
-
-    newDist = Utils::distance(glm::ivec2(position.x, position.y-1), target);
-    if (map->isCaseEmpty(position.x, position.y-1) && newDist < totalDist)
-        std::cout << "Can move top. New dist : " << newDist << std::endl;
-
-    newDist = Utils::distance(glm::ivec2(position.x, position.y+1), target);
-    if (map->isCaseEmpty(position.x, position.y+1) && newDist < totalDist)
-        std::cout << "Can move bot. New dist : " << newDist << std::endl;
-
-    totalDist = newDist;
-    i++;
+  if (distances[position.y][position.x] == 255) {
+        std::cout << "The enemy couldn't reach the player." << std::endl;
+        return MOVEMENT_NONE;
   }
 
-  return path;
+  // TODO Vérification sortie du mur
+
+  if (position.x-1 > 0) {
+    if (distances[position.y][position.x-1] == distances[position.y][position.x]-1)
+        return MOVEMENT_LEFT;
+  }
+  if (position.x+1 < map->datas[0].size()) {
+    if (distances[position.y][position.x+1] == distances[position.y][position.x]-1)
+        return MOVEMENT_RIGHT;
+  }
+  if (position.y-1 > 0) {
+    if (distances[position.y-1][position.x] == distances[position.y][position.x]-1)
+        return MOVEMENT_FORWARD;
+  }
+  if (position.y+1 < map->datas.size()) {
+    if (distances[position.y+1][position.x] == distances[position.y][position.x]-1)
+        return MOVEMENT_BACKWARD;
+  }
+}
+
+void Enemy::print() const {
+    std::cout << "Position : " << position.x << ", " << position.y << std::endl;
 }
