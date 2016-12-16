@@ -5,7 +5,7 @@ Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_GAMEPLAY) {
     map.load("tinymap");
     map.save("res/saves/saveTest.txt");
-    view.setMap(map);
+    //view.setMap(map);
     
         
         
