@@ -1,0 +1,3 @@
+Time Steps
+%anim posX posY posZ rotX rotY rotZ scaleX scaleY scaleZ
+...

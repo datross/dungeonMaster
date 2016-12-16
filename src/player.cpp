@@ -33,20 +33,17 @@ int Player::isNextDoor(){
 }
 
 void Player::use(Item* item){
-  /*
-  if (type == TREASURE) {
-    player->score += value;
-  } else if (type == WEAPON) {
-    palyer->power += value;
-  } else if (type == ARMOR) {
-    player->defense += value;
-  } else if (type == HEALTH) {
-    player->life += value;
-  } else if (type == KEY) {
-    int door = player->isNextDoor();
-    if(door >= 3 && value == door) {
-      //Open door
-    }
+  if (item->type == TREASURE) {
+    score += item->value;
+} else if (item->type == WEAPON) {
+    power += item->value;
+} else if (item->type == ARMOR) {
+    defense += item->value;
+} else if (item->type == HEALTH) {
+    life += item->value;
+} else if (item->type == KEY) {
+		if(isNextDoor() == item->value) {
+
+		}
   }
-  */
 }
