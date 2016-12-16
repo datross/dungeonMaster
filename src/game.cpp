@@ -5,17 +5,17 @@ Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_GAMEPLAY) {
     map.load("tinymap");
     map.save("res/saves/saveTest.txt");
-    //view.setMap(map);
-    
-        
-        
+    view.setMap(map);
+
+
+
     std::cout << "Enemies" << std::endl;
     std::list<Enemy>::iterator it = map.characters.begin();
     for (; it != map.characters.end(); it++) {
         it->print();
         it->reach(glm::ivec2(0,0), &map);
     }
-    
+
 }
 
 Game::~Game() {
