@@ -5,12 +5,13 @@
 using namespace std;
 
 Item::Item(){}
-Item::Item(glm::ivec2 position, std::string id, int value, ItemType type, int durability) :
+Item::Item(glm::ivec2 position, std::string id, int value, ItemType type, int durability, std::shared_ptr<Mesh> mesh_ptr) :
   position(position),
   id(id),
   value(value),
   type(type),
-  durability(durability)
+  durability(durability),
+  mesh_ptr(mesh_ptr)
   {}
 Item::~Item(){}
 

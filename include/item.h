@@ -2,9 +2,10 @@
 #define ITEM_H
 
 #include <string>
+#include <memory>
 #include "glm.h"
 
-//#include "mesh.h"
+#include "mesh.h"
 
 enum ItemType {
   TREASURE = 0,
@@ -22,10 +23,14 @@ public:
   int value;
   ItemType type;
   int durability;
-  //Mesh mesh;
+  std::shared_ptr<Mesh> mesh_ptr;
 
   Item();
-  Item(glm::ivec2 position = glm::ivec2(0,0), std::string id = "", int value = 0, ItemType type = TREASURE, int durability = -1);
+  Item(glm::ivec2 position = glm::ivec2(0,0),
+  		std::string id = "", int value = 0,
+		ItemType type = TREASURE,
+		int durability = -1,
+		std::shared_ptr<Mesh> mesh_ptr = NULL);
   ~Item();
 
   void print();

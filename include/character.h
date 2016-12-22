@@ -38,7 +38,8 @@ public:
             std::string id = "Default",
             unsigned int life = 0,
             unsigned int defense = 0,
-            unsigned int power = 0 );
+            unsigned int power = 0 ,
+			std::shared_ptr<Mesh> mesh_ptr = NULL);
   ~Character();
 
   glm::vec3 getVisualPosition(Uint32 time);
