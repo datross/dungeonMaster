@@ -83,36 +83,48 @@ void View::updateEvent() {
     }
 }
 
+void View::reshape(unsigned w, unsigned h) {
+    window_width  = w;
+    window_height = h;
+    float aspect_ratio = (float)w/h;
+    
+    // update des matrices de projection des players
+    // TODO gérer proprement la fov des camera
+    for(auto it = assets_ptr->map.players.begin(); it != assets_ptr->map.players.end(); ++it) {
+        it->cam.init(70., aspect_ratio);
+    }
+}
+
 void View::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Mesh mesh;
-    mesh.loadFromFile("res/tete.obj");
-    mesh.loadShader("res/shaders/3D.vs.glsl",
-                    "res/shaders/directionallight.fs.glsl");
-    Camera camera;
-    camera.init(70, 1.);
-    camera.position = glm::vec3(map_ptr->players.begin()->position.x, 0.5, map_ptr->players.begin()->position.y);
-    camera.direction = glm::vec3(0.5,-0.5,-1);
-
-    glm::mat4 v = camera.getVMatrix();
-    glm::mat4 mv = v;
-    //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-    mv = glm::translate(mv, glm::vec3(0,0,0));
-//     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
-
-    mesh.activateShader();
-
-    mesh.setMVMatrix(mv);
-    mesh.setMVPMatrix(camera.getPMatrix() * mv);
-    mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-    mesh.setNormalMatrix(glm::mat4(1.));
-    mesh.setShininess(1.);
-    mesh.setLightDir_vs(glm::vec3(1,1,1));
-    mesh.setLightIntensity(glm::vec3(1,1,1));
-    mesh.setKs(glm::vec3(1,1,1));
-    mesh.setKd(glm::vec3(1,1,1));
-    mesh.render();
+//     Mesh mesh;
+//     mesh.loadFromFile("res/tete.obj");
+//     mesh.loadShader("res/shaders/3D.vs.glsl",
+//                     "res/shaders/directionallight.fs.glsl");
+//     Camera camera;
+//     camera.init(70, 1.);
+//     camera.position = glm::vec3(map_ptr->players.begin()->position.x, 0.5, map_ptr->players.begin()->position.y);
+//     camera.direction = glm::vec3(0.5,-0.5,-1);
+// 
+//     glm::mat4 v = camera.getVMatrix();
+//     glm::mat4 mv = v;
+//     //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
+//     mv = glm::translate(mv, glm::vec3(0,0,0));
+// //     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
+// 
+//     mesh.activateShader();
+// 
+//     mesh.setMVMatrix(mv);
+//     mesh.setMVPMatrix(camera.getPMatrix() * mv);
+//     mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+//     mesh.setNormalMatrix(glm::mat4(1.));
+//     mesh.setShininess(1.);
+//     mesh.setLightDir_vs(glm::vec3(1,1,1));
+//     mesh.setLightIntensity(glm::vec3(1,1,1));
+//     mesh.setKs(glm::vec3(1,1,1));
+//     mesh.setKd(glm::vec3(1,1,1));
+//     mesh.render();
 
     SDL_GL_SwapWindow(window);
 }
@@ -121,6 +133,6 @@ Player_input View::get_input() {
     return player_input;
 }
 
-void View::setMap(Map& _map_ptr) {
-    map_ptr = std::shared_ptr<Map>(&_map_ptr);
+void View::setAssets(Assets& _assets_ptr) {
+    assets_ptr = std::shared_ptr<Assets>(&_assets_ptr);
 }

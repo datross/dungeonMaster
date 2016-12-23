@@ -2,12 +2,13 @@
 #define VIEW_H
 
 #include <memory>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 
 #include "mesh.h"
 #include "camera.h"
-#include "map.h"
+#include "assets.h"
 
 enum Player_input {
     INPUT_NONE,
@@ -27,10 +28,12 @@ public:
     
     Player_input get_input();
     
-    void setMap(Map&);
+    void setAssets(Assets&);
 private:
     void updateEvent();
+    void reshape(unsigned w, unsigned h);
     
+    // about window
     SDL_Window* window;
     SDL_GLContext context_gl;
     SDL_Event event;
@@ -39,7 +42,9 @@ private:
     unsigned window_width,
              window_height;
              
-    std::shared_ptr<Map> map_ptr;
+    // about game rendering
+    // everything is stored in assets
+    std::shared_ptr<Assets> assets_ptr;
 };
 
 #endif

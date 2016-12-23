@@ -5,7 +5,7 @@ Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_GAMEPLAY) {
 //     map.load("tinymap");
 //     map.save("res/saves/savetinymap.txt");
-    view.setMap(map);
+//     view.setMap(map);
 }
 
 Game::~Game() {
@@ -30,6 +30,7 @@ void Game::menu() {
 }
 
 void Game::gameplay() {
+    // TODO ça paraît très temporaire et crade tout ça...
     if(view.get_input() == INPUT_QUIT)
         game_state = STATE_QUIT;
     else if(view.get_input() == INPUT_MOVE_BACKWARD) {
