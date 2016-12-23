@@ -9,6 +9,24 @@ Mesh::~Mesh() {
     glDeleteVertexArrays(1, &vao);
 }
 
+Mesh::Mesh(const Mesh& mesh) {
+    vbo      = mesh.vbo;
+    ibo      = mesh.ibo;
+    vao      = mesh.vao;
+    numFaces = mesh.numFaces;
+    shader   = mesh.shader;
+    
+    uMVMatrix       = mesh.uMVMatrix;
+    uMVPMatrix      = mesh.uMVPMatrix;
+    uNormalMatrix   = mesh.uNormalMatrix;
+    uTexture        = mesh.uTexture;
+    uShininess      = mesh.uShininess;
+    uLightDir_vs    = mesh.uLightDir_vs;
+    uLightIntensity = mesh.uLightIntensity;
+    uKs             = mesh.uKs;
+    uKd             = mesh.uKd;
+}
+
 bool Mesh::loadFromFile(std::string file) {
 	path = file;
 

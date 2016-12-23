@@ -3,8 +3,8 @@
 
 Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_GAMEPLAY) {
-    map.load("tinymap");
-    map.save("res/saves/savetinymap.txt");
+//     map.load("tinymap");
+//     map.save("res/saves/savetinymap.txt");
     view.setMap(map);
 }
 

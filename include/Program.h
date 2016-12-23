@@ -20,11 +20,16 @@ public:
 		rvalue.m_nGLId = 0;
 	}
 
-	Program& operator =(Program&& rvalue) {
-		m_nGLId = rvalue.m_nGLId;
-		rvalue.m_nGLId = 0;
-		return *this;
-	}
+// 	Program& operator =(Program&& rvalue) {
+// 		m_nGLId = rvalue.m_nGLId;
+// 		rvalue.m_nGLId = 0;
+// 		return *this;
+// 	}
+
+        Program& operator=(const Program& source) {
+            m_nGLId = source.m_nGLId;
+            return *this;
+        }
 
 	GLuint getGLId() const {
 		return m_nGLId;
@@ -44,7 +49,7 @@ public:
 
 private:
 	Program(const Program&);
-	Program& operator =(const Program&);
+// 	Program& operator =(const Program&);
 
 	GLuint m_nGLId;
 };

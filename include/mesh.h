@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include <GL/glew.h>
 #include "glm.h"
 #include <assimp/Importer.hpp>
@@ -31,10 +32,11 @@ class Mesh {
 public:
     Mesh();
     ~Mesh();
+    Mesh(const Mesh&);
 
     bool loadFromFile(std::string file);
     bool loadShader(std::string vertexShader, std::string fragmentShader);
-    void render();
+    void render();  
 
     void activateShader();
 
@@ -47,7 +49,7 @@ public:
     void setKs(glm::vec3);
     void setKd(glm::vec3);
 
-	std::string path;
+    std::string path;
 private:
     GLuint vbo, ibo, vao;
     unsigned numFaces;
