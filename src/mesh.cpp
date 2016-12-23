@@ -9,24 +9,44 @@ Mesh::~Mesh() {
     glDeleteVertexArrays(1, &vao);
 }
 
+Mesh::Mesh(const Mesh& mesh) {
+    vbo      = mesh.vbo;
+    ibo      = mesh.ibo;
+    vao      = mesh.vao;
+    numFaces = mesh.numFaces;
+    shader   = mesh.shader;
+    
+    uMVMatrix       = mesh.uMVMatrix;
+    uMVPMatrix      = mesh.uMVPMatrix;
+    uNormalMatrix   = mesh.uNormalMatrix;
+    uTexture        = mesh.uTexture;
+    uShininess      = mesh.uShininess;
+    uLightDir_vs    = mesh.uLightDir_vs;
+    uLightIntensity = mesh.uLightIntensity;
+    uKs             = mesh.uKs;
+    uKd             = mesh.uKd;
+}
+
 bool Mesh::loadFromFile(std::string file) {
+	path = file;
+
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate/* | aiProcess_GenNormals*/);
-    
+
     if(!scene) {
         std::cout << "Error loading: " << file << " : " << importer.GetErrorString() << std::endl;
         return false;
     }
-    
+
     // TODO Checker tout ça.
     // Faces are ONLY triangles
-    
+
     aiMesh * mesh = scene->mMeshes[0];
-    
+
     std::vector<Vertex> vertices;
     std::vector<glm::ivec3> indices;
-    
-    
+
+
     // vertices
     for(unsigned v = 0; v < mesh->mNumVertices; ++v) {
         Vertex vertex;
@@ -41,7 +61,7 @@ bool Mesh::loadFromFile(std::string file) {
         vertex.texCoord = glm::vec2(0, 0);
         vertices.push_back(vertex);
     }
-    
+
     // faces (vertices indices)
     numFaces = mesh->mNumFaces;
     for(unsigned f = 0; f < mesh->mNumFaces; ++f) {
@@ -49,19 +69,19 @@ bool Mesh::loadFromFile(std::string file) {
                                      mesh->mFaces[f].mIndices[1],
                                      mesh->mFaces[f].mIndices[2]));
     }
-    
+
     // send vertices to GPU
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
+
     // send indices to GPU
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(glm::ivec3), indices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
+
     // create VAO
     glGenVertexArrays(1,&vao);
     glBindVertexArray(vao);
@@ -75,13 +95,13 @@ bool Mesh::loadFromFile(std::string file) {
     glVertexAttribPointer(VERTEX_ATTR_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoord));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    
+
     return true;
 }
 
 bool Mesh::loadShader(std::string vertexShader, std::string fragmentShader) {
     shader = glimac::loadProgram(vertexShader, fragmentShader);
-    
+
     uMVPMatrix = glGetUniformLocation(shader.getGLId(), "uMVPMatrix");
     uMVMatrix = glGetUniformLocation(shader.getGLId(), "uMVMatrix");
     uNormalMatrix = glGetUniformLocation(shader.getGLId(), "uNormalMatrix");
@@ -91,7 +111,7 @@ bool Mesh::loadShader(std::string vertexShader, std::string fragmentShader) {
     uLightIntensity = glGetUniformLocation(shader.getGLId(), "uLightIntensity");
     uKs = glGetUniformLocation(shader.getGLId(), "uKs");
     uKd = glGetUniformLocation(shader.getGLId(), "uKd");
-    
+
     return true;
 }
 
@@ -109,7 +129,7 @@ void Mesh::setMVMatrix(glm::mat4 mat) {
     glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Mesh::setMVPMatrix(glm::mat4 mat) 
+void Mesh::setMVPMatrix(glm::mat4 mat)
 {
     glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(mat));
 }

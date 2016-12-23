@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include <GL/glew.h>
 #include "glm.h"
 #include <assimp/Importer.hpp>
@@ -21,7 +22,7 @@ struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texCoord;
-    
+
     Vertex(){}
     Vertex(glm::vec3 _position, glm::vec3 _normal, glm::vec2 _texCoord)
         : position(_position), normal(_normal), texCoord(_texCoord) {}
@@ -31,13 +32,14 @@ class Mesh {
 public:
     Mesh();
     ~Mesh();
-    
+    Mesh(const Mesh&);
+
     bool loadFromFile(std::string file);
     bool loadShader(std::string vertexShader, std::string fragmentShader);
-    void render();
-    
+    void render();  
+
     void activateShader();
-    
+
     void setMVMatrix(glm::mat4);
     void setMVPMatrix(glm::mat4);
     void setNormalMatrix(glm::mat4);
@@ -46,11 +48,13 @@ public:
     void setLightIntensity(glm::vec3);
     void setKs(glm::vec3);
     void setKd(glm::vec3);
+
+    std::string path;
 private:
     GLuint vbo, ibo, vao;
     unsigned numFaces;
     glimac::Program shader;
-    
+
     // uniform
     GLint uMVMatrix;
     GLint uMVPMatrix;

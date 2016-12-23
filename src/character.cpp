@@ -7,14 +7,16 @@ using namespace std;
 Character::Character(){}
 Character::Character(glm::ivec2 position, glm::vec3 orientation,
                     float scale, string id,
-                    unsigned int life, unsigned int defense, unsigned int power) :
+                    unsigned int life, unsigned int defense, unsigned int power,
+					shared_ptr<Mesh> mesh_ptr) :
                     position(position),
                     orientation(orientation),
                     scale(scale),
                     id(id),
                     life(life),
                     defense(defense),
-                    power(power){}
+                    power(power),
+					mesh_ptr(mesh_ptr){}
 Character::~Character(){}
 
 glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
@@ -47,7 +49,7 @@ glm::vec3 Character::getVisualPosition(Uint32 time) {
     if((Uint32)(1./speed) + anim_start_time < time) { // l'anim de déplacement est terminée
         return glm::vec3(position.x, 0, position.y);
     }
-    
+
     glm::ivec2 direction_i = computeSteppedDirection(orientation);
     glm::vec3 direction = glm::vec3(direction_i.x, 0, direction_i.y);
     return glm::vec3(position.x, 0, position.y) + direction * (float)(speed *(time - anim_start_time));

@@ -23,7 +23,7 @@ obj/%.o: src/%.cpp
 	g++ $(CXXFLAGS) -c -o $@ $<
 	
 clean:
-	rm obj/*
-	rm bin/*
+	rm -f obj/*
+	rm -f bin/*
 
 re: clean all
