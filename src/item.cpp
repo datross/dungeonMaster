@@ -5,14 +5,13 @@
 using namespace std;
 
 Item::Item(){}
-Item::Item(glm::ivec2 position, std::string id, int value, ItemType type, int durability, std::shared_ptr<Mesh> mesh_ptr) :
-  position(position),
-  id(id),
-  value(value),
-  type(type),
-  durability(durability),
-  mesh_ptr(mesh_ptr)
-  {}
+Item::Item(glm::ivec2 position, std::string id,
+		   int value, ItemType type, int durability,
+		   std::shared_ptr<Mesh> mesh_ptr, std::shared_ptr<glimac::Program> shaders_ptr) :
+			  position(position), id(id),
+			  value(value), type(type), durability(durability),
+			  mesh_ptr(mesh_ptr), shaders_ptr(shaders_ptr)
+			  {}
 Item::~Item(){}
 
 void Item::print(){

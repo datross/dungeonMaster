@@ -25,7 +25,8 @@ public :
   Player(glm::ivec2 position = glm::ivec2(0,0), glm::vec3 orientation = glm::vec3(0,0,0),
         float scale = 1, std::string id = "Default",
         unsigned int life = 0, unsigned int defense = 0, unsigned int power = 0,
-        unsigned int score = 0, std::shared_ptr<Mesh> mesh_ptr = NULL);
+        unsigned int score = 0,
+		std::shared_ptr<Mesh> mesh_ptr = NULL, std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Player();
 
   void openMenu(MenuType type);

@@ -8,15 +8,12 @@ Character::Character(){}
 Character::Character(glm::ivec2 position, glm::vec3 orientation,
                     float scale, string id,
                     unsigned int life, unsigned int defense, unsigned int power,
-					shared_ptr<Mesh> mesh_ptr) :
-                    position(position),
-                    orientation(orientation),
-                    scale(scale),
-                    id(id),
-                    life(life),
-                    defense(defense),
-                    power(power),
-					mesh_ptr(mesh_ptr){}
+					shared_ptr<Mesh> mesh_ptr, shared_ptr<glimac::Program> shaders_ptr) :
+	                    position(position), orientation(orientation),
+	                    scale(scale), id(id),
+	                    life(life), defense(defense), power(power),
+						mesh_ptr(mesh_ptr),	shaders_ptr(shaders_ptr)
+						{}
 Character::~Character(){}
 
 glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {

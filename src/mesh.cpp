@@ -15,7 +15,7 @@ Mesh::Mesh(const Mesh& mesh) {
     vao      = mesh.vao;
     numFaces = mesh.numFaces;
     shader   = mesh.shader;
-    
+
     uMVMatrix       = mesh.uMVMatrix;
     uMVPMatrix      = mesh.uMVPMatrix;
     uNormalMatrix   = mesh.uNormalMatrix;
@@ -28,8 +28,7 @@ Mesh::Mesh(const Mesh& mesh) {
 }
 
 bool Mesh::loadFromFile(std::string file) {
-	path = file;
-
+	
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate/* | aiProcess_GenNormals*/);
 

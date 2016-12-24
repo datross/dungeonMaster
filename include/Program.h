@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "Shader.h"
 #include "FilePath.h"
+#include <string>
 
 namespace glimac {
 
@@ -46,6 +47,11 @@ public:
 	void use() const {
 		glUseProgram(m_nGLId);
 	}
+
+	std::string vertexShaderPath;
+	std::string fragmentShaderPath;
+
+
 
 private:
 	Program(const Program&);

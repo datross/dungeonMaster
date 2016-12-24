@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "mesh.h"
+#include "Program.h"
 
 class Trap {
 public:
@@ -15,12 +16,13 @@ public:
   int damages;
   unsigned int activationTiming;
   std::shared_ptr<Mesh> mesh_ptr;
+  std::shared_ptr<glimac::Program> shaders_ptr;
 
   Trap();
   Trap(glm::ivec2 position = glm::ivec2(0,0),
   std::string id = "Default", int damages = 0,
   unsigned int timing = 1000,
-  std::shared_ptr<Mesh> mesh_ptr = NULL);
+  std::shared_ptr<Mesh> mesh_ptr = NULL, std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Trap();
 
   void activate();

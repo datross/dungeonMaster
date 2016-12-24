@@ -1,15 +1,15 @@
 #Level name
 Number of players
-posX posY scale id life defense power nb_items_inventory score mesh_name
-	id value Itemtype durability isEquiped mesh_name
+posX posY scale id life defense power nb_items_inventory score mesh_path vshader_path fshader_path
+	id value Itemtype durability isEquiped mesh_path vshader_path fshader_path
 	...
 ...
 Number of items
-posX posY id value Itemtype durability mesh_name
+posX posY id value Itemtype durability mesh_path vshader_path fshader_path
 ...
 Number of monsters
-posX posY scale id life defense power detect_range mesh_name
+posX posY scale id life defense power detect_range mesh_path vshader_path fshader_path
 ...
 Number of traps
-posX posY id damages timing mesh_name
+posX posY id damages timing mesh_path vshader_path fshader_path
 ...
