@@ -6,8 +6,6 @@ Game::Game(char* _application_path)
 		assets.load("tinymap");
 		assets.save("res/saves/savetinymap.txt");
 		view.setAssets(assets);
-
-		assets.map.print();
 }
 
 Game::~Game() {
@@ -48,4 +46,14 @@ void Game::gameplay() {
         assets.map.players.begin()->position = assets.map.players.begin()->position + glm::ivec2(1,0);
         std::cout << assets.map.players.begin()->position << std::endl;
     }
+}
+
+void Game::print(){
+	std::cout << "*** GAME - BEGIN ***" << std::endl;
+	std::cout << "Application path : " << application_path << std::endl;
+	std::cout << "Game_state : " << game_state << std::endl;
+	std::cout << std::endl;
+	assets.print();
+	std::cout << std::endl;
+	std::cout << "*** GAME - END ***" << '\n';
 }

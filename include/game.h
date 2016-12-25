@@ -27,6 +27,9 @@ public:
     // leu jeu est dans l'état 'gameplay'
     void gameplay();
 
+	// Pour debugage
+	void print();
+
     Assets assets;
     View view;
     glimac::FilePath application_path;

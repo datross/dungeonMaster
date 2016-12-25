@@ -39,6 +39,7 @@ shared_ptr<glimac::Program> Assets::shadersLoad(string vShader_path, string fSha
 	(*shader) = glimac::loadProgram(SHADER_PATH + vShader_path,SHADER_PATH + fShader_path);
 	shader->vertexShaderPath = vShader_path;
 	shader->fragmentShaderPath = fShader_path;
+	shaders.push_back(*shader);
     return shared_ptr<glimac::Program>(shader);
 }
 
@@ -212,4 +213,15 @@ void Assets::loadAnimationsPack(EntityType type, string animationsPackPath){
 		animations[type].push_back(Animation(ANIMATION_PATH + line));
     } else
         cerr << "Cannot open " << animationsPackPath << endl;
+}
+
+void Assets::print(){
+	std::cout << "*** ASSETS - BEGIN ***" << std::endl;
+	std::cout << "Animations chargées : " << animations.size() << std::endl;
+	std::cout << "Meshes chargés : " << meshes.size() << std::endl;
+	std::cout << "Shaders chargés : " << shaders.size() << std::endl;
+	std::cout << std::endl;
+	map.print();
+	std::cout << std::endl;
+	std::cout << "*** ASSETS - END ***" << '\n';
 }

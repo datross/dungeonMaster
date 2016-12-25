@@ -29,6 +29,8 @@ public:
 	std::shared_ptr<glimac::Program> shadersLoad(std::string vShader_path, std::string fShader_path);
 
 	void loadAnimationsPack(EntityType type, std::string animationsPackPath);
+
+	void print();
 };
 
 
