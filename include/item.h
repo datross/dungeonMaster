@@ -2,11 +2,13 @@
 #define ITEM_H
 
 #include <string>
+#include <map>
 #include <memory>
 #include "glm.h"
 
 #include "mesh.h"
 #include "Program.h"
+#include "animation.h"
 
 enum ItemType {
   TREASURE = 0,
@@ -26,6 +28,7 @@ public:
   int durability;
   std::shared_ptr<Mesh> mesh_ptr;
   std::shared_ptr<glimac::Program> shaders_ptr;
+  std::shared_ptr< std::map<EntityType, std::vector< Animation > > > animations_ptr;
 
   Item();
   Item(glm::ivec2 position = glm::ivec2(0,0),

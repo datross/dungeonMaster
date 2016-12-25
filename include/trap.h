@@ -3,10 +3,12 @@
 
 #include "glm.h"
 #include <string>
+#include <map>
 #include <memory>
 
 #include "mesh.h"
 #include "Program.h"
+#include "animation.h"
 
 class Trap {
 public:
@@ -17,6 +19,7 @@ public:
   unsigned int activationTiming;
   std::shared_ptr<Mesh> mesh_ptr;
   std::shared_ptr<glimac::Program> shaders_ptr;
+  std::shared_ptr< std::map<EntityType, std::vector< Animation > > > animations_ptr;
 
   Trap();
   Trap(glm::ivec2 position = glm::ivec2(0,0),

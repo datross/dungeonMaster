@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include <memory>
+#include <map>
 #include <vector>
 #include <string>
 #include <math.h>
@@ -9,6 +10,7 @@
 #include "glm.h"
 
 #include "mesh.h"
+#include "animation.h"
 #include "Program.h"
 
 enum Movement {
@@ -32,6 +34,7 @@ public:
   unsigned int power;
   std::shared_ptr<Mesh> mesh_ptr;
   std::shared_ptr<glimac::Program> shaders_ptr;
+  std::shared_ptr< std::map <EntityType, std::vector< Animation > > > animations_ptr;
 
   Character();
   Character(glm::ivec2 position = glm::ivec2(0,0) ,

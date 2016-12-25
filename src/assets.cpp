@@ -111,6 +111,7 @@ void Assets::loadEntities(string pathFile){
         float scale;
         shared_ptr<Mesh> mesh_ptr;
         shared_ptr<glimac::Program> shaders_ptr;
+		shared_ptr< std::map<EntityType, std::vector<Animation> > > animationsLink = shared_ptr< std::map<EntityType, std::vector<Animation> > > (&animations);
 
         file >> nb_Player;
         for (unsigned int i = 0; i < nb_Player; i++) {
@@ -120,19 +121,22 @@ void Assets::loadEntities(string pathFile){
             mesh_ptr = meshLoad(mesh_path);
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
             Player tmp_player = Player(position, glm::vec3(0,0,0), scale, id, life, defense, power, score, mesh_ptr, shaders_ptr);
+			tmp_player.animations_ptr =animationsLink;
 
             for (unsigned int j = 0; j < nb_items_inventory; j++) {
                 file >> id_inventory >>  value_inventory >> type_inventory >>  durability_inventory >> isEquiped >> mesh_path >> vShader_path >> fShader_path;
                 getline(file, line);
+
                 position = glm::ivec2(0, 0);
+				mesh_ptr = meshLoad(mesh_path);
+				shaders_ptr = shadersLoad(vShader_path, fShader_path);
+				Item tmp_item = Item(position, id_inventory, value_inventory, (ItemType)type_inventory, durability_inventory, mesh_ptr, shaders_ptr);
+				tmp_item.animations_ptr =animationsLink;
+
                 if(isEquiped){
-                    mesh_ptr = meshLoad(mesh_path);
-					shaders_ptr = shadersLoad(vShader_path, fShader_path);
-                    tmp_player.equip(Item(position, id_inventory, value_inventory, (ItemType)type_inventory, durability_inventory, mesh_ptr, shaders_ptr));
+                    tmp_player.equip(tmp_item);
                 }else{
-                    mesh_ptr = meshLoad(mesh_path);
-					shaders_ptr = shadersLoad(vShader_path, fShader_path);
-                    tmp_player.addItem(Item(position, id_inventory, value_inventory, (ItemType)type_inventory, durability_inventory, mesh_ptr, shaders_ptr));
+                    tmp_player.addItem(tmp_item);
                 }
             }
             map.players.push_back(tmp_player);
@@ -145,7 +149,9 @@ void Assets::loadEntities(string pathFile){
             glm::ivec2 position = glm::ivec2(posX, posY);
             mesh_ptr = meshLoad(mesh_path);
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
-            map.items.push_back(Item(position, id, value, (ItemType)type, durability, mesh_ptr, shaders_ptr));
+			Item tmp_item = Item(position, id, value, (ItemType)type, durability, mesh_ptr, shaders_ptr);
+			tmp_item.animations_ptr =animationsLink;
+			map.items.push_back(tmp_item);
         }
 
         file >> nb_Enemy;
@@ -155,7 +161,9 @@ void Assets::loadEntities(string pathFile){
             glm::ivec2 position = glm::ivec2(posX, posY);
             mesh_ptr = meshLoad(mesh_path);
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
-            map.characters.push_back(Enemy(position, glm::vec3(0,0,0), scale, id, life, defense, power, detectRange, mesh_ptr, shaders_ptr));
+			Enemy tmp_enemy = Enemy(position, glm::vec3(0,0,0), scale, id, life, defense, power, detectRange, mesh_ptr, shaders_ptr);
+			tmp_enemy.animations_ptr =animationsLink;
+			map.characters.push_back(tmp_enemy);
         }
 
         file >> nb_Traps;
@@ -165,7 +173,9 @@ void Assets::loadEntities(string pathFile){
             glm::ivec2 position = glm::ivec2(posX, posY);
             mesh_ptr = meshLoad(mesh_path);
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
-            map.traps.push_back(Trap(position, id, damages, timing, mesh_ptr, shaders_ptr));
+			Trap tmp_trap = Trap(position, id, damages, timing, mesh_ptr, shaders_ptr);
+			tmp_trap.animations_ptr =animationsLink;
+            map.traps.push_back(tmp_trap);
         }
 
         file.close();
