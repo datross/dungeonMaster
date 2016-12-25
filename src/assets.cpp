@@ -2,6 +2,12 @@
 
 #include <fstream>
 #include <iostream>
+#include <utility>
+
+const std::string DATA_PATH = "res/levels/";
+const std::string MESH_PATH = "res/meshes/";
+const std::string SHADER_PATH = "res/shaders/";
+const std::string ANIMATION_PATH = "res/animations/";
 
 using namespace std;
 
@@ -30,21 +36,28 @@ shared_ptr<glimac::Program> Assets::shadersLoad(string vShader_path, string fSha
     }
 
     glimac::Program * shader = new glimac::Program();
-	(*shader) = glimac::loadProgram(vShader_path, fShader_path);
+	(*shader) = glimac::loadProgram(SHADER_PATH + vShader_path,SHADER_PATH + fShader_path);
 	shader->vertexShaderPath = vShader_path;
 	shader->fragmentShaderPath = fShader_path;
     return shared_ptr<glimac::Program>(shader);
 }
 
 void Assets::load(string file_name){
-    string levelsPath = "res/levels/";
 
-    map.loadTerrain(levelsPath + file_name + ".ppm");
-    loadEntities(levelsPath + file_name + ".txt");
+    map.loadTerrain(DATA_PATH + file_name + ".ppm");
+    loadEntities(DATA_PATH + file_name + ".txt");
 
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
-        (*it).loadFromFile((*it).path);
+        (*it).loadFromFile(MESH_PATH + (*it).path);
     }
+
+	std::vector< std::pair<EntityType, std::string> > animsPacks;
+	animsPacks.push_back(std::pair<EntityType, std::string>(DROPABLE_ITEM, ANIMATION_PATH + "item_pack.txt"));
+
+	for(std::vector<std::pair<EntityType, std::string> >::iterator it=animsPacks.begin();
+		it != animsPacks.end(); ++it){
+			loadAnimationsPack((*it).first, (*it).second);
+	}
 }
 
 void Assets::save(string pathFile){
@@ -181,4 +194,22 @@ void Assets::loadEntities(string pathFile){
         file.close();
     } else
         cerr << "Cannot open " << pathFile << endl;
+}
+
+void Assets::loadAnimationsPack(EntityType type, string animationsPackPath){
+	ifstream file;
+    file.open(animationsPackPath, ios::in);
+
+	string line;
+    if(file){
+		getline(file, line);
+		animations[type].push_back(Animation(ANIMATION_PATH + line));
+
+		getline(file, line);
+		animations[type].push_back(Animation(ANIMATION_PATH + line));
+
+		getline(file, line);
+		animations[type].push_back(Animation(ANIMATION_PATH + line));
+    } else
+        cerr << "Cannot open " << animationsPackPath << endl;
 }

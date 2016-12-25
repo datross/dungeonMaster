@@ -3,9 +3,11 @@
 
 Game::Game(char* _application_path)
     : application_path(_application_path), game_state(STATE_GAMEPLAY) {
-//     assets.load("tinymap");
-//     assets.save("res/saves/savetinymap.txt");
-//     view.setMap(assets.map);
+		assets.load("tinymap");
+		assets.save("res/saves/savetinymap.txt");
+		view.setAssets(assets);
+
+		assets.map.print();
 }
 
 Game::~Game() {

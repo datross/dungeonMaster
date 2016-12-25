@@ -1,0 +1,3 @@
+ENCOUNTER_animation_path
+END_animation_path
+STAND_animation_path

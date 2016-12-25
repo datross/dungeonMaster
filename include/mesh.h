@@ -36,7 +36,7 @@ public:
 
     bool loadFromFile(std::string file);
     bool loadShader(std::string vertexShader, std::string fragmentShader);
-    void render();  
+    void render();
 
     void activateShader();
 

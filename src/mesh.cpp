@@ -10,6 +10,8 @@ Mesh::~Mesh() {
 }
 
 Mesh::Mesh(const Mesh& mesh) {
+	path	 = mesh.path;
+
     vbo      = mesh.vbo;
     ibo      = mesh.ibo;
     vao      = mesh.vao;
@@ -28,7 +30,7 @@ Mesh::Mesh(const Mesh& mesh) {
 }
 
 bool Mesh::loadFromFile(std::string file) {
-	
+
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate/* | aiProcess_GenNormals*/);
 

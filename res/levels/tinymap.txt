@@ -1,10 +1,10 @@
 #Tinymap
 1
-2 4 1 Mouse1 10 0 3 1 0 mouse.obj 3D.vs.glsl directionallight.fs.glsl
-	cheese 10 3 -1 0 chees0.obj 3D.vs.glsl directionallight.fs.glsl
+2 4 1 Mouse1 10 0 3 1 0 tete.obj 3D.vs.glsl directionallight.fs.glsl
+	cheese 10 3 -1 0 tete.obj 3D.vs.glsl directionallight.fs.glsl
 1
-17 2 Button1 1 1 -1 button0.obj 3D.vs.glsl directionallight.fs.glsl
+17 2 Button1 1 1 -1 tete.obj 3D.vs.glsl directionallight.fs.glsl
 1
-0 0 1 spider 3 0 1 5 monster0.obj 3D.vs.glsl directionallight.fs.glsl
+0 0 1 spider 3 0 1 5 tete.obj 3D.vs.glsl directionallight.fs.glsl
 1
-17 1 Trappe 99 1000 trap0.obj 3D.vs.glsl directionallight.fs.glsl
+17 1 Trappe 99 1000 tete.obj 3D.vs.glsl directionallight.fs.glsl

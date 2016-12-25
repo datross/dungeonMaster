@@ -22,8 +22,12 @@ enum AnimsSet {
 
 class Animation {
 public:
+	Animation();
+	Animation(std::string path);
+	~Animation();
+
 	float duration;
-	std::pair< float,std::vector<glm::vec3> > anim;
+	std::vector<std::pair< float , std::vector< glm::vec3 > > > anim;
 
 	void loadAnimation(std::string path);
 	void execute();

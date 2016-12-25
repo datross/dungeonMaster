@@ -1,0 +1,3 @@
+item_encounter.txt
+item_end.txt
+item_stand.txt
