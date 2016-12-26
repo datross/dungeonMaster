@@ -2,10 +2,12 @@
 #include <iostream>
 
 Game::Game(char* _application_path)
-    : application_path(_application_path), game_state(STATE_GAMEPLAY) {
+    : assets(_application_path), application_path(_application_path), game_state(STATE_GAMEPLAY) {
+		view.setAssets(assets);
+
+		//Default level (debug)
 		assets.load("tinymap");
 		assets.save("res/saves/savetinymap.txt");
-		view.setAssets(assets);
 }
 
 Game::~Game() {

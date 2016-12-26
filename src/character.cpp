@@ -75,5 +75,7 @@ void Character::print(){
   cout << "Id : " << id << endl;
   cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
   cout << "life/defense/power : (" << life << ";" << defense << ";" << power <<")" <<'\n';
+  cout << "Mesh name : " << mesh_ptr->path <<'\n';
+
   cout << "******Character - end******" << '\n';
 }

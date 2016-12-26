@@ -4,20 +4,17 @@
 #include <iostream>
 #include <utility>
 
-const std::string DATA_PATH = "res/levels/";
-const std::string MESH_PATH = "res/meshes/";
-const std::string SHADER_PATH = "res/shaders/";
-const std::string ANIMATION_PATH = "res/animations/";
-
 using namespace std;
 
-Assets::Assets(){}
+Assets::Assets(char* _application_path): application_path(_application_path){
+	application_path = application_path.dirPath() + "../";
+}
 Assets::~Assets(){}
 
 
-shared_ptr<Mesh> Assets::meshLoad(string mesh_path){
-    for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
-        if((*it).path.compare(mesh_path) == 0){
+shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
+	for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
+        if((*it).path == mesh_path){
             return shared_ptr<Mesh> (&(*it));
         }
     }
@@ -27,7 +24,7 @@ shared_ptr<Mesh> Assets::meshLoad(string mesh_path){
     meshes.push_back(*mesh);
     return shared_ptr<Mesh>(mesh);
 }
-shared_ptr<glimac::Program> Assets::shadersLoad(string vShader_path, string fShader_path){
+shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path){
     for(vector<glimac::Program>::iterator it = shaders.begin(); it != shaders.end(); ++it){
         if((*it).vertexShaderPath.compare(vShader_path) == 0 &&
 		   (*it).fragmentShaderPath.compare(fShader_path) == 0){
@@ -36,34 +33,34 @@ shared_ptr<glimac::Program> Assets::shadersLoad(string vShader_path, string fSha
     }
 
     glimac::Program * shader = new glimac::Program();
-	(*shader) = glimac::loadProgram(SHADER_PATH + vShader_path,SHADER_PATH + fShader_path);
+	(*shader) = glimac::loadProgram(application_path + SHADER_PATH + vShader_path, application_path + SHADER_PATH + fShader_path);
 	shader->vertexShaderPath = vShader_path;
 	shader->fragmentShaderPath = fShader_path;
 	shaders.push_back(*shader);
     return shared_ptr<glimac::Program>(shader);
 }
 
-void Assets::load(string file_name){
+void Assets::load(string fileName){
 
-    map.loadTerrain(DATA_PATH + file_name + ".ppm");
-    loadEntities(DATA_PATH + file_name + ".txt");
+    map.loadTerrain(application_path + DATA_PATH + (fileName + ".ppm"));
+    loadEntities(application_path + DATA_PATH + (fileName + ".txt"));
 
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
-        (*it).loadFromFile(MESH_PATH + (*it).path);
+        (*it).loadFromFile(application_path + MESH_PATH + (*it).path);
     }
 
 	std::vector< std::pair<EntityType, std::string> > animsPacks;
-	animsPacks.push_back(std::pair<EntityType, std::string>(DROPABLE_ITEM, ANIMATION_PATH + "item_pack.txt"));
+	animsPacks.push_back(std::pair<EntityType, std::string>(DROPABLE_ITEM,"item_pack.txt"));
 
 	for(std::vector<std::pair<EntityType, std::string> >::iterator it=animsPacks.begin();
 		it != animsPacks.end(); ++it){
-			loadAnimationsPack((*it).first, (*it).second);
+			loadAnimationsPack((*it).first, application_path + ANIMATION_PATH + (*it).second);
 	}
 }
 
-void Assets::save(string pathFile){
+void Assets::save(glimac::FilePath filePath){
     ofstream file;
-    file.open(pathFile, ios::out | ios::trunc);
+    file.open(filePath, ios::out | ios::trunc);
 
     if(file){
         file << map.name << endl;
@@ -103,11 +100,11 @@ void Assets::save(string pathFile){
         }
 
     } else
-        cerr << "Cannot open or create " << pathFile << endl;
+        cerr << "Cannot open or create " << filePath << endl;
 
 }
 
-void Assets::loadEntities(string pathFile){
+void Assets::loadEntities(glimac::FilePath pathFile){
 
     ifstream file;
     file.open(pathFile, ios::in);
@@ -197,7 +194,7 @@ void Assets::loadEntities(string pathFile){
         cerr << "Cannot open " << pathFile << endl;
 }
 
-void Assets::loadAnimationsPack(EntityType type, string animationsPackPath){
+void Assets::loadAnimationsPack(EntityType type, glimac::FilePath animationsPackPath){
 	ifstream file;
     file.open(animationsPackPath, ios::in);
 

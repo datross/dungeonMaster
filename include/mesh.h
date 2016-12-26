@@ -11,6 +11,7 @@
 #include <assimp/postprocess.h>
 
 #include "Program.h"
+#include "FilePath.h"
 
 enum VertexAttribute {
     VERTEX_ATTR_POSITION = 0,
@@ -35,7 +36,7 @@ public:
     Mesh(const Mesh&);
 
     bool loadFromFile(std::string file);
-    bool loadShader(std::string vertexShader, std::string fragmentShader);
+    bool loadShader(glimac::Program& shader);
     void render();
 
     void activateShader();
@@ -49,7 +50,7 @@ public:
     void setKs(glm::vec3);
     void setKd(glm::vec3);
 
-    std::string path;
+    glimac::FilePath path;
 private:
     GLuint vbo, ibo, vao;
     unsigned numFaces;

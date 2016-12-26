@@ -100,8 +100,7 @@ bool Mesh::loadFromFile(std::string file) {
     return true;
 }
 
-bool Mesh::loadShader(std::string vertexShader, std::string fragmentShader) {
-    shader = glimac::loadProgram(vertexShader, fragmentShader);
+bool Mesh::loadShader(glimac::Program& shader) {
 
     uMVPMatrix = glGetUniformLocation(shader.getGLId(), "uMVPMatrix");
     uMVMatrix = glGetUniformLocation(shader.getGLId(), "uMVMatrix");

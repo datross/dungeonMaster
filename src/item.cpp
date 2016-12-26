@@ -15,11 +15,12 @@ Item::Item(glm::ivec2 position, std::string id,
 Item::~Item(){}
 
 void Item::print(){
-  cout << "******Item******" << '\n';
-  cout << "Id : " << id << endl;
-  cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
-  cout << "Type/value/durability : (" << type << ";" << value <<";" << durability <<")" <<'\n';
-  cout << "******Item - end******" << '\n';
+  	cout << "******Item******" << '\n';
+  	cout << "Id : " << id << endl;
+  	cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
+  	cout << "Type/value/durability : (" << type << ";" << value <<";" << durability <<")" <<'\n';
+	cout << "Mesh name : " << mesh_ptr->path <<'\n';
+  	cout << "******Item - end******" << '\n';
 }
 bool Item::operator==(const Item & b){
   if(!id.compare(b.id)){

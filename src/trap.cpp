@@ -21,9 +21,10 @@ bool Trap::detect(){
 }
 
 void Trap::print(){
-  cout << "******Trap******" << '\n';
-  cout << "Id : " << id << endl;
-  cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
-  cout << "damage/timing : (" << damages << ";" << activationTiming <<")" <<'\n';
-  cout << "******Trap - end******" << '\n';
+	cout << "******Trap******" << '\n';
+	cout << "Id : " << id << endl;
+	cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
+	cout << "damage/timing : (" << damages << ";" << activationTiming <<")" <<'\n';
+	cout << "Mesh name : " << mesh_ptr->path <<'\n';
+	cout << "******Trap - end******" << '\n';
 }

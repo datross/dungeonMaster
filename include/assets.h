@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include <map>
+#include "FilePath.h"
 
 #include "mesh.h"
 #include "map.h"
@@ -13,22 +14,29 @@
 
 class Assets {
 public:
+	const std::string DATA_PATH = "res/levels/";
+	const std::string MESH_PATH = "res/meshes/";
+	const std::string SHADER_PATH = "res/shaders/";
+	const std::string ANIMATION_PATH = "res/animations/";
+
+    glimac::FilePath application_path;
+
 	std::map < EntityType, std::vector<Animation> > animations;
 	std::vector<Mesh> meshes;
 	std::vector<glimac::Program> shaders;
 
 	Map map;
 
-	Assets();
+	Assets(char* application_path);
 	~Assets();
-	void save(std::string fileName);
+	void save(glimac::FilePath filePath);
 
 	void load(std::string fileName);
-	void loadEntities(std::string fileName);
-	std::shared_ptr<Mesh> meshLoad(std::string mesh_path);
-	std::shared_ptr<glimac::Program> shadersLoad(std::string vShader_path, std::string fShader_path);
+	void loadEntities(glimac::FilePath fileName);
+	std::shared_ptr<Mesh> meshLoad(glimac::FilePath mesh_path);
+	std::shared_ptr<glimac::Program> shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path);
 
-	void loadAnimationsPack(EntityType type, std::string animationsPackPath);
+	void loadAnimationsPack(EntityType type, glimac::FilePath animationsPackPath);
 
 	void print();
 };

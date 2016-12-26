@@ -9,59 +9,57 @@
 namespace glimac {
 
 class Program {
+private:
+// 	Program& operator =(const Program&);
+
+	GLuint m_nGLId;
 public:
+	std::string vertexShaderPath;
+	std::string fragmentShaderPath;
+
 	Program(): m_nGLId(glCreateProgram()) {
 	}
-
 	~Program() {
 		glDeleteProgram(m_nGLId);
 	}
-
+/*
 	Program(Program&& rvalue): m_nGLId(rvalue.m_nGLId) {
 		rvalue.m_nGLId = 0;
 	}
-
-// 	Program& operator =(Program&& rvalue) {
-// 		m_nGLId = rvalue.m_nGLId;
-// 		rvalue.m_nGLId = 0;
-// 		return *this;
-// 	}
-
-        Program& operator=(const Program& source) {
-            m_nGLId = source.m_nGLId;
-            return *this;
-        }
-
+*/
+	Program(const Program& p){
+		m_nGLId = p.m_nGLId;
+		vertexShaderPath = p.vertexShaderPath;
+		fragmentShaderPath = p.fragmentShaderPath;
+	}
+	/*
+	Program& operator =(Program&& rvalue) {
+ 		m_nGLId = rvalue.m_nGLId;
+		vertexShaderPath = rvalue.vertexShaderPath;
+		fragmentShaderPath = rvalue.fragmentShaderPath;
+ 		rvalue.m_nGLId = 0;
+ 		rvalue.vertexShaderPath = "";
+ 		rvalue.fragmentShaderPath = "";
+ 		return *this;
+ 	}
+	*/
 	GLuint getGLId() const {
 		return m_nGLId;
 	}
-
 	void attachShader(const Shader& shader) {
 		glAttachShader(m_nGLId, shader.getGLId());
 	}
-
-	bool link();
-
-	const std::string getInfoLog() const;
-
 	void use() const {
 		glUseProgram(m_nGLId);
 	}
 
-	std::string vertexShaderPath;
-	std::string fragmentShaderPath;
+	bool link();
+	const std::string getInfoLog() const;
 
-
-
-private:
-	Program(const Program&);
-// 	Program& operator =(const Program&);
-
-	GLuint m_nGLId;
 };
 
 // Build a GLSL program from source code
-Program buildProgram(const GLchar* vsSrc, const GLchar* fsSrc);
+//Program buildProgram(const GLchar* vsSrc, const GLchar* fsSrc);
 
 // Load source code from files and build a GLSL program
 Program loadProgram(const FilePath& vsFile, const FilePath& fsFile);

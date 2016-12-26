@@ -21,6 +21,7 @@ const std::string Program::getInfoLog() const {
 }
 
 // Build a GLSL program from source code
+/*
 Program buildProgram(const GLchar* vsSrc, const GLchar* fsSrc) {
 	Shader vs(GL_VERTEX_SHADER);
 	vs.setSource(vsSrc);
@@ -46,7 +47,7 @@ Program buildProgram(const GLchar* vsSrc, const GLchar* fsSrc) {
 
 	return program;
 }
-
+*/
 // Load source code from files and build a GLSL program
 Program loadProgram(const FilePath& vsFile, const FilePath& fsFile) {
 	Shader vs = loadShader(GL_VERTEX_SHADER, vsFile);
