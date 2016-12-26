@@ -39,8 +39,6 @@ public:
     bool loadShader(glimac::Program& shader);
     void render();
 
-    void activateShader();
-
     void setMVMatrix(glm::mat4);
     void setMVPMatrix(glm::mat4);
     void setNormalMatrix(glm::mat4);
@@ -54,7 +52,6 @@ public:
 private:
     GLuint vbo, ibo, vao;
     unsigned numFaces;
-    glimac::Program shader;
 
     // uniform
     GLint uMVMatrix;

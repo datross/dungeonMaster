@@ -16,7 +16,6 @@ Mesh::Mesh(const Mesh& mesh) {
     ibo      = mesh.ibo;
     vao      = mesh.vao;
     numFaces = mesh.numFaces;
-    shader   = mesh.shader;
 
     uMVMatrix       = mesh.uMVMatrix;
     uMVPMatrix      = mesh.uMVPMatrix;
@@ -119,10 +118,6 @@ void Mesh::render() {
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 3*numFaces, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-}
-
-void Mesh::activateShader() {
-    shader.use();
 }
 
 void Mesh::setMVMatrix(glm::mat4 mat) {
