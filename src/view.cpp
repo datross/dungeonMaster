@@ -1,7 +1,6 @@
 #include <iostream>
 #include "view.h"
 
-
 #include "gui.h"
 
 View::View()
@@ -107,7 +106,7 @@ void View::reshape(unsigned w, unsigned h) {
     }
 }
 
-void View::render(Game_state game_state) {
+void View::render(Game_state& game_state) {
     glClear(GL_COLOR_BUFFER_BIT);
 
 //     Mesh mesh;
@@ -141,7 +140,7 @@ void View::render(Game_state game_state) {
 	// USER INTERFACE
 	ImGui_ImplSdlGL3_NewFrame(window);
 	if(game_state == STATE_MENU) {
-		mainMenu();
+		mainMenu(game_state);
 	} else if (game_state == STATE_GAMEPLAY) {
 
 	} else if (game_state == STATE_QUIT) {
@@ -158,19 +157,12 @@ Player_input View::get_input() {
     return player_input;
 }
 
-void View::mainMenu(){
+void View::mainMenu(Game_state& game_state){
 
-	//Menu's textures loading
+	//Menu's textures
 	float tex_w = (float)ImGui::GetIO().Fonts->TexWidth;
 	float tex_h = (float)ImGui::GetIO().Fonts->TexHeight;
 	ImTextureID tex_id = ImGui::GetIO().Fonts->TexID;
-
-	// Booleans for menu's windows
-	bool showMainMenu = true,
-		 showLevelSelector = false,
-		 showSavesSelector = false,
-		 showOptionsSelector = false,
-		 showQuitPopUp = false;
 
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -183,20 +175,20 @@ void View::mainMenu(){
 		//ImGui::Image(tex_id, ImVec2(window_width, window_height), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
 
 	//MAIN MENU
-	if(ImGui::Begin("Main menu", &showMainMenu, window_flags)){
-
+	if(Gui::getInstance().showMainMenu){
+		ImGui::Begin("Main menu", &(Gui::getInstance().showMainMenu), window_flags);
 		//Buttons
 		if (ImGui::Button("Nouvelle partie")){
-			showMainMenu = false;
-			showLevelSelector = true;
+			Gui::getInstance().showMainMenu = false;
+			Gui::getInstance().showLevelSelector = true;
 		}
 		if (ImGui::Button("Charger partie")){
-			showMainMenu = false;
-			showSavesSelector = true;
+			Gui::getInstance().showMainMenu = false;
+			Gui::getInstance().showSavesSelector = true;
 		}
 		if (ImGui::Button("Options")){
-			showMainMenu = false;
-			showOptionsSelector = true;
+			Gui::getInstance().showMainMenu = false;
+			Gui::getInstance().showOptionsSelector = true;
 		}
 		if (ImGui::Button("Quitter")){
 			ImGui::OpenPopup("Quit");
@@ -211,12 +203,68 @@ void View::mainMenu(){
 			ImGui::Spacing();
 
 			if (ImGui::Button("Oui")){
-				player_input = INPUT_QUIT;
+				game_state = STATE_QUIT;
 				ImGui::CloseCurrentPopup();
 			}
-			if (ImGui::Button("non"))
+			ImGui::SameLine();
+			if (ImGui::Button("Non"))
 				ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
+		}
+		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
+
+		}*/
+
+		ImGui::End();
+	}
+
+	//LOAD SAVES MENU
+	if(Gui::getInstance().showSavesSelector){
+		ImGui::Begin("Load saves menu", &(Gui::getInstance().showSavesSelector), window_flags);
+		//Buttons
+		if (ImGui::Button("Tinymap")){
+			assets_ptr->load("tinymap", false);
+			game_state = STATE_GAMEPLAY;
+			Gui::getInstance().showSavesSelector = false;
+			Gui::getInstance().showMainMenu = true;
+		}
+		if (ImGui::Button("Retour")){
+			Gui::getInstance().showSavesSelector = false;
+			Gui::getInstance().showMainMenu = true;
+		}
+
+		ImGui::End();
+	}
+
+	//LEVEL MENU
+	if(Gui::getInstance().showLevelSelector){
+		ImGui::Begin("Level menu", &(Gui::getInstance().showLevelSelector), window_flags);
+		//Buttons
+		if (ImGui::Button("Tinymap")){
+			assets_ptr->load("tinymap", true);
+			game_state = STATE_GAMEPLAY;
+			Gui::getInstance().showLevelSelector = false;
+			Gui::getInstance().showMainMenu = true;
+		}
+		if (ImGui::Button("Retour")){
+			Gui::getInstance().showLevelSelector = false;
+			Gui::getInstance().showMainMenu = true;
+		}
+		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
+
+		}*/
+
+		ImGui::End();
+	}
+
+	//OPTION MENU
+	if(Gui::getInstance().showOptionsSelector){
+		ImGui::Begin("Level menu", &(Gui::getInstance().showOptionsSelector), window_flags);
+		//Buttons
+
+		if (ImGui::Button("Retour")){
+			Gui::getInstance().showOptionsSelector = false;
+			Gui::getInstance().showMainMenu = true;
 		}
 		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
 

@@ -32,7 +32,7 @@ public:
 	~Assets();
 	void save(glimac::FilePath filePath);
 
-	void load(std::string fileName);
+	void load(std::string fileName, bool isNewGame);
 	void loadEntities(glimac::FilePath fileName);
 	std::shared_ptr<Mesh> meshLoad(glimac::FilePath mesh_path);
 	std::shared_ptr<glimac::Program> shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path);

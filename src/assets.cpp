@@ -40,10 +40,11 @@ shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, g
     return shared_ptr<glimac::Program>(shader);
 }
 
-void Assets::load(string fileName){
+void Assets::load(string fileName, bool isNewGame){
 
     map.loadTerrain(application_path + DATA_PATH + (fileName + ".ppm"));
-    loadEntities(application_path + DATA_PATH + (fileName + ".txt"));
+	if(isNewGame) loadEntities(application_path + DATA_PATH + (fileName + ".txt"));
+	else loadEntities(application_path + SAVE_PATH + (fileName + ".txt"));
 
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
         (*it).loadFromFile(application_path + MESH_PATH + (*it).path);
@@ -56,6 +57,8 @@ void Assets::load(string fileName){
 		it != animsPacks.end(); ++it){
 			loadAnimationsPack((*it).first, application_path + ANIMATION_PATH + (*it).second);
 	}
+
+	print();
 }
 
 void Assets::save(glimac::FilePath fileName){

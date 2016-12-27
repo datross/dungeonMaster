@@ -122,6 +122,5 @@ int main(int argc, char **argv)
     return 0;*/
 
    Game game(argv[0]);
-   game.print();
    return game.run();
 }

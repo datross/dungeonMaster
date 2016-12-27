@@ -32,11 +32,11 @@ public:
     View();
     ~View();
     void update();
-    void render(Game_state game_state);
+    void render(Game_state& game_state);
 
     Player_input get_input();
 
-	void mainMenu();
+	void mainMenu(Game_state& game_state);
 
     void setAssets(Assets&);
 private:
