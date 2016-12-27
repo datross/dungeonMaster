@@ -14,14 +14,14 @@ lib:
 	cmake CMakeLists.txt -G 'Unix Makefiles' && \
 	make && \
 	cd ../../
-	
+
 linking: $(OBJ)
 	@mkdir -p bin
 	g++ -o bin/dm $^ $(LDFLAGS)
 
 obj/%.o: src/%.cpp
 	g++ $(CXXFLAGS) -c -o $@ $<
-	
+
 clean:
 	rm -f obj/*
 	rm -f bin/*

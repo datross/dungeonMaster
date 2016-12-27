@@ -42,3 +42,19 @@ void Animation::loadAnimation(std::string path){
 void Animation::execute(){
 	return;
 }
+
+void Animation::print(){
+	std::cout << "Duration : " << duration << '\n';
+
+	for (std::vector<std::pair< float , std::vector< glm::vec3 > > >::iterator it = anim.begin();
+		 it != anim.end();
+		 ++it){
+		 	std::cout << (*it).first * 100 << "% ";
+			for (std::vector< glm::vec3 >::iterator it2 = (*it).second.begin();
+				 it2 != (*it).second.end();
+				 ++it2){
+					 std::cout << "(" << (*it2).x << "," << (*it2).y << "," << (*it2).z << ")";
+			}
+			std::cout << '\n';
+	}
+}

@@ -14,6 +14,7 @@
 
 class Assets {
 public:
+	const std::string SAVE_PATH = "res/saves/";
 	const std::string DATA_PATH = "res/levels/";
 	const std::string MESH_PATH = "res/meshes/";
 	const std::string SHADER_PATH = "res/shaders/";

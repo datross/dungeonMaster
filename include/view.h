@@ -10,6 +10,8 @@
 #include "camera.h"
 #include "assets.h"
 
+#include "gui.h"
+
 enum Player_input {
     INPUT_NONE,
     INPUT_QUIT,
@@ -19,29 +21,37 @@ enum Player_input {
     INPUT_MOVE_BACKWARD
 };
 
+enum Game_state {
+    STATE_MENU,
+    STATE_GAMEPLAY,
+    STATE_QUIT
+};
+
 class View {
 public:
     View();
     ~View();
     void update();
-    void render();
-    
+    void render(Game_state game_state);
+
     Player_input get_input();
-    
+
+	void mainMenu();
+
     void setAssets(Assets&);
 private:
     void updateEvent();
     void reshape(unsigned w, unsigned h);
-    
+
     // about window
     SDL_Window* window;
     SDL_GLContext context_gl;
     SDL_Event event;
     Player_input player_input;
-    
+
     unsigned window_width,
              window_height;
-             
+
     // about game rendering
     // everything is stored in assets
     std::shared_ptr<Assets> assets_ptr;

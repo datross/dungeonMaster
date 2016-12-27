@@ -58,7 +58,8 @@ void Assets::load(string fileName){
 	}
 }
 
-void Assets::save(glimac::FilePath filePath){
+void Assets::save(glimac::FilePath fileName){
+	glimac::FilePath filePath = application_path + SAVE_PATH + fileName;
     ofstream file;
     file.open(filePath, ios::out | ios::trunc);
 
@@ -218,6 +219,22 @@ void Assets::print(){
 	std::cout << "Meshes chargés : " << meshes.size() << std::endl;
 	std::cout << "Shaders chargés : " << shaders.size() << std::endl;
 	std::cout << std::endl;
+	std::cout << "*** Animations - BEGIN ***" << std::endl;
+	for(std::map < EntityType, std::vector<Animation> >::iterator it = animations.begin();
+		it!=animations.end();
+		++it){
+			std::cout << "Animation for : " << (*it).first << '\n';
+			unsigned int i = 0;
+			for(std::vector<Animation>::iterator it2 = (*it).second.begin();
+				it2!=(*it).second.end();
+				++it2){
+					std::cout << "Set for : " << (EntityType)i << '\n';
+					(*it2).print();
+					std::cout << '\n';
+					++i;
+			}
+	}
+	std::cout << "*** Animations - END ***" << '\n';
 	map.print();
 	std::cout << std::endl;
 	std::cout << "*** ASSETS - END ***" << '\n';

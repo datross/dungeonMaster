@@ -7,12 +7,6 @@
 #include "view.h"
 #include "assets.h"
 
-enum Game_state {
-    STATE_MENU,
-    STATE_GAMEPLAY,
-    STATE_QUIT
-};
-
 class Game {
 public:
     Game(char* application_path);

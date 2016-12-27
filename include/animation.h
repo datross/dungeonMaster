@@ -31,6 +31,8 @@ public:
 
 	void loadAnimation(std::string path);
 	void execute();
+
+	void print();
 };
 
 #endif
