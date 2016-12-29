@@ -13,7 +13,7 @@ Assets::~Assets(){}
 
 
 shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
-	for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
+    for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
         if((*it).path == mesh_path){
             return shared_ptr<Mesh> (&(*it));
         }

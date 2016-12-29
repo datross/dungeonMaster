@@ -109,46 +109,18 @@ void View::reshape(unsigned w, unsigned h) {
 void View::render(Game_state& game_state) {
     glClear(GL_COLOR_BUFFER_BIT);
 
-//     Mesh mesh;
-//     mesh.loadFromFile("res/tete.obj");
-//     mesh.loadShader("res/shaders/3D.vs.glsl",
-//                     "res/shaders/directionallight.fs.glsl");
-//     Camera camera;
-//     camera.init(70, 1.);
-//     camera.position = glm::vec3(map_ptr->players.begin()->position.x, 0.5, map_ptr->players.begin()->position.y);
-//     camera.direction = glm::vec3(0.5,-0.5,-1);
-//
-//     glm::mat4 v = camera.getVMatrix();
-//     glm::mat4 mv = v;
-//     //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-//     mv = glm::translate(mv, glm::vec3(0,0,0));
-// //     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
-//
-//     mesh.activateShader();
-//
-//     mesh.setMVMatrix(mv);
-//     mesh.setMVPMatrix(camera.getPMatrix() * mv);
-//     mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-//     mesh.setNormalMatrix(glm::mat4(1.));
-//     mesh.setShininess(1.);
-//     mesh.setLightDir_vs(glm::vec3(1,1,1));
-//     mesh.setLightIntensity(glm::vec3(1,1,1));
-//     mesh.setKs(glm::vec3(1,1,1));
-//     mesh.setKd(glm::vec3(1,1,1));
-//     mesh.render();
+    /* USER INTERFACE */
+    ImGui_ImplSdlGL3_NewFrame(window);
+    if(game_state == STATE_MENU) {
+        mainMenu(game_state);
+    } else if (game_state == STATE_GAMEPLAY) {
+        renderGame(game_state);
+    } else if (game_state == STATE_QUIT) {
 
-	// USER INTERFACE
-	ImGui_ImplSdlGL3_NewFrame(window);
-	if(game_state == STATE_MENU) {
-		mainMenu(game_state);
-	} else if (game_state == STATE_GAMEPLAY) {
+    } else {
 
-	} else if (game_state == STATE_QUIT) {
-
-	} else {
-
-	}
-	ImGui::Render();
+    }
+    ImGui::Render();
 
     SDL_GL_SwapWindow(window);
 }
@@ -272,6 +244,39 @@ void View::mainMenu(Game_state& game_state){
 
 		ImGui::End();
 	}
+}
+
+void View::renderGame(Game_state& game_state) {
+    /* Walls rendering */
+    
+    
+//     Mesh mesh;
+//     mesh.loadFromFile("res/tete.obj");
+//     mesh.loadShader("res/shaders/3D.vs.glsl",
+//                     "res/shaders/directionallight.fs.glsl");
+//     Camera camera;
+//     camera.init(70, 1.);
+//     camera.position = glm::vec3(map_ptr->players.begin()->position.x, 0.5, map_ptr->players.begin()->position.y);
+//     camera.direction = glm::vec3(0.5,-0.5,-1);
+//
+//     glm::mat4 v = camera.getVMatrix();
+//     glm::mat4 mv = v;
+//     //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
+//     mv = glm::translate(mv, glm::vec3(0,0,0));
+// //     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
+//
+//     mesh.activateShader();
+//
+//     mesh.setMVMatrix(mv);
+//     mesh.setMVPMatrix(camera.getPMatrix() * mv);
+//     mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+//     mesh.setNormalMatrix(glm::mat4(1.));
+//     mesh.setShininess(1.);
+//     mesh.setLightDir_vs(glm::vec3(1,1,1));
+//     mesh.setLightIntensity(glm::vec3(1,1,1));
+//     mesh.setKs(glm::vec3(1,1,1));
+//     mesh.setKd(glm::vec3(1,1,1));
+//     mesh.render();
 }
 
 void View::setAssets(Assets& _assets_ptr) {

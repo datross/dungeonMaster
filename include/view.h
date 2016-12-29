@@ -31,29 +31,39 @@ class View {
 public:
     View();
     ~View();
+    
+    /* for events */
     void update();
+    
+    /* draw actual buffer */
     void render(Game_state& game_state);
 
     Player_input get_input();
 
-	void mainMenu(Game_state& game_state);
+    /* Rendering function depends on the game state */
+    void mainMenu(Game_state& game_state);
+    void renderGame(Game_state& game_state);
 
     void setAssets(Assets&);
 private:
     void updateEvent();
+    
+    /* update every camera */
     void reshape(unsigned w, unsigned h);
 
-    // about window
+    /* about window */
     SDL_Window* window;
     SDL_GLContext context_gl;
     SDL_Event event;
+    
+    /* input events, already interpreted for the game */
     Player_input player_input;
 
     unsigned window_width,
              window_height;
 
-    // about game rendering
-    // everything is stored in assets
+    /* about game rendering */
+    /* everything is stored in assets */
     std::shared_ptr<Assets> assets_ptr;
 };
 

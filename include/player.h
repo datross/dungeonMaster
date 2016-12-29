@@ -31,7 +31,7 @@ public :
 
   void openMenu(MenuType type);
   void addItem(Item item);
-  void dropItem(Item item);
+  void dropItem(Item item); 
   void equip(Item item);
   void unequip(Item item);
   int isNextDoor();
