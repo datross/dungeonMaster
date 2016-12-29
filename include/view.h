@@ -37,6 +37,7 @@ public:
     Player_input get_input();
 
 	void mainMenu(Game_state& game_state);
+	void HUD(Game_state& game_state);
 
     void setAssets(Assets&);
 private:

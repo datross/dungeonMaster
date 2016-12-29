@@ -1,7 +1,11 @@
 #include <iostream>
 #include "view.h"
 
+#include <sstream>
+
 #include "gui.h"
+
+#define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 View::View()
     : player_input(INPUT_NONE) {
@@ -142,11 +146,11 @@ void View::render(Game_state& game_state) {
 	if(game_state == STATE_MENU) {
 		mainMenu(game_state);
 	} else if (game_state == STATE_GAMEPLAY) {
-
-	} else if (game_state == STATE_QUIT) {
-
+		HUD(game_state);
 	} else {
-
+		bool isValidate = false;
+		Gui::getInstance().errorWindow(isValidate);
+		if(isValidate) game_state = STATE_QUIT;
 	}
 	ImGui::Render();
 
@@ -269,6 +273,106 @@ void View::mainMenu(Game_state& game_state){
 		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
 
 		}*/
+
+		ImGui::End();
+	}
+}
+
+void View::HUD(Game_state& game_state) {
+
+	//Menu's textures
+	float tex_w = (float)ImGui::GetIO().Fonts->TexWidth;
+	float tex_h = (float)ImGui::GetIO().Fonts->TexHeight;
+	ImTextureID tex_id = ImGui::GetIO().Fonts->TexID;
+
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+
+	std::stringstream life, score;
+	life << (*(assets_ptr->map.players.begin())).life;
+	score << (*(assets_ptr->map.players.begin())).score;
+
+	//Indicators
+	/*if(Gui::getInstance().showIndicators){
+		ImGui::Begin("HUD - Life & score & controls", NULL, window_flags);
+
+		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::SameLine();
+		ImGui::Text(life.str().c_str());
+
+		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::SameLine();
+		ImGui::Text(score.str().c_str());
+
+		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::End();
+	}*/
+	//Inventory
+	//if(Gui::getInstance().showInventory){
+		ImGui::Begin("HUD_Inventory", NULL, window_flags);
+		if (ImGui::Button("Inventaire")){
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Carte")){
+			Gui::getInstance().showInventory = false;
+			Gui::getInstance().showMap = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Options")){
+			Gui::getInstance().showInventory = false;
+			Gui::getInstance().showOptions = true;
+		}
+		ImGui::Separator();
+
+		ImGui::Text(std::string("Points de vie : " + life.str()).c_str());
+		ImGui::Text(std::string("Score : " + score.str()).c_str());
+		ImGui::Text("Sac à dos :");
+
+		ImGui::End();
+	//}
+	//Map
+	if(Gui::getInstance().showMap){
+		ImGui::Begin("HUD_Map", NULL, window_flags);
+		if (ImGui::Button("Inventaire")){
+			Gui::getInstance().showMap = false;
+			Gui::getInstance().showInventory = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Carte")){
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Options")){
+			Gui::getInstance().showMap = false;
+			Gui::getInstance().showInventory = true;
+		}
+		ImGui::Separator();
+
+
+
+		ImGui::End();
+	}
+	//Options
+	if(Gui::getInstance().showOptions){
+		ImGui::Begin("HUD_Options", NULL, window_flags);
+		if (ImGui::Button("Inventaire")){
+			Gui::getInstance().showOptions = false;
+			Gui::getInstance().showInventory = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Carte")){
+			Gui::getInstance().showOptions = false;
+			Gui::getInstance().showMap = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Options")){
+		}
+		ImGui::Separator();
+
+
 
 		ImGui::End();
 	}
