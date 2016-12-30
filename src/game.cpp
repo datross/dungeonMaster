@@ -4,6 +4,7 @@
 Game::Game(char* _application_path)
     : assets(_application_path), application_path(_application_path), game_state(STATE_MENU) {
 		view.setAssets(assets);
+		view.initTextures();
 }
 
 Game::~Game() {

@@ -36,6 +36,7 @@ public:
 
     Player_input get_input();
 
+	void initTextures();
 	void mainMenu(Game_state& game_state);
 	void HUD(Game_state& game_state);
 

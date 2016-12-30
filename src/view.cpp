@@ -64,16 +64,6 @@ View::View()
 
     // Setup ImGui binding
     ImGui_ImplSdlGL3_Init(window);
-
-	/* Loading of menu and hud textures */
-	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/background.png"));
-	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/new.png"));
-	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/load.png"));
-	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/explications.png"));
-	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, std::string(assets_ptr->application_path + "res/gui_elements/quit.png"));
-
-	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, std::string(assets_ptr->application_path + "res/gui_elements/life.png"));
-	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, std::string(assets_ptr->application_path +"res/gui_elements/score.png"));
 }
 
 View::~View() {
@@ -170,6 +160,23 @@ Player_input View::get_input() {
     return player_input;
 }
 
+/******************************************
+*		USER INTERFACE FUNCTIONS		  *
+*******************************************/
+
+void View::initTextures(){
+	/* Loading of menu and hud textures */
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/background.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/new.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/load.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/explications.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/quit.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/arrow.png");
+
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/life.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/score.png");
+}
+
 void View::mainMenu(Game_state& game_state){
 
 	ImGuiWindowFlags window_flags = 0;
@@ -178,30 +185,56 @@ void View::mainMenu(Game_state& game_state){
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoSavedSettings;
 
 	// background
-		//ImGui::Image(tex_id, ImVec2(window_width, window_height), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::SetNextWindowPos(ImVec2(-1,-1));
+		ImGui::SetNextWindowSize(ImVec2(window_width+2, window_height+2));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
+		ImGui::Begin("background", NULL, window_flags);
+		ImGui::Image(Gui::getInstance().mainMenuTex[0].first, ImVec2(window_width+2, window_height+2), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::End();
+		ImGui::PopStyleVar();
+
+	// STYLES rules
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(0,0,0,0));
 
 	//MAIN MENU
 	if(Gui::getInstance().showMainMenu){
+
+		ImGui::SetNextWindowPos(ImVec2(50, window_height/3.0f));
 		ImGui::Begin("Main menu", &(Gui::getInstance().showMainMenu), window_flags);
+
 		//Buttons
-		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[1].first, Gui::getInstance().mainMenuTex[1].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))) {
+		ImGui::PushStyleColor(ImGuiCol_Button, ImColor(0,0,0,0));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(0,0,0,0));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(0,0,0,0));
+		float scale_btn = 0.2f;
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[1].first, ImVec2(Gui::getInstance().mainMenuTex[1].second.x * scale_btn, Gui::getInstance().mainMenuTex[1].second.y * scale_btn) , ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))) {
 			Gui::getInstance().showMainMenu = false;
 			Gui::getInstance().showLevelSelector = true;
 		}
-		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[2].first, Gui::getInstance().mainMenuTex[2].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))){
+		ImGui::Spacing();
+
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[2].first, ImVec2(Gui::getInstance().mainMenuTex[2].second.x * scale_btn, Gui::getInstance().mainMenuTex[2].second.y * scale_btn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			Gui::getInstance().showMainMenu = false;
 			Gui::getInstance().showSavesSelector = true;
 		}
-		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[3].first, Gui::getInstance().mainMenuTex[3].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))){
+		ImGui::Spacing();
+
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[3].first, ImVec2(Gui::getInstance().mainMenuTex[3].second.x * scale_btn, Gui::getInstance().mainMenuTex[3].second.y * scale_btn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			Gui::getInstance().showMainMenu = false;
 			Gui::getInstance().showOptionsSelector = true;
 		}
-		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[4].first, Gui::getInstance().mainMenuTex[4].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))){
+		ImGui::Spacing();
+
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[4].first, ImVec2(Gui::getInstance().mainMenuTex[4].second.x * scale_btn, Gui::getInstance().mainMenuTex[4].second.y * scale_btn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			ImGui::OpenPopup("Quit");
 			//QUIT CONFIRMAION POPUP
 		}
+		ImGui::PopStyleColor(3);
+		
+		ImGui::SetNextWindowPosCenter();
 		if (ImGui::BeginPopup("Quit")){
 
 			ImGui::Spacing();
@@ -271,6 +304,11 @@ void View::mainMenu(Game_state& game_state){
 
 		ImGui::End();
 	}
+
+
+	// FORGET STYLE RULES
+	ImGui::PopStyleColor();
+
 }
 
 void View::HUD(Game_state& game_state) {

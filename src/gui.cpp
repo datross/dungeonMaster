@@ -16,7 +16,7 @@ Gui::Gui() : showMainMenu(true),
 	  {}
 
 void Gui::loadTexture (std::vector< std::pair<ImTextureID, ImVec2> >& container, glimac::FilePath path){
-	    std::unique_ptr<glimac::Image> loadImg = glimac::loadImage(path);
+		std::unique_ptr<glimac::Image> loadImg = glimac::loadImage(path.str());
 	    if (loadImg == NULL) {
 	        std::cerr << "Error while loading texture : " << path << std::endl;
 	    }
