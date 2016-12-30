@@ -136,6 +136,7 @@ void View::mainMenu(Game_state& game_state){
 	float tex_h = (float)ImGui::GetIO().Fonts->TexHeight;
 	ImTextureID tex_id = ImGui::GetIO().Fonts->TexID;
 
+	// Windows parameters
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoResize;
@@ -143,12 +144,11 @@ void View::mainMenu(Game_state& game_state){
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 
-	// background
-		//ImGui::Image(tex_id, ImVec2(window_width, window_height), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
-
 	//MAIN MENU
 	if(Gui::getInstance().showMainMenu){
+		//Create window
 		ImGui::Begin("Main menu", &(Gui::getInstance().showMainMenu), window_flags);
+
 		//Buttons
 		if (ImGui::Button("Nouvelle partie")){
 			Gui::getInstance().showMainMenu = false;
@@ -164,8 +164,9 @@ void View::mainMenu(Game_state& game_state){
 		}
 		if (ImGui::Button("Quitter")){
 			ImGui::OpenPopup("Quit");
-			//QUIT CONFIRMAION POPUP
 		}
+
+		//QUIT CONFIRMAION POPUP
 		if (ImGui::BeginPopup("Quit")){
 
 			ImGui::Spacing();
@@ -183,16 +184,15 @@ void View::mainMenu(Game_state& game_state){
 				ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
-		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
-
-		}*/
 
 		ImGui::End();
 	}
 
 	//LOAD SAVES MENU
 	if(Gui::getInstance().showSavesSelector){
+		//init window
 		ImGui::Begin("Load saves menu", &(Gui::getInstance().showSavesSelector), window_flags);
+
 		//Buttons
 		if (ImGui::Button("Tinymap")){
 			assets_ptr->load("tinymap", false);
@@ -210,7 +210,9 @@ void View::mainMenu(Game_state& game_state){
 
 	//LEVEL MENU
 	if(Gui::getInstance().showLevelSelector){
+		//Init window
 		ImGui::Begin("Level menu", &(Gui::getInstance().showLevelSelector), window_flags);
+
 		//Buttons
 		if (ImGui::Button("Tinymap")){
 			assets_ptr->load("tinymap", true);
@@ -222,25 +224,20 @@ void View::mainMenu(Game_state& game_state){
 			Gui::getInstance().showLevelSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
-		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
-
-		}*/
 
 		ImGui::End();
 	}
 
 	//OPTION MENU
 	if(Gui::getInstance().showOptionsSelector){
+		//Init window
 		ImGui::Begin("Level menu", &(Gui::getInstance().showOptionsSelector), window_flags);
-		//Buttons
 
+		//Buttons
 		if (ImGui::Button("Retour")){
 			Gui::getInstance().showOptionsSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
-		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
-
-		}*/
 
 		ImGui::End();
 	}
@@ -248,8 +245,8 @@ void View::mainMenu(Game_state& game_state){
 
 void View::renderGame(Game_state& game_state) {
     /* Walls rendering */
-    
-    
+
+
 //     Mesh mesh;
 //     mesh.loadFromFile("res/tete.obj");
 //     mesh.loadShader("res/shaders/3D.vs.glsl",
