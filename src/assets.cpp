@@ -140,7 +140,7 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 
 
 		/* ---- Players initialization ---- */
-
+        
 	/* Number of player */
         file >> nb_Player;
 
@@ -198,11 +198,13 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         for (unsigned int i = 0; i < nb_Item; i++) {
 			/* Item infos in file */
             file >> posX >> posY >> id >>  value >>  type >>  durability >>  mesh_path >> vShader_path >> fShader_path;
+            
             getline(file, line);
 
 			/* Init position and pointers for rendering */
             glm::ivec2 position = glm::ivec2(posX, posY);
             mesh_ptr = meshLoad(mesh_path);
+            
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
 
 			/* Create item */
@@ -212,10 +214,11 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 
 			/* Add item to map in assets */
 			map.items.push_back(tmp_item);
+                        std::cout << "hey2" << std::endl;
         }
 
 		/* ---- Enemies initialization ---- */
-
+std::cout << "hey" << std::endl;
         file >> nb_Enemy;
         for (unsigned int i = 0; i < nb_Enemy; i++) {
             file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >>  detectRange >>  mesh_path >> vShader_path >> fShader_path;
@@ -229,7 +232,7 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         }
 
 		/* ---- Traps initialization ---- */
-
+std::cout << "hey" << std::endl;
         file >> nb_Traps;
         for (unsigned int i = 0; i < nb_Traps; i++) {
             file >> posX >> posY >> id >>  damages >>  timing >>  mesh_path >> vShader_path >> fShader_path;

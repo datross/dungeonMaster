@@ -245,9 +245,9 @@ void View::mainMenu(Game_state& game_state){
 
 void View::renderGame(Game_state& game_state) {
     /* Walls rendering */
-    for(unsigned x = 0; x < assets_ptr->map->datas.size(); ++x) {
-        for(unsigned y = 0; y < assets_ptr->map->datas[0].size(); ++x) {
-            // TODO 
+    for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
+        for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++x) {
+            // TODO
         }
     }
 
