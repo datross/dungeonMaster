@@ -23,7 +23,6 @@ public:
   std::vector<Trap> traps;
 
   Map();
-  ~Map();
 
   void loadTerrain(std::string pathFile);
   bool isCaseEmpty(int x, int y);

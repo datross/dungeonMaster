@@ -243,62 +243,49 @@ void View::mainMenu(Game_state& game_state){
 	}
 }
 
-void View::renderGame(Game_state& game_state) {    
-
-
+void View::renderGame(Game_state& game_state) {   
+    // TODO temporaire je sais pas trop où le mettre pour l'instant
+    reshape(window_width, window_height);
+    
     Mesh mesh;
     mesh.buildPlane(1, 1);
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
                     "res/shaders/directionallight.fs.glsl");
     mesh.setUniformsId(shader);
     
+    /* Pour toutes les vues des joueurs */
+    for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
+        // TODO checker la position
+        p->cam.position = glm::vec3(p->position.x, 0.7, -p->position.y);
+        std::cout << p->cam.position.x << " " << p->cam.position.z << std::endl;
+        p->orientation = glm::vec3(0,0,-1);
+        p->cam.direction = p->orientation;
 
-    Camera camera;
-    camera.init(70, 1.);
-    camera.position = glm::vec3(0,0,5);
-    camera.direction = glm::vec3(0,0,-1);
-    glm::mat4 v = camera.getVMatrix();
-    glm::mat4 mv = v;
-    //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-    mv = glm::translate(mv, glm::vec3(0,0,0));
-//     glm::mat4 mv = glm::translate(glm::mat4(1.), glm::vec3(0,0,1));
-            
-    shader.use();
-    
-    mesh.setMVMatrix(mv);
-    mesh.setMVPMatrix(camera.getPMatrix() * mv);
-    mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-    mesh.setNormalMatrix(glm::mat4(1.));
-    mesh.setShininess(1.);
-    mesh.setLightDir_vs(glm::vec3(1,1,1));
-    mesh.setLightIntensity(glm::vec3(1,1,1));
-    mesh.setKs(glm::vec3(1,1,1));
-    mesh.setKd(glm::vec3(1,1,1));
-    mesh.render();
-    
-        Map map;
-    map.loadTerrain("res/levels/tinymap.ppm");
-    
-    /* Walls rendering */
-//     for(unsigned x = 0; x < map.datas.size(); ++x) {
-//         for(unsigned y = 0; y < map.datas[0].size(); ++y) {
-//             glm::mat4 mv = v;
-//             //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-//             mv = glm::translate(mv, glm::vec3(0,0,0));
-//             
-//             mesh.setMVMatrix(mv);
-//             mesh.setMVPMatrix(camera.getPMatrix() * mv);
-//             mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-//             mesh.setNormalMatrix(glm::mat4(1.));
-//             mesh.setShininess(1.);
-//             mesh.setLightDir_vs(glm::vec3(1,1,1));
-//             mesh.setLightIntensity(glm::vec3(1,1,1));
-//             mesh.setKs(glm::vec3(1,1,1));
-//             mesh.setKd(glm::vec3(1,1,1));
-//             
-//             mesh.render();
-//         }
-//     }
+        glm::mat4 v = p->cam.getVMatrix();
+        
+        shader.use();
+        
+        /* Walls rendering */
+        for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
+            for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
+                glm::mat4 mv = v;
+                //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
+                mv = glm::translate(mv, glm::vec3(x,0,-y));
+                
+                mesh.setMVMatrix(mv);
+                mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
+                mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                mesh.setNormalMatrix(glm::mat4(1.));
+                mesh.setShininess(1.);
+                mesh.setLightDir_vs(glm::vec3(1,1,1));
+                mesh.setLightIntensity(glm::vec3(1,1,1));
+                mesh.setKs(glm::vec3(1,1,1));
+                mesh.setKd(glm::vec3(1,1,1));
+                
+                mesh.render();
+            }
+        }
+    }
 }
 
 void View::setAssets(Assets& _assets_ptr) {

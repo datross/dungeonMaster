@@ -10,7 +10,6 @@
 using namespace std;
 
 Map::Map(){}
-Map::~Map(){}
 
 void Map::loadTerrain(string pathFile){
 
