@@ -254,12 +254,18 @@ void View::renderGame(Game_state& game_state) {
     mesh.setUniformsId(shader);
     
     /* Pour toutes les vues des joueurs */
-    for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
+//     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
+    auto p = assets_ptr->map.players.begin(); 
         // TODO checker la position
-        p->cam.position = glm::vec3(p->position.x, 0.7, -p->position.y);
-        std::cout << p->cam.position.x << " " << p->cam.position.z << std::endl;
+        p->cam.position = glm::vec3(0, 0, 5);
+//         p->cam.position = glm::vec3(p->position.x, 0.7, -p->position.y);
+        // TODO
         p->orientation = glm::vec3(0,0,-1);
         p->cam.direction = p->orientation;
+        
+        std::cout << p->cam.position << std::endl;
+        std::cout << p->cam.direction << std::endl;
+        std::cout << p->cam.getPMatrix() << std::endl;
 
         glm::mat4 v = p->cam.getVMatrix();
         
@@ -270,7 +276,8 @@ void View::renderGame(Game_state& game_state) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 glm::mat4 mv = v;
                 //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-                mv = glm::translate(mv, glm::vec3(x,0,-y));
+//                 mv = glm::translate(mv, glm::vec3(x,0,-y));
+                mv = glm::translate(mv, glm::vec3(0,0,0));
                 
                 mesh.setMVMatrix(mv);
                 mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
@@ -284,7 +291,7 @@ void View::renderGame(Game_state& game_state) {
                 
                 mesh.render();
             }
-        }
+     //   }
     }
 }
 
