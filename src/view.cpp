@@ -296,10 +296,14 @@ void View::HUD(Game_state& game_state) {
 	life << (*(assets_ptr->map.players.begin())).life;
 	score << (*(assets_ptr->map.players.begin())).score;
 
+
+
 	//Indicators
-	/*if(Gui::getInstance().showIndicators){
+	if(Gui::getInstance().showIndicators){
 		ImGui::Begin("HUD - Life & score & controls", NULL, window_flags);
 
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::Text("Keys pressed:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyPressed(i))             { ImGui::SameLine(); ImGui::Text("%d", i); }
 		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
 		ImGui::SameLine();
 		ImGui::Text(life.str().c_str());
@@ -310,9 +314,9 @@ void View::HUD(Game_state& game_state) {
 
 		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
 		ImGui::End();
-	}*/
+	}
 	//Inventory
-	//if(Gui::getInstance().showInventory){
+	if(Gui::getInstance().showInventory){
 		ImGui::Begin("HUD_Inventory", NULL, window_flags);
 		if (ImGui::Button("Inventaire")){
 		}
@@ -333,7 +337,7 @@ void View::HUD(Game_state& game_state) {
 		ImGui::Text("Sac à dos :");
 
 		ImGui::End();
-	//}
+	}
 	//Map
 	if(Gui::getInstance().showMap){
 		ImGui::Begin("HUD_Map", NULL, window_flags);
@@ -372,10 +376,9 @@ void View::HUD(Game_state& game_state) {
 		}
 		ImGui::Separator();
 
-
-
 		ImGui::End();
 	}
+
 }
 
 void View::setAssets(Assets& _assets_ptr) {

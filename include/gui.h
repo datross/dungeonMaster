@@ -66,7 +66,7 @@ private:
 		  showInventory(false),
 		  showMap(false),
 		  showOptions(false)
-		  {}                    // Constructor? (the {} brackets) are needed here.
+		  {}
 };
 
 #endif
