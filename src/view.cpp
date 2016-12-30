@@ -1,6 +1,5 @@
 #include <iostream>
 #include "view.h"
-
 #include <sstream>
 
 #include "gui.h"
@@ -65,6 +64,16 @@ View::View()
 
     // Setup ImGui binding
     ImGui_ImplSdlGL3_Init(window);
+
+	/* Loading of menu and hud textures */
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/background.png"));
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/new.png"));
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/load.png"));
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/explications.png"));
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, std::string(assets_ptr->application_path + "res/gui_elements/quit.png"));
+
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, std::string(assets_ptr->application_path + "res/gui_elements/life.png"));
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, std::string(assets_ptr->application_path +"res/gui_elements/score.png"));
 }
 
 View::~View() {
@@ -163,11 +172,6 @@ Player_input View::get_input() {
 
 void View::mainMenu(Game_state& game_state){
 
-	//Menu's textures
-	float tex_w = (float)ImGui::GetIO().Fonts->TexWidth;
-	float tex_h = (float)ImGui::GetIO().Fonts->TexHeight;
-	ImTextureID tex_id = ImGui::GetIO().Fonts->TexID;
-
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoResize;
@@ -182,19 +186,19 @@ void View::mainMenu(Game_state& game_state){
 	if(Gui::getInstance().showMainMenu){
 		ImGui::Begin("Main menu", &(Gui::getInstance().showMainMenu), window_flags);
 		//Buttons
-		if (ImGui::Button("Nouvelle partie")){
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[1].first, Gui::getInstance().mainMenuTex[1].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))) {
 			Gui::getInstance().showMainMenu = false;
 			Gui::getInstance().showLevelSelector = true;
 		}
-		if (ImGui::Button("Charger partie")){
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[2].first, Gui::getInstance().mainMenuTex[2].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))){
 			Gui::getInstance().showMainMenu = false;
 			Gui::getInstance().showSavesSelector = true;
 		}
-		if (ImGui::Button("Options")){
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[3].first, Gui::getInstance().mainMenuTex[3].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))){
 			Gui::getInstance().showMainMenu = false;
 			Gui::getInstance().showOptionsSelector = true;
 		}
-		if (ImGui::Button("Quitter")){
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[4].first, Gui::getInstance().mainMenuTex[4].second, ImVec2(0,0), ImVec2(1,1),-1, ImVec4(0,0,0,0), ImVec4(1,1,1,1))){
 			ImGui::OpenPopup("Quit");
 			//QUIT CONFIRMAION POPUP
 		}
@@ -215,9 +219,6 @@ void View::mainMenu(Game_state& game_state){
 				ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
-		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
-
-		}*/
 
 		ImGui::End();
 	}
@@ -254,9 +255,6 @@ void View::mainMenu(Game_state& game_state){
 			Gui::getInstance().showLevelSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
-		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
-
-		}*/
 
 		ImGui::End();
 	}
@@ -270,9 +268,6 @@ void View::mainMenu(Game_state& game_state){
 			Gui::getInstance().showOptionsSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
-		/*if (ImGui::ImageButton(tex_id, ImVec2(32,32), ImVec2(0,0), ImVec2(32.0f/tex_w,32/tex_h), 1, ImColor(0,0,0,255))) {
-
-		}*/
 
 		ImGui::End();
 	}
@@ -302,17 +297,15 @@ void View::HUD(Game_state& game_state) {
 	if(Gui::getInstance().showIndicators){
 		ImGui::Begin("HUD - Life & score & controls", NULL, window_flags);
 
-		ImGuiIO& io = ImGui::GetIO();
-		ImGui::Text("Keys pressed:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyPressed(i))             { ImGui::SameLine(); ImGui::Text("%d", i); }
-		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::Image(Gui::getInstance().HUDTex[0].first, Gui::getInstance().HUDTex[0].second, ImVec2(0,0), ImVec2(1,1), ImVec4(0,0,0,0), ImVec4(1,1,1,1));
 		ImGui::SameLine();
 		ImGui::Text(life.str().c_str());
 
-		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::Image(Gui::getInstance().HUDTex[1].first, Gui::getInstance().HUDTex[0].second, ImVec2(0,0), ImVec2(1,1), ImVec4(0,0,0,0), ImVec4(1,1,1,1));
 		ImGui::SameLine();
 		ImGui::Text(score.str().c_str());
 
-		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImVec4(0,0,0,0), ImVec4(1,1,1,1));
 		ImGui::End();
 	}
 	//Inventory
