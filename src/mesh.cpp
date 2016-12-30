@@ -46,7 +46,6 @@ bool Mesh::loadFromFile(std::string file) {
     std::vector<Vertex> vertices;
     std::vector<glm::ivec3> indices;
 
-
     // vertices
     for(unsigned v = 0; v < mesh->mNumVertices; ++v) {
         Vertex vertex;
@@ -61,7 +60,7 @@ bool Mesh::loadFromFile(std::string file) {
         vertex.texCoord = glm::vec2(0, 0);
         vertices.push_back(vertex);
     }
-
+std::cout << "hey" << std::endl;
     // faces (vertices indices)
     numFaces = mesh->mNumFaces;
     for(unsigned f = 0; f < mesh->mNumFaces; ++f) {
@@ -70,19 +69,24 @@ bool Mesh::loadFromFile(std::string file) {
                                      mesh->mFaces[f].mIndices[2]));
     }
 
-    // send vertices to GPU
+    sendGeometryToGPU(vertices, indices);
+    return true;
+}
+
+void Mesh::sendGeometryToGPU(std::vector<Vertex>& vertices, std::vector<glm::ivec3>& indices) {
+    /* send vertices to GPU */
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    // send indices to GPU
+    /* send indices to GPU */
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(glm::ivec3), indices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    // create VAO
+    /* create VAO */
     glGenVertexArrays(1,&vao);
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
@@ -95,11 +99,26 @@ bool Mesh::loadFromFile(std::string file) {
     glVertexAttribPointer(VERTEX_ATTR_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoord));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    return true;
 }
 
-bool Mesh::loadShader(glimac::Program& shader) {
+void Mesh::buildPlane(float w, float h) {
+    std::vector<Vertex> vertices;
+    std::vector<glm::ivec3> indices;
+    for(unsigned x = 0; x < 2; ++x)
+        for(unsigned y = 0; y < 2; ++y)
+            vertices.push_back(Vertex(
+                glm::vec3(x * w, y * h, 0),
+                glm::vec3(0, 0, 1),
+                glm::vec2(x, y)
+            ));
+    indices = {
+        glm::ivec3(0, 1, 2),
+        glm::ivec3(1, 3, 2) };
+        
+    sendGeometryToGPU(vertices, indices);
+}
+
+bool Mesh::setUniformsId(glimac::Program& shader) {
 
     uMVPMatrix = glGetUniformLocation(shader.getGLId(), "uMVPMatrix");
     uMVMatrix = glGetUniformLocation(shader.getGLId(), "uMVMatrix");

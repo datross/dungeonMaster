@@ -34,10 +34,16 @@ public:
     Mesh();
     ~Mesh();
     Mesh(const Mesh&);
+    
+    bool setUniformsId(glimac::Program& shader);
+    void render();
 
     bool loadFromFile(std::string file);
-    bool loadShader(glimac::Program& shader);
-    void render();
+    void sendGeometryToGPU(std::vector<Vertex>& vertices, 
+                           std::vector<glm::ivec3>& indices);
+    
+    /* basic geometric objects */
+    void buildPlane(float w, float h);
 
     void setMVMatrix(glm::mat4);
     void setMVPMatrix(glm::mat4);
@@ -50,10 +56,13 @@ public:
 
     glimac::FilePath path;
 private:
+    /* geometry structures identifiers */
     GLuint vbo, ibo, vao;
+    
+    /* number of faces */
     unsigned numFaces;
 
-    // uniform
+    /* uniform identifiers */
     GLint uMVMatrix;
     GLint uMVPMatrix;
     GLint uNormalMatrix;
