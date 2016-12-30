@@ -13,7 +13,7 @@ public:
     glm::mat4 getPMatrix();
     glm::mat4 getVMatrix();
 
-    glm::vec3 position;
+    glm::vec3 position; 
     glm::vec3 direction;
 };
 

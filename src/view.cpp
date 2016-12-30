@@ -257,24 +257,20 @@ void View::renderGame(Game_state& game_state) {
 //     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
     auto p = assets_ptr->map.players.begin(); 
     
-    Camera cam;
-//     p->cam.init(70., 1.);
-    cam.init(70., 1.);
+//     Camera cam;
+     p->cam.init(70., 1.);
         // TODO checker la position
-//         p->cam.position = glm::vec3(0, 0, 5);
-        cam.position = glm::vec3(0, 0, 5);
+        p->cam.position = glm::vec3(0, 0, 5);
 //         p->cam.position = glm::vec3(p->position.x, 0.7, -p->position.y);
         // TODO
         p->orientation = glm::vec3(0,0,-1);
-//         p->cam.direction = p->orientation;
-        cam.direction = p->orientation;
+        p->cam.direction = p->orientation;
         
         std::cout << p->cam.position << std::endl;
         std::cout << p->cam.direction << std::endl;
         std::cout << p->cam.getPMatrix() << std::endl;
 
-//         glm::mat4 v = p->cam.getVMatrix();
-        glm::mat4 v = cam.getVMatrix();
+        glm::mat4 v = p->cam.getVMatrix();
         
         shader.use();
         
@@ -287,8 +283,8 @@ void View::renderGame(Game_state& game_state) {
                 mv = glm::translate(mv, glm::vec3(0,0,0));
                 
                 mesh.setMVMatrix(mv);
-//                 mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
-                mesh.setMVPMatrix(cam.getPMatrix() * mv);
+                mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
+//                 mesh.setMVPMatrix(cam.getPMatrix() * mv);
                 mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
                 mesh.setNormalMatrix(glm::mat4(1.));
                 mesh.setShininess(1.);
