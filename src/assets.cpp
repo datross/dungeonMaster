@@ -19,7 +19,7 @@ shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
             return shared_ptr<Mesh> (&(*it));
         }
     }
-
+    /* else add the new mesh to assets and return ptr */
     Mesh * mesh = new Mesh();
     mesh->path = mesh_path;
     meshes.push_back(*mesh);
@@ -35,6 +35,7 @@ shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, g
         }
     }
 
+    /* else add the new program to assets and return ptr */
     glimac::Program * shader = new glimac::Program();
     (*shader) = glimac::loadProgram(application_path + SHADER_PATH + vShader_path, application_path + SHADER_PATH + fShader_path);
     shader->vertexShaderPath = vShader_path;
@@ -124,9 +125,11 @@ void Assets::loadEntities(glimac::FilePath pathFile){
     string line;
     if(file){
 
+        /* Level name */
         getline(file, line);
         map.name = line;
 
+	/* Datas container variables, to create objects */
         int posX, posY, value, value_inventory, type, type_inventory, durability, durability_inventory;
         unsigned int life, defense, power, detectRange, damages, timing, nb_items_inventory, score, isEquiped;
         string id, id_inventory, mesh_path, vShader_path, fShader_path;
@@ -135,46 +138,83 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         shared_ptr<glimac::Program> shaders_ptr;
 		shared_ptr< std::map<EntityType, std::vector<Animation> > > animationsLink = shared_ptr< std::map<EntityType, std::vector<Animation> > > (&animations);
 
+
+		/* ---- Players initialization ---- */
+
+	/* Number of player */
         file >> nb_Player;
+
         for (unsigned int i = 0; i < nb_Player; i++) {
+            /* Player infos in file */
             file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >> nb_items_inventory >> score >> mesh_path >> vShader_path >> fShader_path;
             getline(file, line);
+
+            /* init position */
             glm::ivec2 position = glm::ivec2(posX, posY);
+
+            /* check pointers */
             mesh_ptr = meshLoad(mesh_path);
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
-            Player tmp_player = Player(position, glm::vec3(0,0,0), scale, id, life, defense, power, score, mesh_ptr, shaders_ptr);
-			tmp_player.animations_ptr =animationsLink;
 
+            /* Player creation */
+            Player tmp_player = Player(position, glm::vec3(0,0,0), scale, id, life, defense, power, score, mesh_ptr, shaders_ptr);
+			/* Link to animations */
+			tmp_player.animations_ptr = animationsLink;
+
+			/*  Create his Inventory */
             for (unsigned int j = 0; j < nb_items_inventory; j++) {
+
+				/*  Item infos in  file */
                 file >> id_inventory >>  value_inventory >> type_inventory >>  durability_inventory >> isEquiped >> mesh_path >> vShader_path >> fShader_path;
                 getline(file, line);
 
+				/* init position (null, in his bag) */
                 position = glm::ivec2(0, 0);
+
+				/*  init pointers for rendering (in case where we render items in 3D in inventory) */
 				mesh_ptr = meshLoad(mesh_path);
 				shaders_ptr = shadersLoad(vShader_path, fShader_path);
+
+				/*  Create Item */
 				Item tmp_item = Item(position, id_inventory, value_inventory, (ItemType)type_inventory, durability_inventory, mesh_ptr, shaders_ptr);
+				/*  Link to animations */
 				tmp_item.animations_ptr =animationsLink;
 
+				/*  add item on player (equiped) or in his bag (unequiped) */
                 if(isEquiped){
                     tmp_player.equip(tmp_item);
                 }else{
                     tmp_player.addItem(tmp_item);
                 }
             }
+
+			/*  Add player to map in assets */
             map.players.push_back(tmp_player);
         }
 
+		/* ---- Items initialization ---- */
+
         file >> nb_Item;
         for (unsigned int i = 0; i < nb_Item; i++) {
+			/* Item infos in file */
             file >> posX >> posY >> id >>  value >>  type >>  durability >>  mesh_path >> vShader_path >> fShader_path;
             getline(file, line);
+
+			/* Init position and pointers for rendering */
             glm::ivec2 position = glm::ivec2(posX, posY);
             mesh_ptr = meshLoad(mesh_path);
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
+
+			/* Create item */
 			Item tmp_item = Item(position, id, value, (ItemType)type, durability, mesh_ptr, shaders_ptr);
+			/* Animations link */
 			tmp_item.animations_ptr =animationsLink;
+
+			/* Add item to map in assets */
 			map.items.push_back(tmp_item);
         }
+
+		/* ---- Enemies initialization ---- */
 
         file >> nb_Enemy;
         for (unsigned int i = 0; i < nb_Enemy; i++) {
@@ -187,6 +227,8 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 			tmp_enemy.animations_ptr =animationsLink;
 			map.characters.push_back(tmp_enemy);
         }
+
+		/* ---- Traps initialization ---- */
 
         file >> nb_Traps;
         for (unsigned int i = 0; i < nb_Traps; i++) {
@@ -205,6 +247,7 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         cerr << "Cannot open " << pathFile << endl;
 }
 
+/* Open file of animations pack */
 void Assets::loadAnimationsPack(EntityType type, glimac::FilePath animationsPackPath){
 	ifstream file;
     file.open(animationsPackPath, ios::in);
@@ -212,13 +255,16 @@ void Assets::loadAnimationsPack(EntityType type, glimac::FilePath animationsPack
 	string line;
     if(file){
 		getline(file, line);
-		animations[type].push_back(Animation(ANIMATION_PATH + line));
+		/*  Add animset ENCOUNTER */
+		animations[type].push_back(Animation(application_path + ANIMATION_PATH + line));
 
 		getline(file, line);
-		animations[type].push_back(Animation(ANIMATION_PATH + line));
+		/* add animset END */
+		animations[type].push_back(Animation(application_path + ANIMATION_PATH + line));
 
 		getline(file, line);
-		animations[type].push_back(Animation(ANIMATION_PATH + line));
+		/* add animset STAND */
+		animations[type].push_back(Animation(application_path + ANIMATION_PATH + line));
     } else
         cerr << "Cannot open " << animationsPackPath << endl;
 }
