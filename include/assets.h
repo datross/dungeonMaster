@@ -25,6 +25,9 @@ public:
 	std::map < EntityType, std::vector<Animation> > animations;
 	std::vector<Mesh> meshes;
 	std::vector<glimac::Program> shaders;
+        
+        /* temporaire */
+        Mesh wall;
 
 	Map map;
 

@@ -13,6 +13,7 @@ Assets::~Assets(){}
 
 
 shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
+    /* check if no double */
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
         if((*it).path == mesh_path){
             return shared_ptr<Mesh> (&(*it));
@@ -24,7 +25,9 @@ shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
     meshes.push_back(*mesh);
     return shared_ptr<Mesh>(mesh);
 }
+
 shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path){
+    /* check if no double */
     for(vector<glimac::Program>::iterator it = shaders.begin(); it != shaders.end(); ++it){
         if((*it).vertexShaderPath.compare(vShader_path) == 0 &&
 		   (*it).fragmentShaderPath.compare(fShader_path) == 0){
@@ -33,32 +36,36 @@ shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, g
     }
 
     glimac::Program * shader = new glimac::Program();
-	(*shader) = glimac::loadProgram(application_path + SHADER_PATH + vShader_path, application_path + SHADER_PATH + fShader_path);
-	shader->vertexShaderPath = vShader_path;
-	shader->fragmentShaderPath = fShader_path;
-	shaders.push_back(*shader);
+    (*shader) = glimac::loadProgram(application_path + SHADER_PATH + vShader_path, application_path + SHADER_PATH + fShader_path);
+    shader->vertexShaderPath = vShader_path;
+    shader->fragmentShaderPath = fShader_path;
+    shaders.push_back(*shader);
     return shared_ptr<glimac::Program>(shader);
 }
 
 void Assets::load(string fileName, bool isNewGame){
-
+    /* load map */
     map.loadTerrain(application_path + DATA_PATH + (fileName + ".ppm"));
-	if(isNewGame) loadEntities(application_path + DATA_PATH + (fileName + ".txt"));
-	else loadEntities(application_path + SAVE_PATH + (fileName + ".txt"));
+    
+    /* load entities */
+    if(isNewGame) loadEntities(application_path + DATA_PATH + (fileName + ".txt"));
+    else loadEntities(application_path + SAVE_PATH + (fileName + ".txt"));
 
+    /* load meshes */
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
         (*it).loadFromFile(application_path + MESH_PATH + (*it).path);
     }
 
-	std::vector< std::pair<EntityType, std::string> > animsPacks;
-	animsPacks.push_back(std::pair<EntityType, std::string>(DROPABLE_ITEM,"item_pack.txt"));
+    /* load animations */   
+    std::vector< std::pair<EntityType, std::string> > animsPacks;
+    animsPacks.push_back(std::pair<EntityType, std::string>(DROPABLE_ITEM,"item_pack.txt"));
 
-	for(std::vector<std::pair<EntityType, std::string> >::iterator it=animsPacks.begin();
-		it != animsPacks.end(); ++it){
-			loadAnimationsPack((*it).first, application_path + ANIMATION_PATH + (*it).second);
-	}
+    for(std::vector<std::pair<EntityType, std::string> >::iterator it=animsPacks.begin();
+            it != animsPacks.end(); ++it){
+                    loadAnimationsPack((*it).first, application_path + ANIMATION_PATH + (*it).second);
+    }
 
-	print();
+    print();
 }
 
 void Assets::save(glimac::FilePath fileName){
