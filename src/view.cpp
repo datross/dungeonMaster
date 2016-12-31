@@ -175,6 +175,13 @@ void View::initTextures(){
 
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/life.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/score.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/score.png");
+
+
+	// Load Fonts
+    // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF((assets_ptr->application_path + "include/extra_fonts/olivier_demo.ttf").c_str(), 50.0f);
 }
 
 void View::mainMenu(Game_state& game_state){
@@ -186,6 +193,7 @@ void View::mainMenu(Game_state& game_state){
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoSavedSettings;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
 	// background
 		ImGui::SetNextWindowPos(ImVec2(-1,-1));
@@ -196,8 +204,20 @@ void View::mainMenu(Game_state& game_state){
 		ImGui::End();
 		ImGui::PopStyleVar();
 
+	window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoSavedSettings;
+	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+
 	// STYLES rules
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(0,0,0,0));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImColor(0,0,0,0));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(0,0,0,0));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(0,0,0,0));
 
 	//MAIN MENU
 	if(Gui::getInstance().showMainMenu){
@@ -206,9 +226,6 @@ void View::mainMenu(Game_state& game_state){
 		ImGui::Begin("Main menu", &(Gui::getInstance().showMainMenu), window_flags);
 
 		//Buttons
-		ImGui::PushStyleColor(ImGuiCol_Button, ImColor(0,0,0,0));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(0,0,0,0));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(0,0,0,0));
 		float scale_btn = 0.2f;
 		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[1].first, ImVec2(Gui::getInstance().mainMenuTex[1].second.x * scale_btn, Gui::getInstance().mainMenuTex[1].second.y * scale_btn) , ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))) {
 			Gui::getInstance().showMainMenu = false;
@@ -232,8 +249,7 @@ void View::mainMenu(Game_state& game_state){
 			ImGui::OpenPopup("Quit");
 			//QUIT CONFIRMAION POPUP
 		}
-		ImGui::PopStyleColor(3);
-		
+
 		ImGui::SetNextWindowPosCenter();
 		if (ImGui::BeginPopup("Quit")){
 
@@ -256,6 +272,29 @@ void View::mainMenu(Game_state& game_state){
 		ImGui::End();
 	}
 
+
+	float scaleReturnBtn = 0.2f;
+
+	//LEVEL MENU
+	if(Gui::getInstance().showLevelSelector){
+		ImGui::SetNextWindowPos(ImVec2(50, window_height/3.0f));
+		ImGui::Begin("Level menu", &(Gui::getInstance().showLevelSelector), window_flags);
+		//Buttons
+		if (ImGui::Button("Tinymap")){
+			assets_ptr->load("tinymap", true);
+			game_state = STATE_GAMEPLAY;
+			Gui::getInstance().showLevelSelector = false;
+			Gui::getInstance().showMainMenu = true;
+		}
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[5].first, ImVec2(Gui::getInstance().mainMenuTex[5].second.x * scaleReturnBtn, Gui::getInstance().mainMenuTex[5].second.y * scaleReturnBtn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
+			Gui::getInstance().showLevelSelector = false;
+			Gui::getInstance().showMainMenu = true;
+		}
+
+		ImGui::End();
+	}
+
+
 	//LOAD SAVES MENU
 	if(Gui::getInstance().showSavesSelector){
 		ImGui::Begin("Load saves menu", &(Gui::getInstance().showSavesSelector), window_flags);
@@ -266,26 +305,8 @@ void View::mainMenu(Game_state& game_state){
 			Gui::getInstance().showSavesSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
-		if (ImGui::Button("Retour")){
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[5].first, ImVec2(Gui::getInstance().mainMenuTex[5].second.x * scaleReturnBtn, Gui::getInstance().mainMenuTex[5].second.y * scaleReturnBtn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			Gui::getInstance().showSavesSelector = false;
-			Gui::getInstance().showMainMenu = true;
-		}
-
-		ImGui::End();
-	}
-
-	//LEVEL MENU
-	if(Gui::getInstance().showLevelSelector){
-		ImGui::Begin("Level menu", &(Gui::getInstance().showLevelSelector), window_flags);
-		//Buttons
-		if (ImGui::Button("Tinymap")){
-			assets_ptr->load("tinymap", true);
-			game_state = STATE_GAMEPLAY;
-			Gui::getInstance().showLevelSelector = false;
-			Gui::getInstance().showMainMenu = true;
-		}
-		if (ImGui::Button("Retour")){
-			Gui::getInstance().showLevelSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
 
@@ -297,7 +318,7 @@ void View::mainMenu(Game_state& game_state){
 		ImGui::Begin("Level menu", &(Gui::getInstance().showOptionsSelector), window_flags);
 		//Buttons
 
-		if (ImGui::Button("Retour")){
+		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[5].first, ImVec2(Gui::getInstance().mainMenuTex[5].second.x * scaleReturnBtn, Gui::getInstance().mainMenuTex[5].second.y * scaleReturnBtn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			Gui::getInstance().showOptionsSelector = false;
 			Gui::getInstance().showMainMenu = true;
 		}
@@ -307,16 +328,11 @@ void View::mainMenu(Game_state& game_state){
 
 
 	// FORGET STYLE RULES
-	ImGui::PopStyleColor();
+	ImGui::PopStyleColor(4);
 
 }
 
 void View::HUD(Game_state& game_state) {
-
-	//Menu's textures
-	float tex_w = (float)ImGui::GetIO().Fonts->TexWidth;
-	float tex_h = (float)ImGui::GetIO().Fonts->TexHeight;
-	ImTextureID tex_id = ImGui::GetIO().Fonts->TexID;
 
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -324,26 +340,28 @@ void View::HUD(Game_state& game_state) {
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 
 	std::stringstream life, score;
 	life << (*(assets_ptr->map.players.begin())).life;
 	score << (*(assets_ptr->map.players.begin())).score;
 
-
-
 	//Indicators
 	if(Gui::getInstance().showIndicators){
-		ImGui::Begin("HUD - Life & score & controls", NULL, window_flags);
-
-		ImGui::Image(Gui::getInstance().HUDTex[0].first, Gui::getInstance().HUDTex[0].second, ImVec2(0,0), ImVec2(1,1), ImVec4(0,0,0,0), ImVec4(1,1,1,1));
+		ImGui::SetNextWindowPos(ImVec2(0,0));
+		ImGui::Begin("HUD - Life & score", NULL, window_flags);
+		ImGui::Image(Gui::getInstance().HUDTex[0].first, ImVec2(50,50), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::SameLine();
-		ImGui::Text(life.str().c_str());
-
-		ImGui::Image(Gui::getInstance().HUDTex[1].first, Gui::getInstance().HUDTex[0].second, ImVec2(0,0), ImVec2(1,1), ImVec4(0,0,0,0), ImVec4(1,1,1,1));
+		ImGui::Text(life.str();
+		ImGui::Image(Gui::getInstance().HUDTex[1].first, ImVec2(50,50), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::SameLine();
 		ImGui::Text(score.str().c_str());
+		ImGui::End();
 
-		ImGui::Image(tex_id, ImVec2(tex_w, tex_h), ImVec2(0,0), ImVec2(1,1), ImVec4(0,0,0,0), ImVec4(1,1,1,1));
+		ImGui::SetNextWindowPos(ImVec2(0,(window_height*4)/5.0f));
+		ImGui::SetNextWindowSize(ImVec2(window_width/2.0f, window_height/5.0f));
+		ImGui::Begin("HUD - Commands", NULL, window_flags);
+		ImGui::Image(Gui::getInstance().HUDTex[0].first, Gui::getInstance().HUDTex[0].second, ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::End();
 	}
 	//Inventory
@@ -385,8 +403,6 @@ void View::HUD(Game_state& game_state) {
 			Gui::getInstance().showInventory = true;
 		}
 		ImGui::Separator();
-
-
 
 		ImGui::End();
 	}
