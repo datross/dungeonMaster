@@ -31,7 +31,7 @@ Mesh::Mesh(const Mesh& mesh) {
 bool Mesh::loadFromFile(std::string file) {
 
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate/* | aiProcess_GenNormals*/);
+    const aiScene *scene = importer.ReadFile(file.c_str(), /*aiProcessPreset_TargetRealtime_Fast |*/ aiProcess_Triangulate | aiProcess_GenNormals);
 
     if(!scene) {
         std::cout << "Error loading: " << file << " : " << importer.GetErrorString() << std::endl;
@@ -60,9 +60,10 @@ bool Mesh::loadFromFile(std::string file) {
         vertex.texCoord = glm::vec2(0, 0);
         vertices.push_back(vertex);
     }
-std::cout << "hey" << std::endl;
+
     // faces (vertices indices)
     numFaces = mesh->mNumFaces;
+    std::cout << numFaces  << std::endl;
     for(unsigned f = 0; f < mesh->mNumFaces; ++f) {
         indices.push_back(glm::ivec3(mesh->mFaces[f].mIndices[0],
                                      mesh->mFaces[f].mIndices[1],
@@ -114,6 +115,57 @@ void Mesh::buildPlane(float w, float h) {
     indices = {
         glm::ivec3(0, 1, 2),
         glm::ivec3(1, 3, 2) };
+        
+    numFaces = indices.size();
+    sendGeometryToGPU(vertices, indices);
+}
+
+void Mesh::buildCube(float size) {
+    std::vector<Vertex> vertices;
+    std::vector<glm::ivec3> indices;
+    
+//     vertices = {
+//         /* 0 - 2*/
+//         Vertex(glm::vec3(0,0,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
+//         /* 3 - 5 */
+//         Vertex(glm::vec3(1,0,0), glm::vec3(1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,0,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
+//         /* 6 - 8 */
+//         Vertex(glm::vec3(1,1,0), glm::vec3(1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,1,0), glm::vec3(0,1,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,1,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
+//         /* 9 - 11 */
+//         Vertex(glm::vec3(0,1,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
+//         /* 12 - 14 */
+//         Vertex(glm::vec3(0,0,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,0,0), glm::vec3(0,0,1), glm::vec2(0,0)),
+//         /* 15 - 17 */
+//         Vertex(glm::vec3(1,0,0), glm::vec3(1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,0,0), glm::vec3(0,0,1), glm::vec2(0,0)),
+//         /* 18 - 20 */
+//         Vertex(glm::vec3(1,1,0), glm::vec3(1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,1,0), glm::vec3(0,1,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(1,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
+//         /* 21 - 23 */
+//         Vertex(glm::vec3(0,1,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
+//         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0))
+//     };
+//     
+//     indices = {
+//         glm::ivec3(0, 9, 21),
+//         glm::ivec3(0, 21, 12),
+//         
+//         glm::ivec3(3, 9, 12),
+//         glm::ivec3(0, 21, 12),
+//     };
         
     numFaces = indices.size();
     sendGeometryToGPU(vertices, indices);

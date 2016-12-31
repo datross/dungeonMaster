@@ -57,8 +57,8 @@ void Player::use(Item item){
 
 void Player::updateCam(glm::ivec2 mouseMotion) {
     cam.position = glm::vec3(position.x, 0.7, -position.y);
-    cam.rotation.x -= mouseMotion.x;
-    cam.rotation.y += mouseMotion.y;
+    cam.rotation.x += mouseMotion.x;
+    cam.rotation.y -= mouseMotion.y;
     if(cam.rotation.y > 90) cam.rotation.y = 90;
     else if(cam.rotation.y < -90) cam.rotation.y = -90;
 }

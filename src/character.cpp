@@ -22,22 +22,22 @@ glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
         if(orientation.x > orientation.z)
             direction = glm::ivec2(1, 0);
         else
-            direction = glm::ivec2(0, 1);
+            direction = -glm::ivec2(0, 1);
     } else if(orientation.x < 0 && orientation.z > 0) {
         if(-orientation.x > orientation.z)
             direction = glm::ivec2(-1, 0);
         else
-            direction = glm::ivec2(0, 1);
+            direction = -glm::ivec2(0, 1);
     } else if(orientation.x < 0 && orientation.z < 0) {
         if(orientation.x < orientation.z)
             direction = glm::ivec2(-1, 0);
         else
-            direction = glm::ivec2(0, -1);
+            direction = -glm::ivec2(0, -1);
     } else if(orientation.x > 0 && orientation.z < 0) {
         if(orientation.x > -orientation.z)
             direction = glm::ivec2(1, 0);
         else
-            direction = glm::ivec2(0, -1);
+            direction = -glm::ivec2(0, -1);
     }
     return direction;
 }
@@ -53,7 +53,17 @@ glm::vec3 Character::getVisualPosition(Uint32 time) {
 }
 
 void Character::move (Movement movement, Uint32 time){
-    position += computeSteppedDirection(orientation);
+    auto stepped_dir = computeSteppedDirection(orientation);
+    if(movement == MOVEMENT_FORWARD) {
+        position += stepped_dir;
+    } else if(movement == MOVEMENT_BACKWARD) {
+        position += -stepped_dir;
+    } else if(movement == MOVEMENT_LEFT) {
+        position += glm::vec2(-stepped_dir.y, stepped_dir.x);
+    } else if(movement == MOVEMENT_RIGHT) {
+        position += -glm::vec2(-stepped_dir.y, stepped_dir.x);
+    }
+    
     anim_start_time = time;
 }
 

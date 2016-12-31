@@ -13,7 +13,7 @@ glm::mat4 Camera::getVMatrix() {
     direction.z = glm::cos(glm::radians(rotation.y)) * glm::sin(glm::radians(rotation.x));
     direction.y = glm::sin(glm::radians(rotation.y));
     
-    glm::vec3 local_left = glm::vec3(-glm::sin(glm::radians(rotation.x)), 0, glm::cos(glm::radians(rotation.x)));
+    glm::vec3 local_left = glm::vec3(glm::sin(glm::radians(rotation.x)), 0, -glm::cos(glm::radians(rotation.x)));
     
     return glm::lookAt(position, 
                        position + direction,

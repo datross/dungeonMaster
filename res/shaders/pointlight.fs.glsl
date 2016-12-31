@@ -16,13 +16,13 @@ out vec4 fFragColor;
 
 vec3 blinnPhong() {
     float d = distance(vFragPosition, uLightPos_vs);
-    return (uLightIntensity/(d*d))*(uKd*dot(normalize(uLightPos_vs - vFragPosition), vFragNormal)
+    return (uLightIntensity/(0.5*d*d))*(uKd*dot(normalize(uLightPos_vs - vFragPosition), vFragNormal)
             + uKs * pow(dot(normalize((-vFragPosition+uLightPos_vs - vFragPosition)/2), vFragNormal),uShininess));
 }
 
 void main() {
   //fFragColor = vec4(uKd, 1);//vec4(1,1,1,1);//(blinnPhong().xyz,1);
-//   fFragColor = vec4(vFragNormal,1);
-  fFragColor = vec4(blinnPhong().xyz,1);
-//   fFragColor = vec4(1,1,1,1);
+  fFragColor = vec4(vFragNormal,1);
+//   fFragColor = vec4(blinnPhong().xyz,1);
+//   fFragColor = vec4(uKd,1);
 }

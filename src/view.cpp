@@ -255,10 +255,13 @@ void View::renderGame(Game_state& game_state) {
     //SDL_WarpMouseInWindow(window, window_width / 2, window_height / 2);
     
     Mesh mesh;
-    mesh.buildPlane(1, 1);
+    Mesh ground;
+    ground.buildPlane(1, 1);
+    mesh.loadFromFile("res/meshes/cube.obj");
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
                     "res/shaders/pointlight.fs.glsl");
     mesh.setUniformsId(shader);
+    ground.setUniformsId(shader);
     
     /* Pour toutes les vues des joueurs */
     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
@@ -270,11 +273,30 @@ void View::renderGame(Game_state& game_state) {
         glm::mat4 v = p->cam.getVMatrix();
         glm::mat4 mv = v;
         
+        
+        
         glm::vec3 lightPos = p->cam.position;
         
         shader.use();
         
+        /* on décale tout le décor de (0.5,0.5) pour être au milieu des cases */
+        v = glm::translate(v, glm::vec3(0.5,0,0.5));
+        
         /* Ground rendering */
+        mv = glm::rotate(v, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+        mv = glm::scale(mv, glm::vec3(assets_ptr->map.datas.size(), assets_ptr->map.datas[0].size(), 1.));
+//         mv = glm::translate(mv, glm::vec3(0,2,0));
+        
+        ground.setMVMatrix(mv);
+        ground.setMVPMatrix(p->cam.getPMatrix() * mv);
+        ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+        ground.setShininess(1.);
+        ground.setLightPos_vs(glm::vec3(v * glm::vec4(lightPos,1.)));
+        ground.setLightIntensity(glm::vec3(1,1,1));
+        ground.setKs(glm::vec3(1,1,1));
+        ground.setKd(glm::vec3(1,0,1));
+
+        ground.render();
         
         
         /* Walls rendering */
@@ -282,13 +304,13 @@ void View::renderGame(Game_state& game_state) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 mv = v;
                 //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-                mv = glm::translate(mv, glm::vec3(1.0 * x,0,-1.0 * y));
+                mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
                 
                 mesh.setMVMatrix(mv);
                 mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
                 mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
                 mesh.setShininess(1.);
-                mesh.setLightPos_vs(glm::vec3(mv * glm::vec4(lightPos,1.)));
+                mesh.setLightPos_vs(glm::vec3(v * glm::vec4(lightPos,1.)));
                 mesh.setLightIntensity(glm::vec3(1,1,1));
                 mesh.setKs(glm::vec3(1,1,1));
                 mesh.setKd(glm::vec3(1,1,1));
