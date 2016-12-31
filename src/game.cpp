@@ -31,6 +31,9 @@ void Game::menu() {
 }
 
 void Game::gameplay() {
+    /* update de l'orientation du player */
+    assets.map.players.begin()->updateCam(view.mouse_pos_rel);
+    
     // TODO ça paraît très temporaire et crade tout ça...
     if(view.get_input() == INPUT_QUIT)
         game_state = STATE_QUIT;

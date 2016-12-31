@@ -4,7 +4,7 @@
 #include "gui.h"
 
 View::View()
-    : player_input(INPUT_NONE) {
+    : player_input(INPUT_NONE), mouse_pos(0, 0) {
     /* Initialisation de la SDL */
     if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
     {
@@ -76,6 +76,7 @@ void View::update() {
 
 void View::updateEvent() {
     player_input = INPUT_NONE;
+    mouse_pos_rel = glm::ivec2(0, 0);
     while(SDL_PollEvent(&event))
     {
         if(event.type == SDL_QUIT) {
@@ -90,6 +91,9 @@ void View::updateEvent() {
             } else if(event.key.keysym.sym == SDLK_d) {
                 player_input = INPUT_MOVE_RIGHT;
             }
+        } else if(event.type == SDL_MOUSEMOTION) {
+            mouse_pos_rel = glm::ivec2(event.motion.x, event.motion.y) - mouse_pos;
+            mouse_pos = glm::ivec2(event.motion.x, event.motion.y);
         }
     }
 }
@@ -121,7 +125,8 @@ void View::render(Game_state& game_state) {
 
     }
     ImGui::Render();
-
+    
+    
     SDL_GL_SwapWindow(window);
 }
 
@@ -246,49 +251,44 @@ void View::mainMenu(Game_state& game_state){
 void View::renderGame(Game_state& game_state) {   
     // TODO temporaire je sais pas trop où le mettre pour l'instant
     reshape(window_width, window_height);
+//     SDL_SetRelativeMouseMode(SDL_TRUE);
+    //SDL_WarpMouseInWindow(window, window_width / 2, window_height / 2);
     
     Mesh mesh;
     mesh.buildPlane(1, 1);
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
-                    "res/shaders/directionallight.fs.glsl");
+                    "res/shaders/pointlight.fs.glsl");
     mesh.setUniformsId(shader);
     
     /* Pour toutes les vues des joueurs */
-//     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
-    auto p = assets_ptr->map.players.begin(); 
-    
-//     Camera cam;
-     p->cam.init(70., 1.);
-        // TODO checker la position
-        p->cam.position = glm::vec3(0, 0, 5);
-//         p->cam.position = glm::vec3(p->position.x, 0.7, -p->position.y);
-        // TODO
-        p->orientation = glm::vec3(0,0,-1);
-        p->cam.direction = p->orientation;
+    for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
         
         std::cout << p->cam.position << std::endl;
         std::cout << p->cam.direction << std::endl;
         std::cout << p->cam.getPMatrix() << std::endl;
 
         glm::mat4 v = p->cam.getVMatrix();
+        glm::mat4 mv = v;
+        
+        glm::vec3 lightPos = p->cam.position;
         
         shader.use();
+        
+        /* Ground rendering */
+        
         
         /* Walls rendering */
         for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
-                glm::mat4 mv = v;
+                mv = v;
                 //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-//                 mv = glm::translate(mv, glm::vec3(x,0,-y));
-                mv = glm::translate(mv, glm::vec3(0,0,0));
+                mv = glm::translate(mv, glm::vec3(1.0 * x,0,-1.0 * y));
                 
                 mesh.setMVMatrix(mv);
                 mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
-//                 mesh.setMVPMatrix(cam.getPMatrix() * mv);
                 mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-                mesh.setNormalMatrix(glm::mat4(1.));
                 mesh.setShininess(1.);
-                mesh.setLightDir_vs(glm::vec3(1,1,1));
+                mesh.setLightPos_vs(glm::vec3(mv * glm::vec4(lightPos,1.)));
                 mesh.setLightIntensity(glm::vec3(1,1,1));
                 mesh.setKs(glm::vec3(1,1,1));
                 mesh.setKd(glm::vec3(1,1,1));
@@ -296,7 +296,7 @@ void View::renderGame(Game_state& game_state) {
                 mesh.render();
             }
         }
-//     }
+    }
 }
 
 void View::setAssets(Assets& _assets_ptr) {

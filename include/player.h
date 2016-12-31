@@ -21,6 +21,7 @@ public :
   std::vector<Item> equiped;
   unsigned int score;
   Camera cam;
+  void updateCam(glm::ivec2 mouseMotion);
 
   Player(glm::ivec2 position = glm::ivec2(0,0), glm::vec3 orientation = glm::vec3(0,0,0),
         float scale = 1, std::string id = "Default",

@@ -10,7 +10,7 @@ Mesh::~Mesh() {
 }
 
 Mesh::Mesh(const Mesh& mesh) {
-	path	 = mesh.path;
+    path = mesh.path;
 
     vbo      = mesh.vbo;
     ibo      = mesh.ibo;
@@ -22,7 +22,7 @@ Mesh::Mesh(const Mesh& mesh) {
     uNormalMatrix   = mesh.uNormalMatrix;
     uTexture        = mesh.uTexture;
     uShininess      = mesh.uShininess;
-    uLightDir_vs    = mesh.uLightDir_vs;
+    uLightPos_vs    = mesh.uLightPos_vs;
     uLightIntensity = mesh.uLightIntensity;
     uKs             = mesh.uKs;
     uKd             = mesh.uKd;
@@ -115,6 +115,7 @@ void Mesh::buildPlane(float w, float h) {
         glm::ivec3(0, 1, 2),
         glm::ivec3(1, 3, 2) };
         
+    numFaces = indices.size();
     sendGeometryToGPU(vertices, indices);
 }
 
@@ -125,7 +126,7 @@ bool Mesh::setUniformsId(glimac::Program& shader) {
     uNormalMatrix = glGetUniformLocation(shader.getGLId(), "uNormalMatrix");
     uTexture = glGetUniformLocation(shader.getGLId(), "uTexture");
     uShininess = glGetUniformLocation(shader.getGLId(), "uShininess");
-    uLightDir_vs = glGetUniformLocation(shader.getGLId(), "uLightDir_vs");
+    uLightPos_vs = glGetUniformLocation(shader.getGLId(), "uLightPos_vs");
     uLightIntensity = glGetUniformLocation(shader.getGLId(), "uLightIntensity");
     uKs = glGetUniformLocation(shader.getGLId(), "uKs");
     uKd = glGetUniformLocation(shader.getGLId(), "uKd");
@@ -152,8 +153,8 @@ void Mesh::setNormalMatrix(glm::mat4 mat) {
     glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Mesh::setLightDir_vs(glm::vec3 dir) {
-    glUniform3fv(uLightDir_vs, 1, glm::value_ptr(dir));
+void Mesh::setLightPos_vs(glm::vec3 pos) {
+    glUniform3fv(uLightPos_vs, 1, glm::value_ptr(pos));
 }
 
 void Mesh::setLightIntensity(glm::vec3 intensity) {

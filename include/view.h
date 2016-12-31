@@ -45,7 +45,7 @@ public:
     void renderGame(Game_state& game_state);
 
     void setAssets(Assets&);
-private:
+// private:
     void updateEvent();
     
     /* update every camera */
@@ -58,6 +58,8 @@ private:
     
     /* input events, already interpreted for the game */
     Player_input player_input;
+    glm::ivec2 mouse_pos;
+    glm::ivec2 mouse_pos_rel;
 
     unsigned window_width,
              window_height;

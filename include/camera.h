@@ -15,6 +15,7 @@ public:
 
     glm::vec3 position; 
     glm::vec3 direction;
+    glm::vec2 rotation;
 };
 
 #endif

@@ -24,7 +24,10 @@ enum Movement {
 class Character {
 public:
   glm::ivec2 position;
+  
+  /* these go together */
   glm::vec3 orientation;
+  
   Uint32 anim_start_time;
   float speed; // inverse du temps d'animation de déplacement d'une case à l'autre
   float scale;

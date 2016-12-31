@@ -27,6 +27,8 @@ shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
 }
 
 shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path){
+    std::cout << application_path + SHADER_PATH + vShader_path << std::endl;
+    std::cout << application_path + SHADER_PATH + fShader_path << std::endl;
     /* check if no double */
     for(vector<glimac::Program>::iterator it = shaders.begin(); it != shaders.end(); ++it){
         if((*it).vertexShaderPath.compare(vShader_path) == 0 &&

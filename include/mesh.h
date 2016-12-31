@@ -49,7 +49,7 @@ public:
     void setMVPMatrix(glm::mat4);
     void setNormalMatrix(glm::mat4);
     void setShininess(float);
-    void setLightDir_vs(glm::vec3);
+    void setLightPos_vs(glm::vec3);
     void setLightIntensity(glm::vec3);
     void setKs(glm::vec3);
     void setKd(glm::vec3);
@@ -68,7 +68,7 @@ private:
     GLint uNormalMatrix;
     GLint uTexture;
     GLint uShininess;
-    GLint uLightDir_vs;
+    GLint uLightPos_vs;
     GLint uLightIntensity;
     GLint uKs;
     GLint uKd;
