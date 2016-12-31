@@ -20,7 +20,7 @@ public:
   ~Enemy();
 
   bool detect(Character* other);
-  Movement reach(glm::ivec2 target, Map* map);
+  Movement reach(int targetIndex, Map* map);
 };
 
 #endif
