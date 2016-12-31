@@ -29,7 +29,6 @@ public :
 		std::shared_ptr<Mesh> mesh_ptr = NULL, std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Player();
 
-  void openMenu(MenuType type);
   void addItem(Item item);
   void dropItem(Item item);
   void equip(Item item);

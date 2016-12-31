@@ -81,6 +81,9 @@ void View::updateEvent() {
     player_input = INPUT_NONE;
     while(SDL_PollEvent(&event))
     {
+
+		ImGui_ImplSdlGL3_ProcessEvent(&event);
+
         if(event.type == SDL_QUIT) {
             player_input = INPUT_QUIT;
         } else if(event.type == SDL_KEYDOWN) {
@@ -95,6 +98,20 @@ void View::updateEvent() {
             }
         }
     }
+
+	/* KEYBOARD MENUS EVENTS */
+		//SPACE
+		if (ImGui::IsKeyPressed(32)) {
+			Gui::getInstance().showHUDIndicators = false;
+			Gui::getInstance().showHUDInventory = true;
+		}
+		//ESCAPE
+		if (ImGui::IsKeyPressed(27)) {
+			Gui::getInstance().showHUDIndicators = true;
+			Gui::getInstance().showHUDInventory = false;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDOptions = false;
+		}
 }
 
 void View::reshape(unsigned w, unsigned h) {
@@ -340,44 +357,75 @@ void View::HUD(Game_state& game_state) {
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+	window_flags |= ImGuiWindowFlags_NoSavedSettings;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+	if (!Gui::getInstance().showHUDIndicators){
+		// background
+			ImGui::SetNextWindowPos(ImVec2(-1,-1));
+			ImGui::SetNextWindowSize(ImVec2(window_width+2, window_height+2));
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
+			ImGui::Begin("background", NULL, window_flags);
+			ImGui::Image(Gui::getInstance().mainMenuTex[0].first, ImVec2(window_width+2, window_height+2), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+			ImGui::End();
+			ImGui::PopStyleVar();
+	}
+
+	window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoSavedSettings;
 
 	std::stringstream life, score;
 	life << (*(assets_ptr->map.players.begin())).life;
 	score << (*(assets_ptr->map.players.begin())).score;
 
+	// STYLES rules
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(0,0,0,0));
+	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImColor(255,255,255,255));
+
 	//Indicators
-	if(Gui::getInstance().showIndicators){
+	if(Gui::getInstance().showHUDIndicators){
 		ImGui::SetNextWindowPos(ImVec2(0,0));
 		ImGui::Begin("HUD - Life & score", NULL, window_flags);
 		ImGui::Image(Gui::getInstance().HUDTex[0].first, ImVec2(50,50), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::SameLine();
-		ImGui::Text(life.str();
+		ImGui::Text(life.str().c_str());
 		ImGui::Image(Gui::getInstance().HUDTex[1].first, ImVec2(50,50), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::SameLine();
 		ImGui::Text(score.str().c_str());
 		ImGui::End();
-
+/*
 		ImGui::SetNextWindowPos(ImVec2(0,(window_height*4)/5.0f));
 		ImGui::SetNextWindowSize(ImVec2(window_width/2.0f, window_height/5.0f));
 		ImGui::Begin("HUD - Commands", NULL, window_flags);
 		ImGui::Image(Gui::getInstance().HUDTex[0].first, Gui::getInstance().HUDTex[0].second, ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::End();
+*/
 	}
 	//Inventory
-	if(Gui::getInstance().showInventory){
+	if(Gui::getInstance().showHUDInventory){
+
+		ImGui::SetNextWindowPos(ImVec2(window_width*0.1,window_height*0.1));
+		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
+		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Inventory", NULL, window_flags);
 		if (ImGui::Button("Inventaire")){
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Carte")){
-			Gui::getInstance().showInventory = false;
-			Gui::getInstance().showMap = true;
+			Gui::getInstance().showHUDInventory = false;
+			Gui::getInstance().showHUDOptions = false;
+			Gui::getInstance().showHUDMap = true;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Options")){
-			Gui::getInstance().showInventory = false;
-			Gui::getInstance().showOptions = true;
+			Gui::getInstance().showHUDInventory = false;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDOptions = true;
 		}
 		ImGui::Separator();
 
@@ -388,35 +436,47 @@ void View::HUD(Game_state& game_state) {
 		ImGui::End();
 	}
 	//Map
-	if(Gui::getInstance().showMap){
+	if(Gui::getInstance().showHUDMap){
+
+		ImGui::SetNextWindowPos(ImVec2(window_width*0.1,window_height*0.1));
+		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
+		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Map", NULL, window_flags);
 		if (ImGui::Button("Inventaire")){
-			Gui::getInstance().showMap = false;
-			Gui::getInstance().showInventory = true;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDOptions = false;
+			Gui::getInstance().showHUDInventory = true;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Carte")){
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Options")){
-			Gui::getInstance().showMap = false;
-			Gui::getInstance().showInventory = true;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDInventory = false;
+			Gui::getInstance().showHUDOptions = true;
 		}
 		ImGui::Separator();
 
 		ImGui::End();
 	}
 	//Options
-	if(Gui::getInstance().showOptions){
+	if(Gui::getInstance().showHUDOptions){
+
+		ImGui::SetNextWindowPos(ImVec2(window_width*0.1,window_height*0.1));
+		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
+		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Options", NULL, window_flags);
 		if (ImGui::Button("Inventaire")){
-			Gui::getInstance().showOptions = false;
-			Gui::getInstance().showInventory = true;
+			Gui::getInstance().showHUDOptions = false;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDInventory = true;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Carte")){
-			Gui::getInstance().showOptions = false;
-			Gui::getInstance().showMap = true;
+			Gui::getInstance().showHUDOptions = false;
+			Gui::getInstance().showHUDInventory = false;
+			Gui::getInstance().showHUDMap = true;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Options")){
@@ -425,6 +485,9 @@ void View::HUD(Game_state& game_state) {
 
 		ImGui::End();
 	}
+
+	// FORGET STYLE RULES
+	ImGui::PopStyleColor(2);
 
 }
 

@@ -13,10 +13,6 @@ Player::Player(glm::ivec2 position, glm::vec3 orientation,
                     {}
 Player::~Player(){}
 
-
-void Player::openMenu(MenuType type){
-  return;
-}
 void Player::addItem(Item item){
   inventory.push_back(item);
 }

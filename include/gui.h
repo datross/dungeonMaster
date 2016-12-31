@@ -34,10 +34,10 @@ public:
 		  showQuitPopUp;
 
 	// Boolean HUD
-	bool showIndicators,
-		 showInventory,
-		 showMap,
-		 showOptions;
+	bool showHUDIndicators,
+		 showHUDInventory,
+		 showHUDMap,
+		 showHUDOptions;
 
 	// Textures menu (id and size)
 	std::vector< std::pair<ImTextureID, ImVec2> > mainMenuTex;

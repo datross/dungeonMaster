@@ -9,10 +9,10 @@ Gui::Gui() : showMainMenu(true),
 	  showOptionsSelector(false),
 	  showQuitPopUp(false),
 
-	  showIndicators(true),
-	  showInventory(false),
-	  showMap(false),
-	  showOptions(false)
+	  showHUDIndicators(true),
+	  showHUDInventory(false),
+	  showHUDMap(false),
+	  showHUDOptions(false)
 	  {}
 
 void Gui::loadTexture (std::vector< std::pair<ImTextureID, ImVec2> >& container, glimac::FilePath path){
