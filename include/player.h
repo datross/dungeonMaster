@@ -35,7 +35,8 @@ public :
   void unequip(Item item);
   int isNextDoor();
   void use (Item item);
-  void attack(Character* enemy);
+  void attack (Character* enemy);
+  void defend (unsigned int amountAttack);
 };
 
 #endif

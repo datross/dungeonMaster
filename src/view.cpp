@@ -1,6 +1,7 @@
 #include <iostream>
 #include "view.h"
 #include <sstream>
+#include <algorithm>
 
 #include "gui.h"
 
@@ -190,15 +191,27 @@ void View::initTextures(){
 	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/quit.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/arrow.png");
 
-	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/life.png");
-	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/score.png");
-	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/score.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Life.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Button_Blue.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Button_Gold.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Button_Green.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Button_Red.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Attack.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Defense.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Mice.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + DATA_PATH + (assets_ptr->map.name + ".ppm"));
+
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Armor_Nut.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Armor_Thimble.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Weapon_Needle.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Weapon_Pin.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Weapon_Stone.png");
 
 
 	// Load Fonts
     // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
     ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF((assets_ptr->application_path + "include/extra_fonts/olivier_demo.ttf").c_str(), 50.0f);
+    io.Fonts->AddFontFromFileTTF((assets_ptr->application_path + "include/extra_fonts/olivier_demo.ttf").c_str(), 30.0f);
 }
 
 void View::mainMenu(Game_state& game_state){
@@ -352,26 +365,7 @@ void View::mainMenu(Game_state& game_state){
 void View::HUD(Game_state& game_state) {
 
 	ImGuiWindowFlags window_flags = 0;
-	window_flags |= ImGuiWindowFlags_NoTitleBar;
-	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoScrollbar;
-	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_NoSavedSettings;
-	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-	if (!Gui::getInstance().showHUDIndicators){
-		// background
-			ImGui::SetNextWindowPos(ImVec2(-1,-1));
-			ImGui::SetNextWindowSize(ImVec2(window_width+2, window_height+2));
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0,0));
-			ImGui::Begin("background", NULL, window_flags);
-			ImGui::Image(Gui::getInstance().mainMenuTex[0].first, ImVec2(window_width+2, window_height+2), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
-			ImGui::End();
-			ImGui::PopStyleVar();
-	}
-
-	window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoMove;
@@ -379,22 +373,35 @@ void View::HUD(Game_state& game_state) {
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoSavedSettings;
 
-	std::stringstream life, score;
+	ImGuiWindowFlags windowChild_flags = 0;
+
+	windowChild_flags |= ImGuiWindowFlags_NoTitleBar;
+	windowChild_flags |= ImGuiWindowFlags_NoResize;
+	windowChild_flags |= ImGuiWindowFlags_NoMove;
+	windowChild_flags |= ImGuiWindowFlags_NoScrollbar;
+	windowChild_flags |= ImGuiWindowFlags_NoCollapse;
+	windowChild_flags |= ImGuiWindowFlags_NoSavedSettings;
+	windowChild_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+	std::stringstream life, score, power, defense;
 	life << (*(assets_ptr->map.players.begin())).life;
 	score << (*(assets_ptr->map.players.begin())).score;
+	power << (*(assets_ptr->map.players.begin())).power;
+	defense << (*(assets_ptr->map.players.begin())).defense;
 
 	// STYLES rules
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(0,0,0,0));
-	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImColor(255,255,255,255));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImColor(32,73,79,255));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(29,62,69,255));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(9,42,49,255));
 
 	//Indicators
 	if(Gui::getInstance().showHUDIndicators){
 		ImGui::SetNextWindowPos(ImVec2(0,0));
 		ImGui::Begin("HUD - Life & score", NULL, window_flags);
-		ImGui::Image(Gui::getInstance().HUDTex[0].first, ImVec2(50,50), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::Image(Gui::getInstance().HUDTex[0].first, ImVec2(30,30), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::SameLine();
 		ImGui::Text(life.str().c_str());
-		ImGui::Image(Gui::getInstance().HUDTex[1].first, ImVec2(50,50), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::Image(Gui::getInstance().HUDTex[1].first, ImVec2(30,30), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 		ImGui::SameLine();
 		ImGui::Text(score.str().c_str());
 		ImGui::End();
@@ -406,6 +413,9 @@ void View::HUD(Game_state& game_state) {
 		ImGui::End();
 */
 	}
+
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(9,42,49,255));
+
 	//Inventory
 	if(Gui::getInstance().showHUDInventory){
 
@@ -413,25 +423,90 @@ void View::HUD(Game_state& game_state) {
 		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
 		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Inventory", NULL, window_flags);
-		if (ImGui::Button("Inventaire")){
-		}
+
+		ImGui::Text("- Inventaire -");
 		ImGui::SameLine();
-		if (ImGui::Button("Carte")){
+		if (ImGui::Button("- Carte -")){
 			Gui::getInstance().showHUDInventory = false;
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDMap = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Options")){
+		if (ImGui::Button("- Options -")){
 			Gui::getInstance().showHUDInventory = false;
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDOptions = true;
 		}
 		ImGui::Separator();
 
+		std::vector<std::string> indexTex = {
+			"Armor_Nut",
+			"Armor_Thimble",
+			"Weapon_Needle",
+			"Weapon_Pin",
+			"Weapon_Stone"
+		};
+
+		ImGui::Columns(2, "visual");
+		float scaleVisual = 0.25f;
+		ImGui::Image(Gui::getInstance().HUDTex[7].first, ImVec2(Gui::getInstance().HUDTex[7].second.x*scaleVisual,  Gui::getInstance().HUDTex[7].second.y*scaleVisual), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::NextColumn();
+		ImGui::Text("- Statistiques -");
+		ImGui::Image(Gui::getInstance().HUDTex[0].first, ImVec2(30,30), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::SameLine();
 		ImGui::Text(std::string("Points de vie : " + life.str()).c_str());
+		ImGui::Image(Gui::getInstance().HUDTex[2].first, ImVec2(30,30), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::SameLine();
 		ImGui::Text(std::string("Score : " + score.str()).c_str());
-		ImGui::Text("Sac à dos :");
+		ImGui::Image(Gui::getInstance().HUDTex[5].first, ImVec2(30,30), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::SameLine();
+		ImGui::Text(std::string("Attaque : " + power.str()).c_str());
+		ImGui::Image(Gui::getInstance().HUDTex[6].first, ImVec2(30,30), ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::SameLine();
+		ImGui::Text(std::string("Defense : " + defense.str()).c_str());
+		ImGui::Spacing();
+		ImGui::NextColumn();
+		ImGui::Columns(1);
+
+		ImGui::Columns((*(assets_ptr->map.players.begin())).inventory.size(), "bag");
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImColor(0,0,0,0));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(29,62,69,255));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(9,42,49,255));
+		ImGui::Separator();
+		if((*(assets_ptr->map.players.begin())).inventory.size()>0){
+			for(std::vector<Item>::iterator it = (*(assets_ptr->map.players.begin())).inventory.begin();
+				it != (*(assets_ptr->map.players.begin())).inventory.end();
+				it++){
+					int index = 0;
+					for (size_t i = 0; i < indexTex.size(); i++) {
+						if(indexTex[i].compare((*it).id) == 0) index = i;
+					}
+					ImGui::Text((*it).id.c_str());
+
+					ImColor btnBg = ImColor(0,0,0,0);
+					if((*(assets_ptr->map.players.begin())).equiped.end() != std::find((*(assets_ptr->map.players.begin())).equiped.begin(), (*(assets_ptr->map.players.begin())).equiped.end(), (*it))){
+						ImGui::PushID(0);
+						ImGui::PushStyleColor(ImGuiCol_Button, ImColor(255,200,0,255));
+						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(155,100,0,255));
+						ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(105,50,0,255));
+						if (ImGui::ImageButton(Gui::getInstance().HUDTex[9+index].first, ImVec2(100,100), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
+							(*(assets_ptr->map.players.begin())).unequip((*it));
+						}
+						ImGui::PopStyleColor(3);
+						ImGui::PopID();
+					}else {
+						if (ImGui::ImageButton(Gui::getInstance().HUDTex[8+index].first, ImVec2(100,100), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
+							(*(assets_ptr->map.players.begin())).equip((*it));
+						}
+					}
+					ImGui::ProgressBar((*it).durability, ImVec2(0.0f,0.0f));
+					if(it != (*(assets_ptr->map.players.begin())).inventory.end()-1) ImGui::NextColumn();
+			}
+			ImGui::Columns(1);
+			ImGui::Separator();
+		}
+		ImGui::PopStyleColor(3);
 
 		ImGui::End();
 	}
@@ -442,21 +517,22 @@ void View::HUD(Game_state& game_state) {
 		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
 		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Map", NULL, window_flags);
-		if (ImGui::Button("Inventaire")){
+		if (ImGui::Button("- Inventaire -")){
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDInventory = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Carte")){
-		}
+		ImGui::Text("- Carte -");
 		ImGui::SameLine();
-		if (ImGui::Button("Options")){
+		if (ImGui::Button("- Options -")){
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDInventory = false;
 			Gui::getInstance().showHUDOptions = true;
 		}
 		ImGui::Separator();
+
+		ImGui::Image(Gui::getInstance().HUDTex[8].first, ImVec2(ImGui::GetWindowHeight()*0.8f, ImGui::GetWindowHeight()*0.8f) , ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 
 		ImGui::End();
 	}
@@ -467,27 +543,50 @@ void View::HUD(Game_state& game_state) {
 		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
 		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Options", NULL, window_flags);
-		if (ImGui::Button("Inventaire")){
+		if (ImGui::Button("- Inventaire -")){
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDInventory = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Carte")){
+		if (ImGui::Button("- Carte -")){
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDInventory = false;
 			Gui::getInstance().showHUDMap = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Options")){
-		}
+		ImGui::Text("- Options -");
 		ImGui::Separator();
+
+		if (ImGui::Button("Sauvegarder & quitter")){
+			ImGui::OpenPopup("Quit");
+			//QUIT CONFIRMAION POPUP
+		}
+
+		ImGui::SetNextWindowPosCenter();
+		if (ImGui::BeginPopup("Quit")){
+
+			ImGui::Spacing();
+			ImGui::Text("Voulez vous vraiment quitter le jeu ?");
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			if (ImGui::Button("Oui")){
+				game_state = STATE_QUIT;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Non"))
+				ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+		}
 
 		ImGui::End();
 	}
 
 	// FORGET STYLE RULES
-	ImGui::PopStyleColor(2);
+	ImGui::PopStyleColor(4);
 
 }
 

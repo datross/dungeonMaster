@@ -25,7 +25,7 @@ public:
   std::string id;
   int value;
   ItemType type;
-  int durability;
+  float durability;
   std::shared_ptr<Mesh> mesh_ptr;
   std::shared_ptr<glimac::Program> shaders_ptr;
   std::shared_ptr< std::map<EntityType, std::vector< Animation > > > animations_ptr;
@@ -34,7 +34,7 @@ public:
   Item(glm::ivec2 position = glm::ivec2(0,0),
   		std::string id = "", int value = 0,
 		ItemType type = TREASURE,
-		int durability = -1,
+		float durability = 2,
 		std::shared_ptr<Mesh> mesh_ptr = NULL, std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Item();
 

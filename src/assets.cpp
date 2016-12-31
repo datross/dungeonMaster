@@ -120,10 +120,10 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         getline(file, line);
         map.name = line;
 
-        int posX, posY, value, value_inventory, type, type_inventory, durability, durability_inventory;
+        int posX, posY, value, value_inventory, type, type_inventory;
         unsigned int life, defense, power, detectRange, damages, timing, nb_items_inventory, score, isEquiped;
         string id, id_inventory, mesh_path, vShader_path, fShader_path;
-        float scale;
+        float scale, durability, durability_inventory;
         shared_ptr<Mesh> mesh_ptr;
         shared_ptr<glimac::Program> shaders_ptr;
 		shared_ptr< std::map<EntityType, std::vector<Animation> > > animationsLink = shared_ptr< std::map<EntityType, std::vector<Animation> > > (&animations);
