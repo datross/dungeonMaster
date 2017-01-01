@@ -65,7 +65,7 @@ void Map::loadTerrain(string pathFile){
 }
 
 bool Map::isCaseEmpty(int x, int y){
-    return datas[x][y] == 0;
+    return datas[x][y] == 0 || datas[x][y] == 1 || datas[x][y] == 2;
 }
 
 void Map::print() {

@@ -49,7 +49,7 @@ shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, g
 void Assets::load(string fileName, bool isNewGame){
     /* load map */
     map.loadTerrain(application_path + DATA_PATH + (fileName + ".ppm"));
-    
+
     /* load entities */
     if(isNewGame) loadEntities(application_path + DATA_PATH + (fileName + ".txt"));
     else loadEntities(application_path + SAVE_PATH + (fileName + ".txt"));
@@ -59,7 +59,7 @@ void Assets::load(string fileName, bool isNewGame){
         (*it).loadFromFile(application_path + MESH_PATH + (*it).path);
     }
 
-    /* load animations */   
+    /* load animations */
     std::vector< std::pair<EntityType, std::string> > animsPacks;
     animsPacks.push_back(std::pair<EntityType, std::string>(DROPABLE_ITEM,"item_pack.txt"));
 
@@ -143,7 +143,7 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 
 
 		/* ---- Players initialization ---- */
-        
+
 	/* Number of player */
         file >> nb_Player;
 
@@ -184,11 +184,8 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 				tmp_item.animations_ptr =animationsLink;
 
 				/*  add item on player (equiped) or in his bag (unequiped) */
-                if(isEquiped){
-                    tmp_player.equip(tmp_item);
-                }else{
-                    tmp_player.addItem(tmp_item);
-                }
+				tmp_player.addItem(tmp_item);
+                if(isEquiped) tmp_player.equip(tmp_item);
             }
 
 			/*  Add player to map in assets */
@@ -201,13 +198,13 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         for (unsigned int i = 0; i < nb_Item; i++) {
 			/* Item infos in file */
             file >> posX >> posY >> id >>  value >>  type >>  durability >>  mesh_path >> vShader_path >> fShader_path;
-            
+
             getline(file, line);
 
 			/* Init position and pointers for rendering */
             glm::ivec2 position = glm::ivec2(posX, posY);
             mesh_ptr = meshLoad(mesh_path);
-            
+
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
 
 			/* Create item */

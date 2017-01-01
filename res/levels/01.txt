@@ -1,0 +1,10 @@
+#01
+1
+1 1 1 Mouse 10 0 3 1 0 tete.obj 3D.vs.glsl pointlight.fs.glsl
+	Armor_Nut 5 2 1 1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+1
+5 1 Cheese 5 3 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+1
+1 12 1 Spider 6 0 3 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+1
+3 5 Trappe 99 1000 tete.obj 3D.vs.glsl pointlight.fs.glsl

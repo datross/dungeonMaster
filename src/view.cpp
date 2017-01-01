@@ -26,7 +26,7 @@ View::View()
     /* Version d'OpenGL */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    
+
     /* Double Buffer */
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -61,13 +61,13 @@ View::View()
         std::cerr << glewGetErrorString(glewInitError) << std::endl;
         exit(EXIT_FAILURE);
     }
-    
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
     /* Setup ImGui binding */
     ImGui_ImplSdlGL3_Init(window);
-    
+
 }
 
 View::~View() {
@@ -142,7 +142,7 @@ void View::render(Game_state& game_state) {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 //     glDepthFunc(GL_LESS);
-    glDepthMask(GL_TRUE); 
+    glDepthMask(GL_TRUE);
     if(game_state == STATE_MENU) {
         mainMenu(game_state);
     } else if (game_state == STATE_GAMEPLAY) {
@@ -156,7 +156,7 @@ void View::render(Game_state& game_state) {
 		if(isValidate) game_state = STATE_QUIT;
     }
     ImGui::Render();
-    
+
     SDL_GL_SwapWindow(window);
 }
 
@@ -300,6 +300,15 @@ void View::mainMenu(Game_state& game_state){
 		//Buttons
 		if (ImGui::Button("Tinymap")){
 			std::string lvl_name = "tinymap";
+			assets_ptr->load(lvl_name, true);
+			game_state = STATE_GAMEPLAY;
+			Gui::getInstance().showLevelSelector = false;
+			Gui::getInstance().showMainMenu = true;
+
+			Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/maps/"+ (lvl_name + ".png"));
+		}
+		if (ImGui::Button("Un nouveau départ")){
+			std::string lvl_name = "01";
 			assets_ptr->load(lvl_name, true);
 			game_state = STATE_GAMEPLAY;
 			Gui::getInstance().showLevelSelector = false;
@@ -578,10 +587,10 @@ void View::HUD(Game_state& game_state) {
 
 }
 
-void View::renderGame(Game_state& game_state) {   
+void View::renderGame(Game_state& game_state) {
     // TODO temporaire je sais pas trop où le mettre pour l'instant
     reshape(window_width, window_height);
-    
+
     Mesh mesh;
     Mesh ground;
     ground.buildPlane(1, 1);
@@ -591,31 +600,31 @@ void View::renderGame(Game_state& game_state) {
                     "res/shaders/pointlight.fs.glsl");
     mesh.setUniformsId(shader);
     ground.setUniformsId(shader);
-    
+
     /* Pour toutes les vues des joueurs */
     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
-        
+
         std::cout << p->cam.position << std::endl;
         std::cout << p->cam.direction << std::endl;
         std::cout << p->cam.getPMatrix() << std::endl;
 
         glm::mat4 v = p->cam.getVMatrix();
         glm::mat4 mv = v;
-        
-        
-        
+
+
+
         glm::vec3 lightPos = p->cam.position;
-        
+
         shader.use();
-        
+
         /* on décale tout le décor de (0.5,0.5) pour être au milieu des cases */
         glm::mat4 v_origin = v;
         v = glm::translate(v, glm::vec3(0.5,0,0.5));
-        
+
         /* Ground rendering */
         mv = glm::rotate(v, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
         mv = glm::scale(mv, glm::vec3(assets_ptr->map.datas.size(), assets_ptr->map.datas[0].size(), 1.));
-        
+
         ground.setMVMatrix(mv);
         ground.setMVPMatrix(p->cam.getPMatrix() * mv);
         ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
@@ -626,15 +635,15 @@ void View::renderGame(Game_state& game_state) {
         ground.setKd(glm::vec3(1,0,1));
 
         ground.render();
-        
-        
+
+
         /* Walls rendering */
         for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(!assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
-                    
+
                     mesh.setMVMatrix(mv);
                     mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
                     mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
@@ -643,7 +652,7 @@ void View::renderGame(Game_state& game_state) {
                     mesh.setLightIntensity(glm::vec3(1,1,1));
                     mesh.setKs(glm::vec3(1,1,1));
                     mesh.setKd(glm::vec3(1,1,1));
-                    
+
                     mesh.render();
                 }
             }
