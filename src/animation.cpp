@@ -1,12 +1,14 @@
 #include "animation.h"
 #include <fstream>
 #include <iostream>
+
 using namespace std;
 
 Animation::Animation(){}
 Animation::~Animation(){}
 Animation::Animation(std::string path){
 	loadAnimation(path);
+	beginning = 0;
 }
 
 void Animation::loadAnimation(std::string path){
@@ -39,8 +41,23 @@ void Animation::loadAnimation(std::string path){
         cerr << "Cannot open animation " << path << endl;
 }
 
-void Animation::execute(){
-	return;
+template <typename T>
+void Animation::execute(T& entity){
+	Uint32 ticks = SDL_GetTicks();
+	if(beginning == 0) {
+		beginning = ticks;
+	}
+	float animProgress = (ticks - beginning)/duration;
+	for (std::vector<std::pair< float , std::vector< glm::vec3 > > >::iterator it = anim.begin();
+		 it != anim.end()-1;
+	 	 it++) {
+			 if(animProgress >= (*it).first && animProgress < (*(++it)).first) {
+				 float interpolValue = (animProgress- (*it).first)/((*(++it)).first - animProgress >= (*it).first);
+				 entity.position = interpolValue * ((*it).second[0]/(*(++it)).second[0]);
+				 //entity.rotation = interpolValue * ((*it).second[0]/(*(++it)).second[0]);
+				 //entity.scale = interpolValue * ((*it).second[0]/(*(++it)).second[0]);
+			 }
+	}
 }
 
 void Animation::print(){
