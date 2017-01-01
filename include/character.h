@@ -24,10 +24,10 @@ enum Movement {
 class Character {
 public:
   glm::ivec2 position;
-  
+
   /* these go together */
   glm::vec3 orientation;
-  
+
   Uint32 anim_start_time;
   float speed; // inverse du temps d'animation de déplacement d'une case à l'autre
   float scale;
@@ -51,6 +51,8 @@ public:
 			std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Character();
 
+
+  void setDatas(std::vector<std::vector<int> >* datas);
   glm::vec3 getVisualPosition(Uint32 time);
   void move (Movement movement, Uint32 time);
   void attack (Character* enemy);
