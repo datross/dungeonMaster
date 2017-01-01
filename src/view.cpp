@@ -25,10 +25,7 @@ View::View()
     
     /* Double Buffer */
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    
-    glEnable(GL_DEPTH_TEST);
-    //glDepthMask(GL_TRUE);
+//     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
     /* taille de la fenêtre par défaut */
     window_width = 1024;
@@ -61,11 +58,14 @@ View::View()
         exit(EXIT_FAILURE);
     }
     
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
+
+// glClearColor ( 0.0, 0.0, 0.0, 1.0 );
     
 
     /* Setup ImGui binding */
     ImGui_ImplSdlGL3_Init(window);
+    
 }
 
 View::~View() {
@@ -120,16 +120,21 @@ void View::render(Game_state& game_state) {
 
     /* USER INTERFACE */
     ImGui_ImplSdlGL3_NewFrame(window);
+//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if(game_state == STATE_MENU) {
         mainMenu(game_state);
+        ImGui::Render();
     } else if (game_state == STATE_GAMEPLAY) {
+        glEnable(GL_BLEND);
+        //glEnable(GL_DEPTH_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         renderGame(game_state);
     } else if (game_state == STATE_QUIT) {
 
     } else {
 
     }
-    ImGui::Render();
+    
     
     
     SDL_GL_SwapWindow(window);
