@@ -16,6 +16,10 @@ Character::Character(glm::ivec2 position, glm::vec3 orientation,
 						{}
 Character::~Character(){}
 
+void Character::setDatas(std::vector<std::vector<int> >* datas) {
+	this->mapDatas = datas;
+}
+
 glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
     glm::ivec2 direction;
     if(orientation.x > 0 && orientation.z > 0) {
@@ -63,7 +67,7 @@ void Character::move (Movement movement, Uint32 time){
     } else if(movement == MOVEMENT_RIGHT) {
         position += -glm::vec2(-stepped_dir.y, stepped_dir.x);
     }
-    
+
     anim_start_time = time;
 }
 

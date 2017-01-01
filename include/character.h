@@ -35,7 +35,7 @@ public:
   unsigned int life;
   unsigned int defense;
   unsigned int power;
-  std::vector<std::vector<int> >* datas;
+  std::vector<std::vector<int> >* mapDatas;
   std::shared_ptr<Mesh> mesh_ptr;
   std::shared_ptr<glimac::Program> shaders_ptr;
   std::shared_ptr< std::map <EntityType, std::vector< Animation > > > animations_ptr;
