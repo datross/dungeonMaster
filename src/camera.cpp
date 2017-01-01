@@ -5,7 +5,7 @@ Camera::Camera()
 }
 
 void Camera::init(float fov, float aspectRatio){
-    projection = glm::perspective<float>(glm::radians(fov), aspectRatio, 0., 100.);
+    projection = glm::perspective<float>(glm::radians(fov), aspectRatio, 0.01, 100.);
 }
 
 glm::mat4 Camera::getVMatrix() {

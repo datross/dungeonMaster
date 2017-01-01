@@ -25,7 +25,7 @@ View::View()
     
     /* Double Buffer */
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-//     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
     /* taille de la fenêtre par défaut */
     window_width = 1024;
@@ -58,10 +58,8 @@ View::View()
         exit(EXIT_FAILURE);
     }
     
-    //glEnable(GL_DEPTH_TEST);
-
-// glClearColor ( 0.0, 0.0, 0.0, 1.0 );
-    
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
 
     /* Setup ImGui binding */
     ImGui_ImplSdlGL3_Init(window);
@@ -120,22 +118,20 @@ void View::render(Game_state& game_state) {
 
     /* USER INTERFACE */
     ImGui_ImplSdlGL3_NewFrame(window);
-//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+//     glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE); 
     if(game_state == STATE_MENU) {
         mainMenu(game_state);
-        ImGui::Render();
     } else if (game_state == STATE_GAMEPLAY) {
-        glEnable(GL_BLEND);
-        //glEnable(GL_DEPTH_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         renderGame(game_state);
     } else if (game_state == STATE_QUIT) {
 
     } else {
 
     }
-    
-    
+    ImGui::Render();
     
     SDL_GL_SwapWindow(window);
 }
@@ -261,14 +257,12 @@ void View::mainMenu(Game_state& game_state){
 void View::renderGame(Game_state& game_state) {   
     // TODO temporaire je sais pas trop où le mettre pour l'instant
     reshape(window_width, window_height);
-//     SDL_SetRelativeMouseMode(SDL_TRUE);
-    //SDL_WarpMouseInWindow(window, window_width / 2, window_height / 2);
     
     Mesh mesh;
     Mesh ground;
     ground.buildPlane(1, 1);
-    mesh.buildPlane(1, 1);
-//     mesh.loadFromFile("res/meshes/cube.obj");
+//     mesh.buildPlane(1, 1);
+    mesh.loadFromFile("res/meshes/cube.obj");
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
                     "res/shaders/pointlight.fs.glsl");
     mesh.setUniformsId(shader);
@@ -291,18 +285,18 @@ void View::renderGame(Game_state& game_state) {
         shader.use();
         
         /* on décale tout le décor de (0.5,0.5) pour être au milieu des cases */
+        glm::mat4 v_origin = v;
         v = glm::translate(v, glm::vec3(0.5,0,0.5));
         
         /* Ground rendering */
         mv = glm::rotate(v, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
         mv = glm::scale(mv, glm::vec3(assets_ptr->map.datas.size(), assets_ptr->map.datas[0].size(), 1.));
-//         mv = glm::translate(mv, glm::vec3(0,2,0));
         
         ground.setMVMatrix(mv);
         ground.setMVPMatrix(p->cam.getPMatrix() * mv);
         ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
         ground.setShininess(1.);
-        ground.setLightPos_vs(glm::vec3(v * glm::vec4(lightPos,1.)));
+        ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
         ground.setLightIntensity(glm::vec3(1,1,1));
         ground.setKs(glm::vec3(1,1,1));
         ground.setKd(glm::vec3(1,0,1));
@@ -313,20 +307,21 @@ void View::renderGame(Game_state& game_state) {
         /* Walls rendering */
         for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
-                mv = v;
-                //mv = glm::scale(v, glm::vec3(0.1,0.1,0.1));
-                mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
-                
-                mesh.setMVMatrix(mv);
-                mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
-                mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-                mesh.setShininess(1.);
-                mesh.setLightPos_vs(glm::vec3(v * glm::vec4(lightPos,1.)));
-                mesh.setLightIntensity(glm::vec3(1,1,1));
-                mesh.setKs(glm::vec3(1,1,1));
-                mesh.setKd(glm::vec3(x/10.,y/10.,1));
-                
-                mesh.render();
+                if(assets_ptr->map.isCaseEmpty(x, y)) {
+                    mv = v;
+                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                    
+                    mesh.setMVMatrix(mv);
+                    mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
+                    mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                    mesh.setShininess(1.);
+                    mesh.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+                    mesh.setLightIntensity(glm::vec3(1,1,1));
+                    mesh.setKs(glm::vec3(1,1,1));
+                    mesh.setKd(glm::vec3(1,1,1));
+                    
+                    mesh.render();
+                }
             }
         }
     }
