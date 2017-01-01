@@ -199,7 +199,6 @@ void View::initTextures(){
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Attack.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Defense.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Mice.png");
-	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + DATA_PATH + (assets_ptr->map.name + ".ppm"));
 
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Armor_Nut.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Armor_Thimble.png");
@@ -311,10 +310,13 @@ void View::mainMenu(Game_state& game_state){
 		ImGui::Begin("Level menu", &(Gui::getInstance().showLevelSelector), window_flags);
 		//Buttons
 		if (ImGui::Button("Tinymap")){
-			assets_ptr->load("tinymap", true);
+			std::string lvl_name = "tinymap";
+			assets_ptr->load(lvl_name, true);
 			game_state = STATE_GAMEPLAY;
 			Gui::getInstance().showLevelSelector = false;
 			Gui::getInstance().showMainMenu = true;
+
+			Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/maps/"+ (lvl_name + ".png"));
 		}
 		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[5].first, ImVec2(Gui::getInstance().mainMenuTex[5].second.x * scaleReturnBtn, Gui::getInstance().mainMenuTex[5].second.y * scaleReturnBtn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			Gui::getInstance().showLevelSelector = false;
@@ -327,6 +329,7 @@ void View::mainMenu(Game_state& game_state){
 
 	//LOAD SAVES MENU
 	if(Gui::getInstance().showSavesSelector){
+			ImGui::SetNextWindowPos(ImVec2(50, window_height/3.0f));
 		ImGui::Begin("Load saves menu", &(Gui::getInstance().showSavesSelector), window_flags);
 		//Buttons
 		if (ImGui::Button("Tinymap")){
@@ -345,6 +348,7 @@ void View::mainMenu(Game_state& game_state){
 
 	//OPTION MENU
 	if(Gui::getInstance().showOptionsSelector){
+			ImGui::SetNextWindowPos(ImVec2(50, window_height/3.0f));
 		ImGui::Begin("Level menu", &(Gui::getInstance().showOptionsSelector), window_flags);
 		//Buttons
 
@@ -421,7 +425,6 @@ void View::HUD(Game_state& game_state) {
 
 		ImGui::SetNextWindowPos(ImVec2(window_width*0.1,window_height*0.1));
 		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
-		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Inventory", NULL, window_flags);
 
 		ImGui::Text("- Inventaire -");
@@ -490,7 +493,7 @@ void View::HUD(Game_state& game_state) {
 						ImGui::PushStyleColor(ImGuiCol_Button, ImColor(255,200,0,255));
 						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(155,100,0,255));
 						ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(105,50,0,255));
-						if (ImGui::ImageButton(Gui::getInstance().HUDTex[9+index].first, ImVec2(100,100), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
+						if (ImGui::ImageButton(Gui::getInstance().HUDTex[8+index].first, ImVec2(100,100), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 							(*(assets_ptr->map.players.begin())).unequip((*it));
 						}
 						ImGui::PopStyleColor(3);
@@ -515,7 +518,6 @@ void View::HUD(Game_state& game_state) {
 
 		ImGui::SetNextWindowPos(ImVec2(window_width*0.1,window_height*0.1));
 		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
-		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Map", NULL, window_flags);
 		if (ImGui::Button("- Inventaire -")){
 			Gui::getInstance().showHUDMap = false;
@@ -532,7 +534,7 @@ void View::HUD(Game_state& game_state) {
 		}
 		ImGui::Separator();
 
-		ImGui::Image(Gui::getInstance().HUDTex[8].first, ImVec2(ImGui::GetWindowHeight()*0.8f, ImGui::GetWindowHeight()*0.8f) , ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
+		ImGui::Image((*(Gui::getInstance().HUDTex.end()-1)).first, ImVec2(ImGui::GetWindowHeight()*0.8f, ImGui::GetWindowHeight()*0.8f) , ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 
 		ImGui::End();
 	}
@@ -541,7 +543,6 @@ void View::HUD(Game_state& game_state) {
 
 		ImGui::SetNextWindowPos(ImVec2(window_width*0.1,window_height*0.1));
 		ImGui::SetNextWindowSize(ImVec2(window_width*0.8, window_height*0.8));
-		ImGui::SetNextWindowFocus();
 		ImGui::Begin("HUD_Options", NULL, window_flags);
 		if (ImGui::Button("- Inventaire -")){
 			Gui::getInstance().showHUDOptions = false;
@@ -558,7 +559,14 @@ void View::HUD(Game_state& game_state) {
 		ImGui::Text("- Options -");
 		ImGui::Separator();
 
-		if (ImGui::Button("Sauvegarder & quitter")){
+		if (ImGui::Button("Retour au menu principal")){
+			Gui::getInstance().showHUDOptions = false;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDInventory = true;
+			game_state = STATE_MENU;
+		}
+
+		if (ImGui::Button("Quitter")){
 			ImGui::OpenPopup("Quit");
 			//QUIT CONFIRMAION POPUP
 		}

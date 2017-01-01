@@ -119,6 +119,7 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 
         getline(file, line);
         map.name = line;
+		std::cout << "Name : " << line << '\n';
 
         int posX, posY, value, value_inventory, type, type_inventory;
         unsigned int life, defense, power, detectRange, damages, timing, nb_items_inventory, score, isEquiped;
