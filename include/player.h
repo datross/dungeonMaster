@@ -29,14 +29,14 @@ public :
 		std::shared_ptr<Mesh> mesh_ptr = NULL, std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Player();
 
-  void openMenu(MenuType type);
   void addItem(Item item);
   void dropItem(Item item); 
   void equip(Item item);
   void unequip(Item item);
   int isNextDoor();
   void use (Item item);
-  void attack(Character* enemy);
+  void attack (Character* enemy);
+  void defend (unsigned int amountAttack);
 };
 
 #endif
