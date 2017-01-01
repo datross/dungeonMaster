@@ -22,11 +22,13 @@ View::View()
     /* Version d'OpenGL */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
+    
     /* Double Buffer */
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    
     glEnable(GL_DEPTH_TEST);
+    //glDepthMask(GL_TRUE);
 
     /* taille de la fenêtre par défaut */
     window_width = 1024;
@@ -58,6 +60,9 @@ View::View()
         std::cerr << glewGetErrorString(glewInitError) << std::endl;
         exit(EXIT_FAILURE);
     }
+    
+    glEnable(GL_DEPTH_TEST);
+    
 
     /* Setup ImGui binding */
     ImGui_ImplSdlGL3_Init(window);
@@ -111,7 +116,7 @@ void View::reshape(unsigned w, unsigned h) {
 }
 
 void View::render(Game_state& game_state) {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     /* USER INTERFACE */
     ImGui_ImplSdlGL3_NewFrame(window);
@@ -257,7 +262,8 @@ void View::renderGame(Game_state& game_state) {
     Mesh mesh;
     Mesh ground;
     ground.buildPlane(1, 1);
-    mesh.loadFromFile("res/meshes/cube.obj");
+    mesh.buildPlane(1, 1);
+//     mesh.loadFromFile("res/meshes/cube.obj");
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
                     "res/shaders/pointlight.fs.glsl");
     mesh.setUniformsId(shader);
@@ -313,7 +319,7 @@ void View::renderGame(Game_state& game_state) {
                 mesh.setLightPos_vs(glm::vec3(v * glm::vec4(lightPos,1.)));
                 mesh.setLightIntensity(glm::vec3(1,1,1));
                 mesh.setKs(glm::vec3(1,1,1));
-                mesh.setKd(glm::vec3(1,1,1));
+                mesh.setKd(glm::vec3(x/10.,y/10.,1));
                 
                 mesh.render();
             }

@@ -21,8 +21,7 @@ vec3 blinnPhong() {
 }
 
 void main() {
-  //fFragColor = vec4(uKd, 1);//vec4(1,1,1,1);//(blinnPhong().xyz,1);
-  fFragColor = vec4(vFragNormal,1);
+//   fFragColor = vec4(vFragNormal+vec3(0.2,0.2,0.2),1);
 //   fFragColor = vec4(blinnPhong().xyz,1);
-//   fFragColor = vec4(uKd,1);
+  fFragColor = vec4(uKd,1);
 }

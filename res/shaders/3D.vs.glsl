@@ -19,8 +19,8 @@ void main() {
 
     // Calcul des valeurs de sortie
     vFragPosition = vec3(uMVMatrix * vertexPosition);
-//     vFragNormal = vec3(uNormalMatrix * vertexNormal);
-    vFragNormal = aVertexNormal;
+    vFragNormal = vec3(uNormalMatrix * vertexNormal);
+//     vFragNormal = aVertexNormal;
     vTexCoords = aVertexTexCoords;
 
     // Calcul de la position projetée
