@@ -1,9 +1,10 @@
+
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
 #include <memory>
-#include <map>
 #include <vector>
+#include <map>
 #include <string>
 #include <math.h>
 #include <SDL2/SDL.h>
@@ -23,6 +24,8 @@ enum Movement {
 
 class Character {
 public:
+  std::vector<std::vector<int> >* mapDatas;
+
   glm::ivec2 position;
 
   /* these go together */
@@ -35,7 +38,6 @@ public:
   unsigned int life;
   unsigned int defense;
   unsigned int power;
-  std::vector<std::vector<int> >* mapDatas;
   std::shared_ptr<Mesh> mesh_ptr;
   std::shared_ptr<glimac::Program> shaders_ptr;
   std::shared_ptr< std::map <EntityType, std::vector< Animation > > > animations_ptr;
@@ -52,14 +54,13 @@ public:
 			std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Character();
 
-
-  void setDatas(std::vector<std::vector<int> >* datas);
   glm::vec3 getVisualPosition(Uint32 time);
-  void move (Movement movement, Uint32 time);
+void setDatas(std::vector<std::vector<int> >* datas);
   void attack (Character* enemy);
   void defend (unsigned int amountAttack);
   void death();
-
+void move (Movement movement, Uint32 time);
+bool canMove(glm::ivec2 newPos);
   void print();
 };
 
