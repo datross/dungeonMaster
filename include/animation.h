@@ -4,6 +4,7 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <SDL2/SDL.h>
 #include "glm.h"
 
 enum EntityType {
@@ -26,11 +27,15 @@ public:
 	Animation(std::string path);
 	~Animation();
 
+	Uint32 beginning;
+
 	float duration;
 	std::vector<std::pair< float , std::vector< glm::vec3 > > > anim;
 
 	void loadAnimation(std::string path);
-	void execute();
+
+	template <typename T>
+	bool execute(T& entity);
 
 	void print();
 };

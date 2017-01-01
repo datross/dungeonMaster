@@ -24,8 +24,8 @@ bool Enemy::detect(Character* other){
     return true;
 }
 
-Movement Enemy::reach(glm::ivec2 target, Map* map) {
-    std::vector<std::vector<unsigned int>> distances = map->getDistance(0); //TODO Modifier le 0 avec le nombre du bon joueur
+Movement Enemy::reach(int targetIndex, Map* map) {
+    std::vector<std::vector<unsigned int>> distances = map->getDistance(targetIndex);
 
     if (distances[position.y][position.x] == 255) {
         std::cout << "The enemy couldn't reach the player." << std::endl;
@@ -34,23 +34,32 @@ Movement Enemy::reach(glm::ivec2 target, Map* map) {
 
     if (position.x-1 >= 0) {
         if (distances[position.y][position.x-1] == distances[position.y][position.x]-1) {
-            return MOVEMENT_LEFT;
+			//MOVEMENT_LEFT;
+			orientation.x = -1;
+			orientation.z = 0;
         }
     }
-    if (position.x+1 < map->datas[0].size()) {
+    if (position.x+1 < (int) map->datas[0].size()) {
         if (distances[position.y][position.x+1] == distances[position.y][position.x]-1) {
-            return MOVEMENT_RIGHT;
+			//MOVEMENT_RIGHT;
+			orientation.x = 1;
+			orientation.z = 0;
         }
     }
     if (position.y-1 >= 0) {
         if (distances[position.y-1][position.x] == distances[position.y][position.x]-1) {
-            return MOVEMENT_FORWARD;
+			//MOVEMENT_FORWARD;
+			orientation.x = 0;
+			orientation.z = -1;
         }
     }
-    if (position.y+1 < map->datas.size()) {
+    if (position.y+1 < (int) map->datas.size()) {
         if (distances[position.y+1][position.x] == distances[position.y][position.x]-1) {
-            return MOVEMENT_BACKWARD;
+			//MOVEMENT_BACKWARD;
+			orientation.x = 0;
+			orientation.z = 1;
         }
     }
 
+	return MOVEMENT_FORWARD;
 }

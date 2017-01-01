@@ -11,7 +11,7 @@ Character::Character(glm::ivec2 position, glm::vec3 orientation,
 					shared_ptr<Mesh> mesh_ptr, shared_ptr<glimac::Program> shaders_ptr) :
 	                    position(position), orientation(orientation),
 	                    scale(scale), id(id),
-	                    life(life), defense(defense), power(power),
+	                    life(life), defense(defense), power(power), speed(0.1),
 						mesh_ptr(mesh_ptr),	shaders_ptr(shaders_ptr)
 						{}
 Character::~Character(){}
@@ -68,24 +68,24 @@ void Character::move (Movement movement, Uint32 time){
 }
 
 void Character::attack (Character* enemy){
-  enemy->defend(power);
+	enemy->defend(power);
 }
 
 void Character::defend (unsigned int amountAttack){
-  life -= (amountAttack - defense);
-  if(!life) death();
+	life -= (amountAttack - defense);
+	if(!life) death();
 }
 
 void Character::death() {
-  return;
+	return;
 }
 
 void Character::print(){
-  cout << "******Character******" << '\n';
-  cout << "Id : " << id << endl;
-  cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
-  cout << "life/defense/power : (" << life << ";" << defense << ";" << power <<")" <<'\n';
-  cout << "Mesh name : " << mesh_ptr->path <<'\n';
+	cout << "******Character******" << '\n';
+	cout << "Id : " << id << endl;
+	cout << "position : (" << position[0] << ";" << position[1] << ")" <<'\n';
+	cout << "life/defense/power : (" << life << ";" << defense << ";" << power <<")" <<'\n';
+	cout << "Mesh name : " << mesh_ptr->path <<'\n';
 
-  cout << "******Character - end******" << '\n';
+	cout << "******Character - end******" << '\n';
 }

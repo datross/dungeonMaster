@@ -6,7 +6,7 @@ using namespace std;
 
 Item::Item(){}
 Item::Item(glm::ivec2 position, std::string id,
-		   int value, ItemType type, int durability,
+		   int value, ItemType type, float durability,
 		   std::shared_ptr<Mesh> mesh_ptr, std::shared_ptr<glimac::Program> shaders_ptr) :
 			  position(position), id(id),
 			  value(value), type(type), durability(durability),
@@ -26,7 +26,6 @@ bool Item::operator==(const Item & b){
   if(!id.compare(b.id)){
     if(value == b.value) {
       if(type == b.type){
-        if(durability == b.durability)
           return true;
       }
     }

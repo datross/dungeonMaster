@@ -13,12 +13,13 @@ Player::Player(glm::ivec2 position, glm::vec3 orientation,
                     {}
 Player::~Player(){}
 
-
-void Player::openMenu(MenuType type){
-  return;
-}
 void Player::addItem(Item item){
-  inventory.push_back(item);
+	std::vector<Item>::iterator i = std::find(inventory.begin(), inventory.end(), item);
+	if(i != inventory.end()) {
+
+	} else {
+		inventory.push_back(item);
+	}
 }
 void Player::dropItem(Item item){
   inventory.erase(find(inventory.begin(), inventory.end(), item));
@@ -37,6 +38,36 @@ void Player::unequip(Item item){
 }
 int Player::isNextDoor(){
   return -1;
+}
+
+void Player::defend (unsigned int amountAttack){
+	life -= (amountAttack - defense);
+	if(!life) death();
+	for(std::vector<Item>::iterator it = equiped.begin(); it!=equiped.end(); ++it){
+		if((*it).type == ARMOR){
+			(*it).durability-= 0.05f;
+			if((*it).durability < 0){
+				unequip((*it));
+				dropItem((*it));
+			} else if ((*it).durability > 1) {
+				(*it).durability = 2;
+			}
+		}
+	}
+}
+void Player::attack (Character* enemy){
+	enemy->defend(power);
+	for(std::vector<Item>::iterator it = equiped.begin(); it!=equiped.end(); ++it){
+		if((*it).type == WEAPON){
+			(*it).durability-= 0.1f;
+			if((*it).durability < 0){
+				unequip((*it));
+				dropItem((*it));
+			} else if ((*it).durability > 1) {
+				(*it).durability = 2;
+			}
+		}
+	}
 }
 
 void Player::use(Item item){
