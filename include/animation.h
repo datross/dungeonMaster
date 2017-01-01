@@ -35,7 +35,7 @@ public:
 	void loadAnimation(std::string path);
 
 	template <typename T>
-	void execute(T& entity);
+	bool execute(T& entity);
 
 	void print();
 };

@@ -42,22 +42,31 @@ void Animation::loadAnimation(std::string path){
 }
 
 template <typename T>
-void Animation::execute(T& entity){
+bool Animation::execute(T& entity){
+	bool isInProgress = false;
 	Uint32 ticks = SDL_GetTicks();
 	if(beginning == 0) {
 		beginning = ticks;
+		isInProgress = true;
 	}
 	float animProgress = (ticks - beginning)/duration;
-	for (std::vector<std::pair< float , std::vector< glm::vec3 > > >::iterator it = anim.begin();
-		 it != anim.end()-1;
-	 	 it++) {
-			 if(animProgress >= (*it).first && animProgress < (*(++it)).first) {
-				 float interpolValue = (animProgress- (*it).first)/((*(++it)).first - animProgress >= (*it).first);
-				 entity.position = interpolValue * ((*it).second[0]/(*(++it)).second[0]);
-				 //entity.rotation = interpolValue * ((*it).second[0]/(*(++it)).second[0]);
-				 //entity.scale = interpolValue * ((*it).second[0]/(*(++it)).second[0]);
-			 }
+	if(animProgress >= 1){
+		beginning = 0;
+		isInProgress = false;
+	} else {
+		for (std::vector<std::pair< float , std::vector< glm::vec3 > > >::iterator it = anim.begin();
+			 it != anim.end()-1;
+		 	 it++) {
+				 if(animProgress >= (*it).first && animProgress < (*(++it)).first) {
+					 float interpolValue = (animProgress- (*it).first)/((*(++it)).first - (*it).first);
+					 entity.position += interpolValue * ((*it).second[0]-(*(++it)).second[0]);
+					 entity.orientation += interpolValue * ((*it).second[1]/(*(++it)).second[1]);
+					 //glm::vec3 tmp_scale = interpolValue * ((*it).second[2]/(*(++it)).second[2]);
+					 //entity.scale = (tmp_scale[0] + tmp_scale[1] + tmp_scale[2])/3.0f;
+				 }
+		}
 	}
+	return isInProgress;
 }
 
 void Animation::print(){
