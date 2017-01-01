@@ -229,6 +229,7 @@ std::cout << "hey" << std::endl;
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
 			Enemy tmp_enemy = Enemy(position, glm::vec3(0,0,0), scale, id, life, defense, power, detectRange, mesh_ptr, shaders_ptr);
 			tmp_enemy.animations_ptr =animationsLink;
+			tmp_enemy.setDatas(&map.datas);
 			map.characters.push_back(tmp_enemy);
         }
 
@@ -243,7 +244,6 @@ std::cout << "hey" << std::endl;
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
 			Trap tmp_trap = Trap(position, id, damages, timing, mesh_ptr, shaders_ptr);
 			tmp_trap.animations_ptr =animationsLink;
-			tmp_enemy.setDatas(&map.datas);
             map.traps.push_back(tmp_trap);
         }
 
