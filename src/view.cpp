@@ -721,5 +721,5 @@ void View::renderGame(Game_state& game_state) {
 }
 
 void View::setAssets(Assets& _assets_ptr) {
-    assets_ptr = std::shared_ptr<Assets>(&_assets_ptr);
+    assets_ptr = &_assets_ptr;
 }

@@ -16,7 +16,7 @@ public:
 		float scale = 1, std::string id = "Default",
 		unsigned int life = 0, unsigned int defense = 0, unsigned int power = 0,
 		unsigned int detectRange = 5,
-		std::shared_ptr<Mesh> mesh_ptr = NULL, std::shared_ptr<glimac::Program> shaders_ptr = NULL);
+		Mesh * mesh_ptr = NULL, glimac::Program * shaders_ptr = NULL);
   ~Enemy();
 
   bool detect(Character* other);
