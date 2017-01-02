@@ -479,7 +479,7 @@ void View::HUD(Game_state& game_state) {
 
 	if(Gui::getInstance().showHUDEndLevelPopUp){
 		ImGui::OpenPopup("End");
-		SDL_SetRelativeMouseMode(SDL_TRUE);
+		Gui::getInstance().showHUDIndicators = false;
 	}
 	//END LEVEL POPUP
 	ImGui::SetNextWindowPosCenter();
@@ -718,9 +718,6 @@ void View::renderGame(Game_state& game_state) {
     /* Pour toutes les vues des joueurs */
     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
 
-//         std::cout << p->cam.position << std::endl;
-//         std::cout << p->cam.direction << std::endl;
-//         std::cout << p->cam.getPMatrix() << std::endl;
 
         glm::mat4 v = p->cam.getVMatrix();
         glm::mat4 mv;

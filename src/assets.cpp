@@ -28,8 +28,6 @@ Mesh * Assets::meshLoad(glimac::FilePath mesh_path){
 }
 
 glimac::Program * Assets::shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path){
-    std::cout << application_path + SHADER_PATH + vShader_path << std::endl;
-    std::cout << application_path + SHADER_PATH + fShader_path << std::endl;
     /* check if no double */
     for(vector<glimac::Program>::iterator it = shaders.begin(); it != shaders.end(); ++it){
         if((*it).vertexShaderPath.compare(vShader_path) == 0 &&
@@ -140,7 +138,6 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         /* Level name */
         getline(file, line);
         map.name = line;
-		std::cout << "Name : " << line << '\n';
 
 		//Datas container variables, to create objects
         int posX, posY, value, value_inventory, type, type_inventory;
@@ -225,11 +222,9 @@ void Assets::loadEntities(glimac::FilePath pathFile){
 
 			/* Add item to map in assets */
 			map.items.push_back(tmp_item);
-                        std::cout << "hey2" << std::endl;
         }
 
 		/* ---- Enemies initialization ---- */
-std::cout << "hey" << std::endl;
         file >> nb_Enemy;
         for (unsigned int i = 0; i < nb_Enemy; i++) {
             file >> posX >> posY >> scale >>  id >>  life >>  defense >>  power >>  detectRange >>  mesh_path >> vShader_path >> fShader_path;
@@ -244,7 +239,6 @@ std::cout << "hey" << std::endl;
         }
 
 		/* ---- Traps initialization ---- */
-std::cout << "hey" << std::endl;
         file >> nb_Traps;
         for (unsigned int i = 0; i < nb_Traps; i++) {
             file >> posX >> posY >> id >>  damages >>  timing >>  mesh_path >> vShader_path >> fShader_path;
