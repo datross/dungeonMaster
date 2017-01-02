@@ -8,6 +8,6 @@
 1
 17 2 Button1 1 1 -1 tete2.obj 3D.vs.glsl pointlight.fs.glsl
 1
-0 0 1 spider 3 0 1 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+0 2 1 spider 3 0 1 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
 1
 17 1 Trappe 99 1000 tete.obj 3D.vs.glsl pointlight.fs.glsl

@@ -467,6 +467,33 @@ void View::HUD(Game_state& game_state) {
 		ImGui::End();
 	}
 
+	if(Gui::getInstance().showHUDEndLevelPopUp){
+		ImGui::OpenPopup("End");
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+	}
+	//END LEVEL POPUP
+	ImGui::SetNextWindowPosCenter();
+	if (ImGui::BeginPopup("End")){
+		ImGui::Spacing();
+		ImGui::Text("Félicitations, Vous avez terminé le niveau.");
+		ImGui::Text("Voulez vous retourner au menu principal ou quitter ?");
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+		if (ImGui::Button("Retour au menu principal")){
+			Gui::getInstance().showHUDOptions = false;
+			Gui::getInstance().showHUDMap = false;
+			Gui::getInstance().showHUDInventory = false;
+			game_state = STATE_MENU;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Quitter")){
+			game_state = STATE_QUIT;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
 	// Background color
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(9,42,49,255));
 
@@ -619,7 +646,7 @@ void View::HUD(Game_state& game_state) {
 		if (ImGui::Button("Retour au menu principal")){
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDMap = false;
-			Gui::getInstance().showHUDInventory = true;
+			Gui::getInstance().showHUDInventory = false;
 			game_state = STATE_MENU;
 		}
 
@@ -749,6 +776,23 @@ void View::renderGame(Game_state& game_state) {
                 }
             }
         }
+
+        /* Enemies rendering */
+         for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
+			 mv = v;
+			 mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
+
+			 ground.setMVMatrix(mv);
+             ground.setMVPMatrix(p->cam.getPMatrix() * mv);
+             ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+             ground.setShininess(1.);
+             ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+             ground.setLightIntensity(glm::vec3(1,1,1));
+             ground.setKs(glm::vec3(1,1,1));
+             ground.setKd(glm::vec3(1,1,1));
+
+             ground.render();
+		 }
     }
 }
 
