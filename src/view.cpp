@@ -109,17 +109,30 @@ void View::updateEvent() {
     }
 
 	/* KEYBOARD MENUS EVENTS */
-		//SPACE
+		//SPACE : OPEN ingame menu
 		if (ImGui::IsKeyPressed(32)) {
 			Gui::getInstance().showHUDIndicators = false;
 			Gui::getInstance().showHUDInventory = true;
 		}
-		//ESCAPE
+		//ESCAPE : CLOSE in game menu
 		if (ImGui::IsKeyPressed(27)) {
 			Gui::getInstance().showHUDIndicators = true;
 			Gui::getInstance().showHUDInventory = false;
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDOptions = false;
+		}
+		//E : ATTACK
+		if (ImGui::IsKeyPressed(101)) {
+
+		}
+		//A : USE Key
+		if (ImGui::IsKeyPressed(97)) {
+			int door = assets_ptr->player[0].isNextDoor();
+			Item keyNeeded = Item(glm::ivec2(0,0), "key", door, KEY, 2, NULL, NULL, NULL);
+			std::vector<Item>::iterator key = std::find(assets_ptr->players[0].inventory.begin(), assets_ptr->players[0].inventory.end(), keyNeeded);
+			if(key != assets_ptr->players[0].inventory.end()){
+				//TODO Ouvrir la porte
+			}
 		}
 }
 
