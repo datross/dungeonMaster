@@ -70,10 +70,7 @@ bool Character::canMove(glm::ivec2 newPos) {
     (*mapDatas)[newPos.y][newPos.x] == 0;
 }
 
-void Character::move (Movement movement, Uint32 time){
-    auto stepped_dir = computeSteppedDirection(orientation);
-    anim_start_time = time;
-    
+void Character::move (Movement movement, Uint32 time){    
     if(movementAnimationFinished(time)) {
         position_prec = position;
         auto stepped_dir = computeSteppedDirection(orientation);
