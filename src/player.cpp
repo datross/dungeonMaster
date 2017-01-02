@@ -51,8 +51,8 @@ void Player::defend (unsigned int amountAttack){
 		}
 	}
 }
-void Player::attack (Character* enemy){
-	enemy->defend(power);
+void Player::attack (Character& enemy){
+	enemy.defend(power);
 	for(std::vector<Item>::iterator it = equiped.begin(); it!=equiped.end(); ++it){
 		if((*it).type == WEAPON){
 			(*it).durability-= 0.1f;

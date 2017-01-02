@@ -121,10 +121,42 @@ void View::updateEvent() {
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDOptions = false;
 		}
+
 		//E : ATTACK
 		if (ImGui::IsKeyPressed(101)) {
+			//Morceau de computeSteppedDirection
+			glm::ivec2 stepped_dir;
+		    if(assets_ptr->map.players.front().orientation.x > 0 && assets_ptr->map.players.front().orientation.z > 0) {
+		        if(assets_ptr->map.players.front().orientation.x > assets_ptr->map.players.front().orientation.z)
+		            stepped_dir = glm::ivec2(1, 0);
+		        else
+		            stepped_dir = glm::ivec2(0, 1);
+		    } else if(assets_ptr->map.players.front().orientation.x < 0 && assets_ptr->map.players.front().orientation.z > 0) {
+		        if(-(assets_ptr->map.players.front().orientation.x) > assets_ptr->map.players.front().orientation.z)
+		            stepped_dir = glm::ivec2(-1, 0);
+		        else
+		            stepped_dir = glm::ivec2(0, 1);
+		    } else if(assets_ptr->map.players.front().orientation.x < 0 && assets_ptr->map.players.front().orientation.z < 0) {
+		        if(assets_ptr->map.players.front().orientation.x < assets_ptr->map.players.front().orientation.z)
+		            stepped_dir = glm::ivec2(-1, 0);
+		        else
+		            stepped_dir = glm::ivec2(0, -1);
+		    } else if(assets_ptr->map.players.front().orientation.x > 0 && assets_ptr->map.players.front().orientation.z < 0) {
+		        if(assets_ptr->map.players.front().orientation.x > -(assets_ptr->map.players.front().orientation.z))
+		            stepped_dir = glm::ivec2(1, 0);
+		        else
+		            stepped_dir = glm::ivec2(0, -1);
+		    }
 
+			// Chack if an enemy is in front, and attack it
+			for(std::list<Enemy>::iterator it = assets_ptr->map.characters.begin();
+				it != assets_ptr->map.characters.end();
+				++it){
+					if((*it).position == (assets_ptr->map.players.front().position + stepped_dir))
+						assets_ptr->map.players.front().attack((*it));
+			}
 		}
+
 		//A : USE Key
 		if (ImGui::IsKeyPressed(97)) {
 			for(std::vector<Item>::iterator it = assets_ptr->map.players.front().inventory.begin();
