@@ -30,6 +30,8 @@ public:
   bool isCaseAccessible(int x, int y);
   std::vector<std::vector<unsigned int>> getDistance(int numPlayer);
 
+  void clear();
+
   void print();
 };
 

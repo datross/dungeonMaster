@@ -72,7 +72,7 @@ void Assets::load(string fileName, bool isNewGame){
             it != animsPacks.end(); ++it){
                     loadAnimationsPack((*it).first, application_path + ANIMATION_PATH + (*it).second);
     }
-    
+
     /* load general shader */
     generalShader = std::shared_ptr<glimac::ProgramWrapper>(new glimac::ProgramWrapper("res/shaders/3D.vs.glsl",
                     "res/shaders/pointlight.fs.glsl"));
@@ -281,6 +281,12 @@ void Assets::loadAnimationsPack(EntityType type, glimac::FilePath animationsPack
 		animations[type].push_back(Animation(application_path + ANIMATION_PATH + line));
     } else
         cerr << "Cannot open " << animationsPackPath << endl;
+}
+
+void Assets::reset(){
+	meshes.clear();
+	shaders.clear();
+	map.clear();
 }
 
 void Assets::print(){

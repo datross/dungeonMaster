@@ -25,7 +25,7 @@ public:
 	std::map < EntityType, std::vector<Animation> > animations;
 	std::vector<Mesh> meshes;
 	std::vector<glimac::Program> shaders;
-        
+
         /* temporaire (ou pas) */
         Mesh wall,
              ground,
@@ -45,6 +45,8 @@ public:
 	glimac::Program * shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path);
 
 	void loadAnimationsPack(EntityType type, glimac::FilePath animationsPackPath);
+
+	void reset();
 
 	void print();
 };

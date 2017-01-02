@@ -20,10 +20,11 @@ public:
 		Mesh * mesh_ptr = NULL, glimac::Program * shaders_ptr = NULL);
   ~Enemy();
 
-	bool detect(Character* other);
+	bool detect(Character other);
 	Movement reach(int targetIndex, Map* map);
 	void attack (Character& enemy);
 	void defend (unsigned int amountAttack);
+	bool near(Character other);
 };
 
 #endif

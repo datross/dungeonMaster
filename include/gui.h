@@ -37,7 +37,8 @@ public:
 	bool showHUDIndicators,
 		 showHUDInventory,
 		 showHUDMap,
-		 showHUDOptions;
+		 showHUDOptions,
+		 showHUDEndLevelPopUp;
 
 	// Textures menu (id and size)
 	std::vector< std::pair<ImTextureID, ImVec2> > mainMenuTex;

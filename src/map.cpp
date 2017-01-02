@@ -139,6 +139,15 @@ bool isVoisin(glm::ivec2 source, glm::ivec2 tested) {
 	return false;
 }
 
+void Map::clear(){
+	name = "";
+	datas.clear();
+	players.clear();
+	characters.clear();
+	items.clear();
+	traps.clear();
+}
+
 std::vector<std::vector<unsigned int>> Map::getDistance(int numPlayer) {
     std::vector<glm::ivec2> link;
     unsigned int nbCorridors = 0;
