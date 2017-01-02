@@ -228,6 +228,7 @@ void View::initTextures(){
 	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/explications.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/quit.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/arrow.png");
+	Gui::getInstance().loadTexture(Gui::getInstance().mainMenuTex, assets_ptr->application_path + "res/gui_elements/mainmenu/controles.png");
 
 	/* Loading of gui icons */
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Life.png");
@@ -410,10 +411,10 @@ void View::mainMenu(Game_state& game_state){
 
 //OPTION MENU
 	if(Gui::getInstance().showOptionsSelector){
-		ImGui::SetNextWindowPos(ImVec2(50, window_height/3.0f));
+		ImGui::SetNextWindowPos(ImVec2(window_width*0.1f, window_height*0.1f));
 		ImGui::Begin("Options menu", &(Gui::getInstance().showOptionsSelector), window_flags);
 
-		/* Vide */
+		ImGui::Image(Gui::getInstance().mainMenuTex[6].first, ImVec2(window_width*0.8f, window_height*0.8f) , ImVec2(0,0), ImVec2(1,1), ImVec4(1,1,1,1), ImVec4(0,0,0,0));
 
 		//Return button
 		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[5].first, ImVec2(Gui::getInstance().mainMenuTex[5].second.x * scaleReturnBtn, Gui::getInstance().mainMenuTex[5].second.y * scaleReturnBtn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
@@ -808,6 +809,20 @@ void View::renderGame(Game_state& game_state) {
 
         /* Enemies rendering */
 		 for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
+			mv = v;
+			mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
+			(*it).mesh_ptr->setMVMatrix(mv);
+			(*it).mesh_ptr->setMVPMatrix(p->cam.getPMatrix() * mv);
+			(*it).mesh_ptr->setNormalMatrix(glm::transpose(glm::inverse(mv)));
+			(*it).mesh_ptr->setShininess(1.);
+			(*it).mesh_ptr->setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+			(*it).mesh_ptr->setLightIntensity(glm::vec3(1,1,1));
+			(*it).mesh_ptr->setKd(glm::vec3(1,1,1));
+
+			(*it).mesh_ptr->render();
+     	}
+        /* Items rendering */
+		for (std::list<Item>::iterator it = assets_ptr->map.items.begin(); it != assets_ptr->map.items.end(); ++it) {
 			mv = v;
 			mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
 			(*it).mesh_ptr->setMVMatrix(mv);
