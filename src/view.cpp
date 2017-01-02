@@ -371,7 +371,7 @@ void View::mainMenu(Game_state& game_state){
 		}
 		/* Level "Sample" */
 		if (ImGui::Button("Encore un nouveau départ")){
-			std::string lvl_name = "samplemap";
+			std::string lvl_name = "simplemap";
 			assets_ptr->load(lvl_name, true);
 			game_state = STATE_GAMEPLAY;
 			Gui::getInstance().showLevelSelector = false;
@@ -562,12 +562,13 @@ void View::HUD(Game_state& game_state) {
 		ImGui::Columns(1);
 
 		// Display inventory, with highlights on equiped items
-		ImGui::Columns((*(assets_ptr->map.players.begin())).inventory.size(), "bag");
 		ImGui::PushStyleColor(ImGuiCol_Button, ImColor(0,0,0,0));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(29,62,69,255));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(9,42,49,255));
 		ImGui::Separator();
 		if((*(assets_ptr->map.players.begin())).inventory.size()>0){
+
+			ImGui::Columns((*(assets_ptr->map.players.begin())).inventory.size(), "bag");
 			for(std::vector<Item>::iterator it = (*(assets_ptr->map.players.begin())).inventory.begin();
 				it != (*(assets_ptr->map.players.begin())).inventory.end();
 				it++){
@@ -805,6 +806,19 @@ void View::renderGame(Game_state& game_state) {
 
              ground.render();
 		 }
+		 for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
+			mv = v;
+			mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
+			(*it).mesh_ptr->setMVMatrix(mv);
+			(*it).mesh_ptr->setMVPMatrix(p->cam.getPMatrix() * mv);
+			(*it).mesh_ptr->setNormalMatrix(glm::transpose(glm::inverse(mv)));
+			(*it).mesh_ptr->setShininess(1.);
+			(*it).mesh_ptr->setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+			(*it).mesh_ptr->setLightIntensity(glm::vec3(1,1,1));
+			(*it).mesh_ptr->setKd(glm::vec3(1,1,1));
+
+			(*it).mesh_ptr->render();
+     	}
     }
 }
 
