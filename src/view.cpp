@@ -369,6 +369,16 @@ void View::mainMenu(Game_state& game_state){
 			// Load map texture for HUD
 			Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/maps/"+ (lvl_name + ".png"));
 		}
+		/* Level "Sample" */
+		if (ImGui::Button("Encore un nouveau départ")){
+			std::string lvl_name = "samplemap";
+			assets_ptr->load(lvl_name, true);
+			game_state = STATE_GAMEPLAY;
+			Gui::getInstance().showLevelSelector = false;
+			Gui::getInstance().showMainMenu = true;
+			// Load map texture for HUD
+			Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/maps/"+ (lvl_name + ".png"));
+		}
 		//Return button
 		if (ImGui::ImageButton(Gui::getInstance().mainMenuTex[5].first, ImVec2(Gui::getInstance().mainMenuTex[5].second.x * scaleReturnBtn, Gui::getInstance().mainMenuTex[5].second.y * scaleReturnBtn), ImVec2(0,0), ImVec2(1,1),-1, ImColor(0,0,0,0))){
 			Gui::getInstance().showLevelSelector = false;
@@ -484,6 +494,7 @@ void View::HUD(Game_state& game_state) {
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDInventory = false;
+			assets_ptr->reset();
 			game_state = STATE_MENU;
 		}
 		ImGui::SameLine();
@@ -647,6 +658,7 @@ void View::HUD(Game_state& game_state) {
 			Gui::getInstance().showHUDOptions = false;
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDInventory = false;
+			assets_ptr->reset();
 			game_state = STATE_MENU;
 		}
 
