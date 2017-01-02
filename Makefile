@@ -1,5 +1,5 @@
 LDFLAGS = -lSDL2 -lGL -lGLEW -Llib/assimp-3.3.1/lib/ -lassimp -Wl,-rpath=lib/assimp-3.3.1/lib/
-CXXFLAGS = -Wall -Iinclude/ -Ilib/assimp-3.3.1/include/ -std=c++11 -fdiagnostics-color
+CXXFLAGS = -Wall -Iinclude/ -Ilib/assimp-3.3.1/include/ -std=c++11 -fdiagnostics-color -I/usr/include/mirclient -I/usr/include/mircommon
 
 SRC = $(wildcard src/*.cpp)
 OBJ = $(SRC:src/%.cpp=obj/%.o)
