@@ -666,8 +666,7 @@ void View::renderGame(Game_state& game_state) {
     Mesh& ceiling = assets_ptr->ceiling;
 
 	//glimac::Program defaultShader = (assets_ptr->shaders.front());
-    auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
-                    "res/shaders/pointlight.fs.glsl");
+    glimac::Program& shader = assets_ptr->generalShader->program;
 
     wall.setUniformsId(shader);
     ground.setUniformsId(shader);

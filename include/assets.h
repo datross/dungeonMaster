@@ -30,6 +30,8 @@ public:
         Mesh wall,
              ground,
              ceiling;
+        /* shader de tous les éléments (quasiment) */
+        std::shared_ptr<glimac::ProgramWrapper> generalShader;
 
 	Map map;
 

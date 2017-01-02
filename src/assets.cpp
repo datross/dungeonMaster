@@ -72,6 +72,10 @@ void Assets::load(string fileName, bool isNewGame){
             it != animsPacks.end(); ++it){
                     loadAnimationsPack((*it).first, application_path + ANIMATION_PATH + (*it).second);
     }
+    
+    /* load general shader */
+    generalShader = std::shared_ptr<glimac::ProgramWrapper>(new glimac::ProgramWrapper("res/shaders/3D.vs.glsl",
+                    "res/shaders/pointlight.fs.glsl"));
 
     print();
 }
