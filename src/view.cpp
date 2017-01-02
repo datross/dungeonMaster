@@ -627,7 +627,7 @@ void View::renderGame(Game_state& game_state) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
-                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                    mv = glm::translate(mv, glm::vec3(1.0 * y,0,1.0 * x));
                     
                     /* ground */
                     
@@ -640,7 +640,7 @@ void View::renderGame(Game_state& game_state) {
                     ground.setKs(glm::vec3(1,1,1));
                     ground.setKd(glm::vec3(1,1,1));
                     
-                    ground.render();
+                    //ground.render();
                     
                     /* ceiling */
                     
