@@ -29,6 +29,7 @@ public:
         /* temporaire (ou pas) */
         Mesh wall,
              ground,
+             water,
              ceiling;
         /* shader de tous les éléments (quasiment) */
         std::shared_ptr<glimac::ProgramWrapper> generalShader;

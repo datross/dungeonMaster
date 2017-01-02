@@ -704,12 +704,14 @@ void View::renderGame(Game_state& game_state) {
     Mesh& wall = assets_ptr->wall;
     Mesh& ground = assets_ptr->ground;
     Mesh& ceiling = assets_ptr->ceiling;
+    Mesh& water = assets_ptr->water;
 
 	//glimac::Program defaultShader = (assets_ptr->shaders.front());
     glimac::Program& shader = assets_ptr->generalShader->program;
 
     wall.setUniformsId(shader);
     ground.setUniformsId(shader);
+    water.setUniformsId(shader);
     ceiling.setUniformsId(shader);
 
     /* Pour toutes les vues des joueurs */
@@ -734,22 +736,38 @@ void View::renderGame(Game_state& game_state) {
         /* Ground and ceiling rendering */
         for(unsigned y = 0; y < assets_ptr->map.datas.size(); ++y) {
             for(unsigned x = 0; x < assets_ptr->map.datas[0].size(); ++x) {
+                
+                mv = v;
+                mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                if(assets_ptr->map.datas[y][x] == -3) { /* water */
+                        water.setMVMatrix(mv);
+                        water.setMVPMatrix(p->cam.getPMatrix() * mv);
+                        water.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                        water.setShininess(1.);
+                        water.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+                        water.setLightIntensity(glm::vec3(1,1,1));
+                        water.setKs(glm::vec3(1,1,1));
+                        water.setKd(glm::vec3(1,1,1));
+
+                        water.render();
+                }
+                
                 if(assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
 
-                    /* ground */
+                    if(assets_ptr->map.datas[y][x] == 0) {  /* ground */
+                        ground.setMVMatrix(mv);
+                        ground.setMVPMatrix(p->cam.getPMatrix() * mv);
+                        ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                        ground.setShininess(1.);
+                        ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+                        ground.setLightIntensity(glm::vec3(1,1,1));
+                        ground.setKs(glm::vec3(1,1,1));
+                        ground.setKd(glm::vec3(1,1,1));
 
-                    ground.setMVMatrix(mv);
-                    ground.setMVPMatrix(p->cam.getPMatrix() * mv);
-                    ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-                    ground.setShininess(1.);
-                    ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
-                    ground.setLightIntensity(glm::vec3(1,1,1));
-                    ground.setKs(glm::vec3(1,1,1));
-                    ground.setKd(glm::vec3(1,1,1));
-
-                    ground.render();
+                        ground.render();
+                    }
 
                     /* ceiling */
 
