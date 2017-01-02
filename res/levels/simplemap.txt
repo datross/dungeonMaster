@@ -1,0 +1,28 @@
+#SimpleMap
+1
+6 17 1 Mouse 10 0 3 0 0 tete.obj 3D.vs.glsl pointlight.fs.glsl
+14
+1 1 Weapon_Needle 2 1 1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+6 9 Armor_Nut 2 2 1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+8 13 Weapon_Pin 3 1 1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+12 9 Cheese_Poisoned 2 3 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+4 3 Cheese 3 3 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+3 11 Cheese 2 3 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+8 3 Button_Gold 5 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+12 5 Button_Blue 2 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+10 13 Button_Blue 2 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+1 15 Button_Gold 5 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+4 15 Button_Blue 2 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+6 16 Button_Blue 2 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+5 17 Button_Blue 2 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+7 17 Button_Blue 2 0 -1 tete.obj 3D.vs.glsl pointlight.fs.glsl
+6
+10 1 1 Spider 6 0 2 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+4 5 1 Spider 5 0 3 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+2 7 1 Spider 6 0 3 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+10 7 1 Spider 5 0 2 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+1 11 1 Spider 5 0 2 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+7 11 1 Spider 4 0 1 5 tete.obj 3D.vs.glsl pointlight.fs.glsl
+2
+6 1 Trappe 99 1000 tete.obj 3D.vs.glsl pointlight.fs.glsl
+12 14 Trappe 99 1000 tete.obj 3D.vs.glsl pointlight.fs.glsl
