@@ -123,7 +123,7 @@ void View::updateEvent() {
 		}
 		//E : ATTACK
 		if (ImGui::IsKeyPressed(101)) {
-			
+
 		}
 		//A : USE Key
 		if (ImGui::IsKeyPressed(97)) {
@@ -206,6 +206,7 @@ void View::initTextures(){
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Icon_Defense.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Mice.png");
 
+	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Key.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Armor_Nut.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Armor_Thimble.png");
 	Gui::getInstance().loadTexture(Gui::getInstance().HUDTex, assets_ptr->application_path + "res/gui_elements/hud/Weapon_Needle.png");
@@ -459,6 +460,7 @@ void View::HUD(Game_state& game_state) {
 		ImGui::Separator();
 
 		std::vector<std::string> indexTex = {
+			"Key",
 			"Armor_Nut",
 			"Armor_Thimble",
 			"Weapon_Needle",
