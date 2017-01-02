@@ -14,8 +14,8 @@ Enemy::Enemy(glm::ivec2 position, glm::vec3 orientation,
 	            {}
 Enemy::~Enemy(){}
 
-bool Enemy::detect(Character* other){
-  glm::ivec2 target = other->position;
+bool Enemy::detect(Character other){
+  glm::ivec2 target = other.position;
   if(abs(target[0] - position[0]) > 5)
     return false;
   else if ((abs(target[0] - position[0]) + abs(target[1] - position[1])) > 5)
@@ -24,11 +24,33 @@ bool Enemy::detect(Character* other){
     return true;
 }
 
+bool Enemy::near(Character other) {
+  glm::ivec2 target = other.position;
+  if (other.position.x + 1 == position.x && other.position.y == position.y)
+	return true;
+  if (other.position.x - 1 == position.x && other.position.y == position.y)
+	return true;
+  if (other.position.x == position.x && other.position.y + 1 == position.y)
+	return true;
+  if (other.position.x == position.x && other.position.y - 1 == position.y)
+	return true;
+  return false;
+}
+
 Movement Enemy::reach(int targetIndex, Map* map) {
     std::vector<std::vector<unsigned int>> distances = map->getDistance(targetIndex);
 
+	//std::cout << "enemy.cpp - Reach Entry " << std::endl;
+
+	// Get the targeted player
+	int i = 0;
+	std::list<Player>::iterator it = map->players.begin(); // Pour le moment ça ne marche qu'avec le joueur 1 du coup...
+	
+	if (!detect((Character) (*it)))
+		return MOVEMENT_NONE;
+
     if (distances[position.y][position.x] == 255) {
-        std::cout << "The enemy couldn't reach the player." << std::endl;
+        std::cout << "enemy.cpp - The enemy couldn't reach the player." << std::endl;
         return MOVEMENT_NONE;
     }
 
@@ -36,27 +58,27 @@ Movement Enemy::reach(int targetIndex, Map* map) {
         if (distances[position.y][position.x-1] == distances[position.y][position.x]-1) {
 			//MOVEMENT_LEFT;
 			orientation.x = -1;
-			orientation.z = 0;
+			orientation.z = 0.1;
         }
     }
     if (position.x+1 < (int) map->datas[0].size()) {
         if (distances[position.y][position.x+1] == distances[position.y][position.x]-1) {
 			//MOVEMENT_RIGHT;
 			orientation.x = 1;
-			orientation.z = 0;
+			orientation.z = 0.1;
         }
     }
     if (position.y-1 >= 0) {
         if (distances[position.y-1][position.x] == distances[position.y][position.x]-1) {
 			//MOVEMENT_FORWARD;
-			orientation.x = 0;
+			orientation.x = 0.1;
 			orientation.z = -1;
         }
     }
     if (position.y+1 < (int) map->datas.size()) {
         if (distances[position.y+1][position.x] == distances[position.y][position.x]-1) {
 			//MOVEMENT_BACKWARD;
-			orientation.x = 0;
+			orientation.x = 0.1;
 			orientation.z = 1;
         }
     }
