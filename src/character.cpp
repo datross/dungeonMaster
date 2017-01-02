@@ -68,13 +68,13 @@ bool Character::canMove(glm::ivec2 newPos) {
 void Character::move (Movement movement, Uint32 time){
     auto stepped_dir = computeSteppedDirection(orientation);
 
-    if(movement == MOVEMENT_FORWARD && canMove(position+stepped_dir)) {
+    if(movement == MOVEMENT_FORWARD /*&& canMove(position+stepped_dir)*/) {
         position += stepped_dir;
-    } else if(movement == MOVEMENT_BACKWARD && canMove(position-stepped_dir)) {
+    } else if(movement == MOVEMENT_BACKWARD /*&& canMove(position-stepped_dir)*/) {
         position += -stepped_dir;
-    } else if(movement == MOVEMENT_LEFT && canMove(position + glm::ivec2(-stepped_dir.y, stepped_dir.x))) {
+    } else if(movement == MOVEMENT_LEFT /*&& canMove(position + glm::ivec2(-stepped_dir.y, stepped_dir.x))*/) {
         position += glm::vec2(-stepped_dir.y, stepped_dir.x);
-    } else if(movement == MOVEMENT_RIGHT && canMove(position-glm::ivec2(-stepped_dir.y, stepped_dir.x))) {
+    } else if(movement == MOVEMENT_RIGHT /*&& canMove(position-glm::ivec2(-stepped_dir.y, stepped_dir.x))*/) {
         position += -glm::vec2(-stepped_dir.y, stepped_dir.x);
     }
 
