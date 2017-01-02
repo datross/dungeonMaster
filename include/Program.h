@@ -64,6 +64,14 @@ public:
 // Load source code from files and build a GLSL program
 Program loadProgram(const FilePath& vsFile, const FilePath& fsFile);
 
+/* wrapper pour Program */
+struct ProgramWrapper {
+    Program program;
+    ProgramWrapper(std::string vs, std::string fs) 
+        : program(glimac::loadProgram("res/shaders/3D.vs.glsl",
+                    "res/shaders/pointlight.fs.glsl"))
+        {}
+};
 
 }
 
