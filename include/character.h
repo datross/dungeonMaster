@@ -27,7 +27,7 @@ public:
   std::vector<std::vector<int> >* mapDatas;
   glm::ivec2 position,
              position_prec; /* utile pour les animations de déplacement */
-  
+
   /* these go together */
   glm::vec3 orientation;
 
@@ -62,6 +62,7 @@ void setDatas(std::vector<std::vector<int> >* datas);
   void death();
 void move (Movement movement, Uint32 time);
 bool canMove(glm::ivec2 newPos);
+glm::ivec2 isNextDoor(int idDoor);
   void print();
 };
 

@@ -123,15 +123,20 @@ void View::updateEvent() {
 		}
 		//E : ATTACK
 		if (ImGui::IsKeyPressed(101)) {
-
+			
 		}
 		//A : USE Key
 		if (ImGui::IsKeyPressed(97)) {
-			int door = assets_ptr->player[0].isNextDoor();
-			Item keyNeeded = Item(glm::ivec2(0,0), "key", door, KEY, 2, NULL, NULL, NULL);
-			std::vector<Item>::iterator key = std::find(assets_ptr->players[0].inventory.begin(), assets_ptr->players[0].inventory.end(), keyNeeded);
-			if(key != assets_ptr->players[0].inventory.end()){
-				//TODO Ouvrir la porte
+			for(std::vector<Item>::iterator it = assets_ptr->map.players.front().inventory.begin();
+				it != assets_ptr->map.players.front().inventory.end();
+				++it){
+					if((*it).type == KEY) {
+						glm::ivec2 door = assets_ptr->map.players.front().isNextDoor((*it).value);
+						if(door != glm::ivec2(0,0)){
+							assets_ptr->map.datas[door.y][door.x] = 0;
+							assets_ptr->map.players.front().use(*it);
+						}
+					}
 			}
 		}
 }
@@ -663,7 +668,7 @@ void View::renderGame(Game_state& game_state) {
                     ground.setKd(glm::vec3(1,1,1));
 
                     ground.render();
-                    
+
                     /* ceiling */
 
                     mv = glm::translate(mv, glm::vec3(0,1,0));

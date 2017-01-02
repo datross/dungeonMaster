@@ -68,7 +68,7 @@ bool Character::canMove(glm::ivec2 newPos) {
 	return (*mapDatas)[newPos.y][newPos.x] == 0;
 }
 
-void Character::move (Movement movement, Uint32 time){    
+void Character::move (Movement movement, Uint32 time){
     if(movementAnimationFinished(time)) {
         position_prec = position;
         auto stepped_dir = computeSteppedDirection(orientation);
@@ -81,10 +81,26 @@ void Character::move (Movement movement, Uint32 time){
         } else if(movement == MOVEMENT_RIGHT && canMove(position+glm::ivec2(-stepped_dir.y, stepped_dir.x))) {
             position += glm::vec2(-stepped_dir.y, stepped_dir.x);
         }
-        
+
         anim_start_time = time;
     }
 }
+glm::ivec2 Character::isNextDoor(int idDoor){
+	auto stepped_dir = computeSteppedDirection(orientation);
+
+	glm::ivec2 posToCheck1 = position + stepped_dir;
+	glm::ivec2 posToCheck2 = position - stepped_dir;
+	glm::ivec2 posToCheck3 = position - glm::ivec2(-stepped_dir.y, stepped_dir.x);
+	glm::ivec2 posToCheck4 = position + glm::ivec2(-stepped_dir.y, stepped_dir.x);
+
+	if ((*mapDatas)[posToCheck1.y][posToCheck1.x] == idDoor) return posToCheck1;
+	if ((*mapDatas)[posToCheck2.y][posToCheck2.x] == idDoor) return posToCheck2;
+	if ((*mapDatas)[posToCheck3.y][posToCheck3.x] == idDoor) return posToCheck3;
+	if ((*mapDatas)[posToCheck4.y][posToCheck4.x] == idDoor) return posToCheck4;
+
+	return glm::ivec2(0,0);
+}
+
 
 void Character::attack (Character* enemy){
   enemy->defend(power);

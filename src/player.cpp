@@ -36,10 +36,6 @@ void Player::unequip(Item item){
 	}
   	equiped.erase(find(equiped.begin(), equiped.end(), item));
 }
-int Player::isNextDoor(){
-  return -1;
-}
-
 void Player::defend (unsigned int amountAttack){
 	life -= (amountAttack - defense);
 	if(!life) death();
@@ -80,10 +76,8 @@ void Player::use(Item item){
 	} else if (item.type == HEALTH) {
 	    life += item.value;
 	} else if (item.type == KEY) {
-		if(isNextDoor() == item.value) {
-
-		}
-  }
+		dropItem(item);
+    }
 }
 
 void Player::updateCam(glm::ivec2 mouseMotion) {
