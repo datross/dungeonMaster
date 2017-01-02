@@ -3,6 +3,7 @@
 
 #include "glm.h"
 
+#include "declarations.h"
 #include "character.h"
 
 class Map;

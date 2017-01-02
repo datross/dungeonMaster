@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+#include "declarations.h"
 #include "character.h"
 #include "item.h"
 #include "camera.h"

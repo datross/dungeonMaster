@@ -1,5 +1,6 @@
 
 #include "character.h"
+#include "map.h"
 
 #include <iostream>
 
@@ -17,8 +18,8 @@ Character::Character(glm::ivec2 position, glm::vec3 orientation,
 						{}
 Character::~Character(){}
 
-void Character::setDatas(std::vector<std::vector<int> >* datas) {
-	mapDatas = datas;
+void Character::setMap(Map * _map) {
+	map = _map;
 }
 
 glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
@@ -65,9 +66,9 @@ glm::vec3 Character::getVisualPosition(Uint32 time) {
 }
 
 bool Character::canMove(glm::ivec2 newPos) {
-	if (newPos.y < 0 || newPos.y > mapDatas->size() || newPos.x < 0 || newPos.x > mapDatas[0].size())
+	if (newPos.y < 0 || newPos.y >= map->datas.size() || newPos.x < 0 || newPos.x >= map->datas[0].size())
 		return false;
-	return (*mapDatas)[newPos.x][newPos.y] == 0;
+	return map->isCaseAccessible(newPos.x, newPos.y);
 }
 
 void Character::move (Movement movement, Uint32 time){
@@ -96,10 +97,10 @@ glm::ivec2 Character::isNextDoor(int idDoor){
 	glm::ivec2 posToCheck3 = position - glm::ivec2(-stepped_dir.y, stepped_dir.x);
 	glm::ivec2 posToCheck4 = position + glm::ivec2(-stepped_dir.y, stepped_dir.x);
 
-	if ((*mapDatas)[posToCheck1.y][posToCheck1.x] == idDoor) return posToCheck1;
-	if ((*mapDatas)[posToCheck2.y][posToCheck2.x] == idDoor) return posToCheck2;
-	if ((*mapDatas)[posToCheck3.y][posToCheck3.x] == idDoor) return posToCheck3;
-	if ((*mapDatas)[posToCheck4.y][posToCheck4.x] == idDoor) return posToCheck4;
+	if (map->datas[posToCheck1.y][posToCheck1.x] == idDoor) return posToCheck1;
+	if (map->datas[posToCheck2.y][posToCheck2.x] == idDoor) return posToCheck2;
+	if (map->datas[posToCheck3.y][posToCheck3.x] == idDoor) return posToCheck3;
+	if (map->datas[posToCheck4.y][posToCheck4.x] == idDoor) return posToCheck4;
 
 	return glm::ivec2(0,0);
 }
