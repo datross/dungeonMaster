@@ -58,7 +58,7 @@ public:
     glimac::FilePath path;
 private:
     /* geometry structures identifiers */
-    GLuint vbo, ibo, vao;
+    GLuint vbo, ibo, vao, tex;
 
     /* number of faces */
     unsigned numFaces;
