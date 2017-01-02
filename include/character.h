@@ -31,16 +31,16 @@ public:
 	/* these go together */
 	glm::vec3 orientation;
 
-	Uint32 anim_start_time;
-	float speed; // inverse du temps d'animation de déplacement d'une case à l'autre
-	float scale;
-	std::string id;
-	unsigned int life;
-	unsigned int defense;
-	unsigned int power;
-	std::shared_ptr<Mesh> mesh_ptr;
-	std::shared_ptr<glimac::Program> shaders_ptr;
-	std::shared_ptr< std::map <EntityType, std::vector< Animation > > > animations_ptr;
+  Uint32 anim_start_time;
+  float speed; // inverse du temps d'animation de déplacement d'une case à l'autre
+  float scale;
+  std::string id;
+  unsigned int life;
+  unsigned int defense;
+  unsigned int power;
+  Mesh * mesh_ptr;
+  glimac::Program * shaders_ptr;
+  std::map <EntityType, std::vector< Animation > > * animations_ptr;
 
   	Character();
   	Character(glm::ivec2 position = glm::ivec2(0,0) ,
@@ -50,9 +50,9 @@ public:
             unsigned int life = 0,
             unsigned int defense = 0,
             unsigned int power = 0 ,
-			std::shared_ptr<Mesh> mesh_ptr = NULL,
-			std::shared_ptr<glimac::Program> shaders_ptr = NULL);
-  	~Character();
+			Mesh * mesh_ptr = NULL,
+			glimac::Program * shaders_ptr = NULL);
+  ~Character();
 
   	bool movementAnimationFinished(Uint32 time);
   	glm::vec3 getVisualPosition(Uint32 time);

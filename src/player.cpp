@@ -7,7 +7,7 @@ Player::Player(glm::ivec2 position, glm::vec3 orientation,
         	   float scale, string id,
         	   unsigned int life, unsigned int defense, unsigned int power,
                unsigned int score,
-			   std::shared_ptr<Mesh> mesh_ptr, std::shared_ptr<glimac::Program> shaders_ptr) :
+			   Mesh * mesh_ptr, glimac::Program * shaders_ptr) :
                     Character(position, orientation, scale, id, life, defense, power, mesh_ptr, shaders_ptr),
                     score(score)
                     {}

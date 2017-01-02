@@ -13,28 +13,28 @@ Assets::Assets(char* _application_path): application_path(_application_path){
 Assets::~Assets(){}
 
 
-shared_ptr<Mesh> Assets::meshLoad(glimac::FilePath mesh_path){
+Mesh * Assets::meshLoad(glimac::FilePath mesh_path){
     /* check if no double */
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
         if((*it).path == mesh_path){
-            return shared_ptr<Mesh> (&(*it));
+            return &(*it);
         }
     }
     /* else add the new mesh to assets and return ptr */
     Mesh * mesh = new Mesh();
     mesh->path = mesh_path;
     meshes.push_back(*mesh);
-    return shared_ptr<Mesh>(mesh);
+    return mesh;
 }
 
-shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path){
+glimac::Program * Assets::shadersLoad(glimac::FilePath vShader_path, glimac::FilePath fShader_path){
     std::cout << application_path + SHADER_PATH + vShader_path << std::endl;
     std::cout << application_path + SHADER_PATH + fShader_path << std::endl;
     /* check if no double */
     for(vector<glimac::Program>::iterator it = shaders.begin(); it != shaders.end(); ++it){
         if((*it).vertexShaderPath.compare(vShader_path) == 0 &&
 		   (*it).fragmentShaderPath.compare(fShader_path) == 0){
-			   return shared_ptr<glimac::Program> (&(*it));
+			   return &(*it);
         }
     }
 
@@ -44,7 +44,7 @@ shared_ptr<glimac::Program> Assets::shadersLoad(glimac::FilePath vShader_path, g
     shader->vertexShaderPath = vShader_path;
     shader->fragmentShaderPath = fShader_path;
     shaders.push_back(*shader);
-    return shared_ptr<glimac::Program>(shader);
+    return shader;
 }
 
 void Assets::load(string fileName, bool isNewGame){
@@ -146,9 +146,9 @@ void Assets::loadEntities(glimac::FilePath pathFile){
         unsigned int life, defense, power, detectRange, damages, timing, nb_items_inventory, score, isEquiped;
         string id, id_inventory, mesh_path, vShader_path, fShader_path;
         float scale, durability, durability_inventory;
-        shared_ptr<Mesh> mesh_ptr;
-        shared_ptr<glimac::Program> shaders_ptr;
-		shared_ptr< std::map<EntityType, std::vector<Animation> > > animationsLink = shared_ptr< std::map<EntityType, std::vector<Animation> > > (&animations);
+        Mesh * mesh_ptr;
+        glimac::Program * shaders_ptr;
+		std::map<EntityType, std::vector<Animation> > * animationsLink = &animations;
 
 
 		/* ---- Players initialization ---- */

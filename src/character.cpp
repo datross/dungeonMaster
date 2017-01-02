@@ -9,7 +9,7 @@ Character::Character(){}
 Character::Character(glm::ivec2 position, glm::vec3 orientation,
                     float scale, string id,
                     unsigned int life, unsigned int defense, unsigned int power,
-					shared_ptr<Mesh> mesh_ptr, shared_ptr<glimac::Program> shaders_ptr) :
+					Mesh * mesh_ptr, glimac::Program * shaders_ptr) :
 	                    position(position), orientation(orientation), anim_start_time(0), speed(4.),
 	                    scale(scale), id(id),
 	                    life(life), defense(defense), power(power),
@@ -18,7 +18,7 @@ Character::Character(glm::ivec2 position, glm::vec3 orientation,
 Character::~Character(){}
 
 void Character::setDatas(std::vector<std::vector<int> >* datas) {
-	this->mapDatas = datas;
+	mapDatas = datas;
 }
 
 glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {

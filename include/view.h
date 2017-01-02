@@ -69,7 +69,8 @@ public:
 
     /* about game rendering */
     /* everything is stored in assets */
-    std::shared_ptr<Assets> assets_ptr;
+    /* not a shared_ptr because no need to delete */
+    Assets * assets_ptr;
 };
 
 #endif
