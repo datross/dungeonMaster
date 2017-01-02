@@ -23,11 +23,11 @@ void Character::setDatas(std::vector<std::vector<int> >* datas) {
 
 glm::ivec2 computeSteppedDirection(glm::vec3 orientation) {
     glm::ivec2 direction;
-    
+
     if(orientation.x > 0 && orientation.z > 0) {
         if(orientation.x > orientation.z)
             direction = glm::ivec2(1, 0);
-            
+
         else
             direction = glm::ivec2(0, 1);
     } else if(orientation.x < 0 && orientation.z > 0) {
@@ -67,14 +67,14 @@ glm::vec3 Character::getVisualPosition(Uint32 time) {
 bool Character::canMove(glm::ivec2 newPos) {
 	if (newPos.y < 0 || newPos.y > mapDatas->size() || newPos.x < 0 || newPos.x > mapDatas[0].size())
 		return false;
-	return (*mapDatas)[newPos.y][newPos.x] == 0;
+	return (*mapDatas)[newPos.x][newPos.y] == 0;
 }
 
 void Character::move (Movement movement, Uint32 time){
     if(movementAnimationFinished(time)) {
         position_prec = position;
         auto stepped_dir = computeSteppedDirection(orientation);
-        
+
         if(movement == MOVEMENT_FORWARD && canMove(position+stepped_dir)) {
             position += stepped_dir;
         } else if(movement == MOVEMENT_BACKWARD && canMove(position-stepped_dir)) {

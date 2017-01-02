@@ -82,9 +82,10 @@ void Player::use(Item item){
 
 void Player::updateCam(glm::ivec2 mouseMotion) {
 //     cam.position = glm::vec3(position.x, 0.7, position.y);
+	float sensibilite = 3.0f;
     cam.position = getVisualPosition(SDL_GetTicks());
-    cam.rotation.x += mouseMotion.x;
-    cam.rotation.y -= mouseMotion.y;
+    cam.rotation.x += mouseMotion.x * sensibilite;
+    cam.rotation.y -= mouseMotion.y * sensibilite;
     if(cam.rotation.y > 90) cam.rotation.y = 90;
     else if(cam.rotation.y < -90) cam.rotation.y = -90;
 }

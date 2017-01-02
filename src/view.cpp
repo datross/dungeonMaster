@@ -736,7 +736,7 @@ void View::renderGame(Game_state& game_state) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
-                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,(1.0 * y)+1));
 
                     /* ground */
 
@@ -774,7 +774,7 @@ void View::renderGame(Game_state& game_state) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(!assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
-                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,(1.0 * y)+1));
 
                     wall.setMVMatrix(mv);
                     wall.setMVPMatrix(p->cam.getPMatrix() * mv);
@@ -791,7 +791,7 @@ void View::renderGame(Game_state& game_state) {
         }
 
         /* Enemies rendering */
-         for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
+        /* for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
 			 mv = v;
 			 mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
 
@@ -805,7 +805,7 @@ void View::renderGame(Game_state& game_state) {
              ground.setKd(glm::vec3(1,1,1));
 
              ground.render();
-		 }
+		 }*/
 		 for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
 			mv = v;
 			mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
