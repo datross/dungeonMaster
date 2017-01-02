@@ -16,7 +16,7 @@ Game::~Game() {
 int Game::run() {
     while(game_state != STATE_QUIT) {
         // TODO temporaire
-        std::cout << "\033[2J";
+//         std::cout << "\033[2J";
         
         view.update();
         if(game_state == STATE_MENU) {
