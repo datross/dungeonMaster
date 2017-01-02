@@ -663,7 +663,7 @@ void View::renderGame(Game_state& game_state) {
                     ground.setKd(glm::vec3(1,1,1));
 
                     ground.render();
-
+                    
                     /* ceiling */
 
                     mv = glm::translate(mv, glm::vec3(0,1,0));

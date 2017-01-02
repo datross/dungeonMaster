@@ -63,24 +63,22 @@ glm::vec3 Character::getVisualPosition(Uint32 time) {
 }
 
 bool Character::canMove(glm::ivec2 newPos) {
-	//TODO Vérifier les sorties de map
-	return (*mapDatas)[newPos.y][newPos.x] == -1 ||
-    (*mapDatas)[newPos.y][newPos.x] == 1 ||
-    (*mapDatas)[newPos.y][newPos.x] == 2 ||
-    (*mapDatas)[newPos.y][newPos.x] == 0;
+	if (newPos.y < 0 || newPos.y > mapDatas->size() || newPos.x < 0 || newPos.x > mapDatas[0].size())
+		return false;
+	return (*mapDatas)[newPos.y][newPos.x] == 0;
 }
 
 void Character::move (Movement movement, Uint32 time){    
     if(movementAnimationFinished(time)) {
         position_prec = position;
         auto stepped_dir = computeSteppedDirection(orientation);
-        if(movement == MOVEMENT_FORWARD /*&& canMove(position+stepped_dir*/)) {
+        if(movement == MOVEMENT_FORWARD && canMove(position+stepped_dir)) {
             position += stepped_dir;
-        } else if(movement == MOVEMENT_BACKWARD /*&& canMove(position-stepped_dir)*/) {
+        } else if(movement == MOVEMENT_BACKWARD && canMove(position-stepped_dir)) {
             position += -stepped_dir;
-        } else if(movement == MOVEMENT_LEFT /*&& canMove(position - glm::ivec2(-stepped_dir.y, stepped_dir.x))*/) {
+        } else if(movement == MOVEMENT_LEFT && canMove(position - glm::ivec2(-stepped_dir.y, stepped_dir.x))) {
             position += -glm::vec2(-stepped_dir.y, stepped_dir.x);
-        } else if(movement == MOVEMENT_RIGHT /*&& canMove(position+glm::ivec2(-stepped_dir.y, stepped_dir.x))*/) {
+        } else if(movement == MOVEMENT_RIGHT && canMove(position+glm::ivec2(-stepped_dir.y, stepped_dir.x))) {
             position += glm::vec2(-stepped_dir.y, stepped_dir.x);
         }
         
