@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 
+#include "declarations.h"
 #include "player.h"
 #include "enemy.h"
 #include "item.h"

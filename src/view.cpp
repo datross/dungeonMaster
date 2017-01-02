@@ -692,8 +692,8 @@ void View::renderGame(Game_state& game_state) {
 
 
         /* Ground and ceiling rendering */
-        for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
-            for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
+        for(unsigned y = 0; y < assets_ptr->map.datas.size(); ++y) {
+            for(unsigned x = 0; x < assets_ptr->map.datas[0].size(); ++x) {
                 if(assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
@@ -730,8 +730,8 @@ void View::renderGame(Game_state& game_state) {
         }
 
         /* Walls rendering */
-        for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
-            for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
+        for(unsigned y = 0; y < assets_ptr->map.datas.size(); ++y) {
+            for(unsigned x = 0; x < assets_ptr->map.datas[0].size(); ++x) {
                 if(!assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));

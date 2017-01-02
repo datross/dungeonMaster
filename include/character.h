@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include "glm.h"
 
+#include "declarations.h"
 #include "mesh.h"
 #include "animation.h"
 #include "Program.h"
@@ -24,7 +25,7 @@ enum Movement {
 
 class Character {
 public:
-	std::vector<std::vector<int> >* mapDatas;
+	Map* map;
 	glm::ivec2 position,
 	         position_prec; /* utile pour les animations de déplacement */
 
@@ -56,7 +57,7 @@ public:
 
   	bool movementAnimationFinished(Uint32 time);
   	glm::vec3 getVisualPosition(Uint32 time);
-	void setDatas(std::vector<std::vector<int> >* datas);
+	void setMap(Map* map);
 	virtual void attack (Character& enemy);
 	virtual void defend (unsigned int amountAttack);
 	void death();

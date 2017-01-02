@@ -172,7 +172,7 @@ void Assets::loadEntities(glimac::FilePath pathFile){
             Player tmp_player = Player(position, glm::vec3(0,0,0), scale, id, life, defense, power, score, mesh_ptr, shaders_ptr);
 			/* Link to animations */
 			tmp_player.animations_ptr = animationsLink;
-			tmp_player.setDatas(&map.datas);
+			tmp_player.setMap(&map);
 
 			/*  Create his Inventory */
             for (unsigned int j = 0; j < nb_items_inventory; j++) {
@@ -238,7 +238,7 @@ std::cout << "hey" << std::endl;
 			shaders_ptr = shadersLoad(vShader_path, fShader_path);
 			Enemy tmp_enemy = Enemy(position, glm::vec3(0,0,0), scale, id, life, defense, power, detectRange, mesh_ptr, shaders_ptr);
 			tmp_enemy.animations_ptr =animationsLink;
-			tmp_enemy.setDatas(&map.datas);
+			tmp_enemy.setMap(&map);
 			map.characters.push_back(tmp_enemy);
         }
 
