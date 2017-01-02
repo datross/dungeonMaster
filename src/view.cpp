@@ -81,6 +81,7 @@ void View::update() {
     updateEvent();
 }
 
+// TODO checker problème de la répétition de touche
 void View::updateEvent() {
     player_input = INPUT_NONE;
     mouse_pos_rel = glm::ivec2(0, 0);
@@ -591,69 +592,91 @@ void View::renderGame(Game_state& game_state) {
     // TODO temporaire je sais pas trop où le mettre pour l'instant
     reshape(window_width, window_height);
 
-    Mesh mesh;
-    Mesh ground;
-    ground.buildPlane(1, 1);
-//     mesh.buildPlane(1, 1);
-    mesh.loadFromFile("res/meshes/cube.obj");
+    Mesh& wall = assets_ptr->wall;
+    Mesh& ground = assets_ptr->ground;
+    Mesh& ceiling = assets_ptr->ceiling;
+
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
                     "res/shaders/pointlight.fs.glsl");
-    mesh.setUniformsId(shader);
+    
+    wall.setUniformsId(shader);
     ground.setUniformsId(shader);
-
+    ceiling.setUniformsId(shader);
+    
     /* Pour toutes les vues des joueurs */
     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
-
-        std::cout << p->cam.position << std::endl;
-        std::cout << p->cam.direction << std::endl;
-        std::cout << p->cam.getPMatrix() << std::endl;
+        
+//         std::cout << p->cam.position << std::endl;
+//         std::cout << p->cam.direction << std::endl;
+//         std::cout << p->cam.getPMatrix() << std::endl;
 
         glm::mat4 v = p->cam.getVMatrix();
-        glm::mat4 mv = v;
-
-
-
+        glm::mat4 mv;
+        
         glm::vec3 lightPos = p->cam.position;
 
         shader.use();
 
         /* on décale tout le décor de (0.5,0.5) pour être au milieu des cases */
         glm::mat4 v_origin = v;
-        v = glm::translate(v, glm::vec3(0.5,0,0.5));
-
-        /* Ground rendering */
-        mv = glm::rotate(v, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
-        mv = glm::scale(mv, glm::vec3(assets_ptr->map.datas.size(), assets_ptr->map.datas[0].size(), 1.));
-
-        ground.setMVMatrix(mv);
-        ground.setMVPMatrix(p->cam.getPMatrix() * mv);
-        ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-        ground.setShininess(1.);
-        ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
-        ground.setLightIntensity(glm::vec3(1,1,1));
-        ground.setKs(glm::vec3(1,1,1));
-        ground.setKd(glm::vec3(1,0,1));
-
-        ground.render();
-
-
+        v = glm::translate(v, glm::vec3(-0.5,0,-0.5));
+        
+        
+        /* Ground and ceiling rendering */
+        for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
+            for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
+                if(assets_ptr->map.isCaseEmpty(x, y)) {
+                    mv = v;
+                    mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                    
+                    /* ground */
+                    
+                    ground.setMVMatrix(mv);
+                    ground.setMVPMatrix(p->cam.getPMatrix() * mv);
+                    ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                    ground.setShininess(1.);
+                    ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+                    ground.setLightIntensity(glm::vec3(1,1,1));
+                    ground.setKs(glm::vec3(1,1,1));
+                    ground.setKd(glm::vec3(1,1,1));
+                    
+                    ground.render();
+                    
+                    /* ceiling */
+                    
+                    mv = glm::translate(mv, glm::vec3(0,1,0));
+                    
+                    ceiling.setMVMatrix(mv);
+                    ceiling.setMVPMatrix(p->cam.getPMatrix() * mv);
+                    ceiling.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                    ceiling.setShininess(1.);
+                    ceiling.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+                    ceiling.setLightIntensity(glm::vec3(1,1,1));
+                    ceiling.setKs(glm::vec3(1,1,1));
+                    ceiling.setKd(glm::vec3(1,1,1));
+                    
+                    ceiling.render();
+                }
+            }
+        }
+        
         /* Walls rendering */
         for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(!assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
-
-                    mesh.setMVMatrix(mv);
-                    mesh.setMVPMatrix(p->cam.getPMatrix() * mv);
-                    mesh.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-                    mesh.setShininess(1.);
-                    mesh.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
-                    mesh.setLightIntensity(glm::vec3(1,1,1));
-                    mesh.setKs(glm::vec3(1,1,1));
-                    mesh.setKd(glm::vec3(1,1,1));
-
-                    mesh.render();
+                    
+                    wall.setMVMatrix(mv);
+                    wall.setMVPMatrix(p->cam.getPMatrix() * mv);
+                    wall.setNormalMatrix(glm::transpose(glm::inverse(mv)));
+                    wall.setShininess(1.);
+                    wall.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
+                    wall.setLightIntensity(glm::vec3(1,1,1));
+                    wall.setKs(glm::vec3(1,1,1));
+                    wall.setKd(glm::vec3(1,1,1));
+                    
+                    wall.render();
                 }
             }
         }

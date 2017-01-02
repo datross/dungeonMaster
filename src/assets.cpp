@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <utility>
+#include <memory>
 
 using namespace std;
 
@@ -58,6 +59,10 @@ void Assets::load(string fileName, bool isNewGame){
     for(vector<Mesh>::iterator it = meshes.begin(); it != meshes.end(); ++it){
         (*it).loadFromFile(application_path + MESH_PATH + (*it).path);
     }
+    wall.loadFromFile("res/meshes/cube.obj");
+//     ground.loadFromFile("res/meshes/ground.obj");
+    ground.loadFromFile("res/meshes/spider.obj");
+    ceiling.loadFromFile("res/meshes/ceiling.obj");
 
     /* load animations */
     std::vector< std::pair<EntityType, std::string> > animsPacks;

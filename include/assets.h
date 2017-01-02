@@ -26,8 +26,10 @@ public:
 	std::vector<Mesh> meshes;
 	std::vector<glimac::Program> shaders;
         
-        /* temporaire */
-        Mesh wall;
+        /* temporaire (ou pas) */
+        Mesh wall,
+             ground,
+             ceiling;
 
 	Map map;
 
