@@ -483,6 +483,7 @@ void View::HUD(Game_state& game_state) {
 	}
 	//END LEVEL POPUP
 	ImGui::SetNextWindowPosCenter();
+	ImGui::SetNextWindowFocus();
 	if (ImGui::BeginPopup("End")){
 		ImGui::Spacing();
 		ImGui::Text("Félicitations, Vous avez terminé le niveau.");
@@ -736,9 +737,9 @@ void View::renderGame(Game_state& game_state) {
         /* Ground and ceiling rendering */
         for(unsigned y = 0; y < assets_ptr->map.datas.size(); ++y) {
             for(unsigned x = 0; x < assets_ptr->map.datas[0].size(); ++x) {
-                
+
                 mv = v;
-                mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
+                mv = glm::translate(mv, glm::vec3(1.0 * x,0,(1.0 * y)+1));
                 if(assets_ptr->map.datas[y][x] == -3) { /* water */
                         water.setMVMatrix(mv);
                         water.setMVPMatrix(p->cam.getPMatrix() * mv);
@@ -751,12 +752,12 @@ void View::renderGame(Game_state& game_state) {
 
                         water.render();
                 }
-                
+
                 if(assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,(1.0 * y)+1));
 
-                    if(assets_ptr->map.datas[y][x] == 0) {  /* ground */
+                    if(assets_ptr->map.datas[y][x] == 0 || assets_ptr->map.datas[y][x] == 1 || assets_ptr->map.datas[y][x] == 2) {  /* ground */
                         ground.setMVMatrix(mv);
                         ground.setMVPMatrix(p->cam.getPMatrix() * mv);
                         ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
@@ -809,21 +810,6 @@ void View::renderGame(Game_state& game_state) {
         }
 
         /* Enemies rendering */
-        /* for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
-			 mv = v;
-			 mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
-
-			 ground.setMVMatrix(mv);
-             ground.setMVPMatrix(p->cam.getPMatrix() * mv);
-             ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
-             ground.setShininess(1.);
-             ground.setLightPos_vs(glm::vec3(v_origin * glm::vec4(lightPos,1.)));
-             ground.setLightIntensity(glm::vec3(1,1,1));
-             ground.setKs(glm::vec3(1,1,1));
-             ground.setKd(glm::vec3(1,1,1));
-
-             ground.render();
-		 }*/
 		 for (std::list<Enemy>::iterator it = assets_ptr->map.characters.begin(); it != assets_ptr->map.characters.end(); ++it) {
 			mv = v;
 			mv = glm::translate(mv, glm::vec3(1.0*it->position.x, 0, 1.0*it->position.y));
