@@ -60,7 +60,8 @@ void Assets::load(string fileName, bool isNewGame){
         (*it).loadFromFile(application_path + MESH_PATH + (*it).path);
     }
     wall.loadFromFile("res/meshes/cube.obj");
-    ground.loadFromFile("res/meshes/ground.obj");
+//     ground.loadFromFile("res/meshes/ground.obj");
+    ground.loadFromFile("res/meshes/spider.obj");
     ceiling.loadFromFile("res/meshes/ceiling.obj");
 
     /* load animations */   

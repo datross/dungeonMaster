@@ -43,19 +43,19 @@ void Game::gameplay() {
         game_state = STATE_QUIT;
     else if(view.get_input() == INPUT_MOVE_BACKWARD) {
 //         assets.map.players.begin()->position = assets.map.players.begin()->position + glm::ivec2(0,-1);
-        assets.map.players.begin()->move(MOVEMENT_BACKWARD, 0);
+        assets.map.players.begin()->move(MOVEMENT_BACKWARD, SDL_GetTicks());
         std::cout << assets.map.players.begin()->position << std::endl;
     } else if(view.get_input() == INPUT_MOVE_FORWARD) {
 //         assets.map.players.begin()->position = assets.map.players.begin()->position + glm::ivec2(0,1);
-        assets.map.players.begin()->move(MOVEMENT_FORWARD, 0);
+        assets.map.players.begin()->move(MOVEMENT_FORWARD, SDL_GetTicks());
         std::cout << assets.map.players.begin()->position << std::endl;
     } else if(view.get_input() == INPUT_MOVE_LEFT) {
 //         assets.map.players.begin()->position = assets.map.players.begin()->position + glm::ivec2(-1,0);
-        assets.map.players.begin()->move(MOVEMENT_LEFT, 0);
+        assets.map.players.begin()->move(MOVEMENT_LEFT, SDL_GetTicks());
         std::cout << assets.map.players.begin()->position << std::endl;
     } else if(view.get_input() == INPUT_MOVE_RIGHT) {
 //         assets.map.players.begin()->position = assets.map.players.begin()->position + glm::ivec2(1,0);
-        assets.map.players.begin()->move(MOVEMENT_RIGHT, 0);
+        assets.map.players.begin()->move(MOVEMENT_RIGHT, SDL_GetTicks());
         std::cout << assets.map.players.begin()->position << std::endl;
     }
 }

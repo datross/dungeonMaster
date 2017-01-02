@@ -81,6 +81,7 @@ void View::update() {
     updateEvent();
 }
 
+// TODO checker problème de la répétition de touche
 void View::updateEvent() {
     player_input = INPUT_NONE;
     mouse_pos_rel = glm::ivec2(0, 0);
@@ -609,7 +610,7 @@ void View::renderGame(Game_state& game_state) {
         
         /* on décale tout le décor de (0.5,0.5) pour être au milieu des cases */
         glm::mat4 v_origin = v;
-        v = glm::translate(v, glm::vec3(0.5,0,0.5));
+        v = glm::translate(v, glm::vec3(-0.5,0,-0.5));
         
         
         /* Ground and ceiling rendering */

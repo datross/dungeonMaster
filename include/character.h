@@ -23,7 +23,8 @@ enum Movement {
 
 class Character {
 public:
-  glm::ivec2 position;
+  glm::ivec2 position,
+             position_prec; /* utile pour les animations de déplacement */
   
   /* these go together */
   glm::vec3 orientation;
@@ -51,6 +52,7 @@ public:
 			std::shared_ptr<glimac::Program> shaders_ptr = NULL);
   ~Character();
 
+  bool movementAnimationFinished(Uint32 time);
   glm::vec3 getVisualPosition(Uint32 time);
   void move (Movement movement, Uint32 time);
   void attack (Character* enemy);
