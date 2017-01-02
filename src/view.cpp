@@ -121,28 +121,28 @@ void View::updateEvent() {
 			Gui::getInstance().showHUDMap = false;
 			Gui::getInstance().showHUDOptions = false;
 		}
-		
+
 		//E : ATTACK
 		if (ImGui::IsKeyPressed(101)) {
 			//Morceau de computeSteppedDirection
 			glm::ivec2 stepped_dir;
-		    if(assets_ptr->map.player.front().x > 0 && assets_ptr->map.player.front().z > 0) {
-		        if(assets_ptr->map.player.front().x > assets_ptr->map.player.front().z)
+		    if(assets_ptr->map.players.front().orientation.x > 0 && assets_ptr->map.players.front().orientation.z > 0) {
+		        if(assets_ptr->map.players.front().orientation.x > assets_ptr->map.players.front().orientation.z)
 		            stepped_dir = glm::ivec2(1, 0);
 		        else
 		            stepped_dir = glm::ivec2(0, 1);
-		    } else if(assets_ptr->map.player.front().x < 0 && assets_ptr->map.player.front().z > 0) {
-		        if(-(assets_ptr->map.player.front().x) > assets_ptr->map.player.front().z)
+		    } else if(assets_ptr->map.players.front().orientation.x < 0 && assets_ptr->map.players.front().orientation.z > 0) {
+		        if(-(assets_ptr->map.players.front().orientation.x) > assets_ptr->map.players.front().orientation.z)
 		            stepped_dir = glm::ivec2(-1, 0);
 		        else
 		            stepped_dir = glm::ivec2(0, 1);
-		    } else if(assets_ptr->map.player.front().x < 0 && assets_ptr->map.player.front().z < 0) {
-		        if(assets_ptr->map.player.front().x < assets_ptr->map.player.front().z)
+		    } else if(assets_ptr->map.players.front().orientation.x < 0 && assets_ptr->map.players.front().orientation.z < 0) {
+		        if(assets_ptr->map.players.front().orientation.x < assets_ptr->map.players.front().orientation.z)
 		            stepped_dir = glm::ivec2(-1, 0);
 		        else
 		            stepped_dir = glm::ivec2(0, -1);
-		    } else if(assets_ptr->map.player.front().x > 0 && assets_ptr->map.player.front().z < 0) {
-		        if(assets_ptr->map.player.front().x > -assets_ptr->map.player.front().z)
+		    } else if(assets_ptr->map.players.front().orientation.x > 0 && assets_ptr->map.players.front().orientation.z < 0) {
+		        if(assets_ptr->map.players.front().orientation.x > -(assets_ptr->map.players.front().orientation.z))
 		            stepped_dir = glm::ivec2(1, 0);
 		        else
 		            stepped_dir = glm::ivec2(0, -1);
@@ -152,8 +152,8 @@ void View::updateEvent() {
 			for(std::list<Enemy>::iterator it = assets_ptr->map.characters.begin();
 				it != assets_ptr->map.characters.end();
 				++it){
-					if((*it).position == (assets_ptr->map.player.front().position + stepped_dir))
-						assets_ptr->map.player.front().attack((*it));
+					if((*it).position == (assets_ptr->map.players.front().position + stepped_dir))
+						assets_ptr->map.players.front().attack((*it));
 			}
 		}
 

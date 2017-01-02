@@ -102,8 +102,8 @@ glm::ivec2 Character::isNextDoor(int idDoor){
 }
 
 
-void Character::attack (Character* enemy){
-  enemy->defend(power);
+void Character::attack (Character& enemy){
+  enemy.defend(power);
 }
 
 void Character::defend (unsigned int amountAttack){

@@ -63,3 +63,10 @@ Movement Enemy::reach(int targetIndex, Map* map) {
 
 	return MOVEMENT_FORWARD;
 }
+
+void Enemy::attack (Character& enemy){
+
+}
+void Enemy::defend (unsigned int amountAttack){
+	
+}

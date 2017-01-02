@@ -35,7 +35,7 @@ public :
   void equip(Item item);
   void unequip(Item item);
   void use (Item item);
-  void attack (Character* enemy);
+  void attack (Character& enemy);
   void defend (unsigned int amountAttack);
 };
 
