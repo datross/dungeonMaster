@@ -145,6 +145,7 @@ void View::render(Game_state& game_state) {
 //     glDepthFunc(GL_LESS);
     glDepthMask(GL_TRUE);
     if(game_state == STATE_MENU) {
+		SDL_SetRelativeMouseMode(SDL_FALSE);
         mainMenu(game_state);
     } else if (game_state == STATE_GAMEPLAY) {
         renderGame(game_state);
@@ -364,6 +365,13 @@ void View::mainMenu(Game_state& game_state){
 }
 
 void View::HUD(Game_state& game_state) {
+
+	if(Gui::getInstance().showHUDIndicators){
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+	}
+	else{
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+	}
 
 	ImGuiWindowFlags window_flags = 0;
 
@@ -596,23 +604,24 @@ void View::renderGame(Game_state& game_state) {
     Mesh& ground = assets_ptr->ground;
     Mesh& ceiling = assets_ptr->ceiling;
 
+	//glimac::Program defaultShader = (assets_ptr->shaders.front());
     auto shader = glimac::loadProgram("res/shaders/3D.vs.glsl",
                     "res/shaders/pointlight.fs.glsl");
-    
+
     wall.setUniformsId(shader);
     ground.setUniformsId(shader);
     ceiling.setUniformsId(shader);
-    
+
     /* Pour toutes les vues des joueurs */
     for(auto p = assets_ptr->map.players.begin(); p != assets_ptr->map.players.end(); ++p) {
-        
+
 //         std::cout << p->cam.position << std::endl;
 //         std::cout << p->cam.direction << std::endl;
 //         std::cout << p->cam.getPMatrix() << std::endl;
 
         glm::mat4 v = p->cam.getVMatrix();
         glm::mat4 mv;
-        
+
         glm::vec3 lightPos = p->cam.position;
 
         shader.use();
@@ -620,17 +629,17 @@ void View::renderGame(Game_state& game_state) {
         /* on décale tout le décor de (0.5,0.5) pour être au milieu des cases */
         glm::mat4 v_origin = v;
         v = glm::translate(v, glm::vec3(-0.5,0,-0.5));
-        
-        
+
+
         /* Ground and ceiling rendering */
         for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
-                    
+
                     /* ground */
-                    
+
                     ground.setMVMatrix(mv);
                     ground.setMVPMatrix(p->cam.getPMatrix() * mv);
                     ground.setNormalMatrix(glm::transpose(glm::inverse(mv)));
@@ -639,13 +648,13 @@ void View::renderGame(Game_state& game_state) {
                     ground.setLightIntensity(glm::vec3(1,1,1));
                     ground.setKs(glm::vec3(1,1,1));
                     ground.setKd(glm::vec3(1,1,1));
-                    
+
                     ground.render();
-                    
+
                     /* ceiling */
-                    
+
                     mv = glm::translate(mv, glm::vec3(0,1,0));
-                    
+
                     ceiling.setMVMatrix(mv);
                     ceiling.setMVPMatrix(p->cam.getPMatrix() * mv);
                     ceiling.setNormalMatrix(glm::transpose(glm::inverse(mv)));
@@ -654,19 +663,19 @@ void View::renderGame(Game_state& game_state) {
                     ceiling.setLightIntensity(glm::vec3(1,1,1));
                     ceiling.setKs(glm::vec3(1,1,1));
                     ceiling.setKd(glm::vec3(1,1,1));
-                    
+
                     ceiling.render();
                 }
             }
         }
-        
+
         /* Walls rendering */
         for(unsigned x = 0; x < assets_ptr->map.datas.size(); ++x) {
             for(unsigned y = 0; y < assets_ptr->map.datas[0].size(); ++y) {
                 if(!assets_ptr->map.isCaseEmpty(x, y)) {
                     mv = v;
                     mv = glm::translate(mv, glm::vec3(1.0 * x,0,1.0 * y));
-                    
+
                     wall.setMVMatrix(mv);
                     wall.setMVPMatrix(p->cam.getPMatrix() * mv);
                     wall.setNormalMatrix(glm::transpose(glm::inverse(mv)));
@@ -675,7 +684,7 @@ void View::renderGame(Game_state& game_state) {
                     wall.setLightIntensity(glm::vec3(1,1,1));
                     wall.setKs(glm::vec3(1,1,1));
                     wall.setKd(glm::vec3(1,1,1));
-                    
+
                     wall.render();
                 }
             }

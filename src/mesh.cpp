@@ -1,5 +1,4 @@
 #include "mesh.h"
-#include "Image.h"
 
 Mesh::Mesh() {
 }
@@ -8,7 +7,6 @@ Mesh::~Mesh() {
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ibo);
     glDeleteVertexArrays(1, &vao);
-    glDeleteTextures(1, &tex);
 }
 
 Mesh::Mesh(const Mesh& mesh) {
@@ -48,7 +46,7 @@ bool Mesh::loadFromFile(std::string file) {
     std::vector<Vertex> vertices;
     std::vector<glm::ivec3> indices;
 
-    /* vertices */
+    // vertices
     for(unsigned v = 0; v < mesh->mNumVertices; ++v) {
         Vertex vertex;
         vertex.position = glm::vec3(mesh->mVertices[v].x,
@@ -57,47 +55,19 @@ bool Mesh::loadFromFile(std::string file) {
         vertex.normal = glm::vec3(mesh->mNormals[v].x,
                                   mesh->mNormals[v].y,
                                   mesh->mNormals[v].z);
-        vertex.texCoord = glm::vec2(mesh->mTextureCoords[0][v].x,
-                                    mesh->mTextureCoords[0][v].y);
+        vertex.texCoord = glm::vec2(mesh->mTextureCoords[0]->x,
+                                    mesh->mTextureCoords[0]->y);
+        vertex.texCoord = glm::vec2(0, 0);
         vertices.push_back(vertex);
     }
 
-    /* faces (vertices indices) */
+    // faces (vertices indices)
     numFaces = mesh->mNumFaces;
     std::cout << numFaces  << std::endl;
     for(unsigned f = 0; f < mesh->mNumFaces; ++f) {
         indices.push_back(glm::ivec3(mesh->mFaces[f].mIndices[0],
                                      mesh->mFaces[f].mIndices[1],
                                      mesh->mFaces[f].mIndices[2]));
-    }
-    
-    /* Texture */
-    /* On considère que la texture à prendre est la première du tas, donc
-     * le 'Kd' dans le .mtl */
-    for(unsigned i = 0; i < scene->mNumMaterials; ++i) {
-        const aiMaterial* material = scene->mMaterials[i];
-        
-        if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-            aiString path;
-
-            if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-                /* path contient le chemin de la texture à charger */
-                std::string imgFile(std::string("res/textures/")+ path.data);
-                std::unique_ptr<glimac::Image> textureImg = glimac::loadImage(imgFile);
-                if(!textureImg) {
-                    std::cerr << "Error, unable to load : " << imgFile << std::endl;
-                    return false;
-                }
-                
-                glGenTextures(1, &tex);
-                glBindTexture(GL_TEXTURE_2D, tex);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImg->getWidth(), textureImg->getHeight(),
-                            0, GL_RGBA, GL_FLOAT, textureImg->getPixels());
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                glBindTexture(GL_TEXTURE_2D, 0);
-            }
-        }
     }
 
     sendGeometryToGPU(vertices, indices);
@@ -145,7 +115,7 @@ void Mesh::buildPlane(float w, float h) {
     indices = {
         glm::ivec3(0, 1, 2),
         glm::ivec3(1, 3, 2) };
-        
+
     numFaces = indices.size();
     sendGeometryToGPU(vertices, indices);
 }
@@ -153,7 +123,7 @@ void Mesh::buildPlane(float w, float h) {
 void Mesh::buildCube(float size) {
     std::vector<Vertex> vertices;
     std::vector<glm::ivec3> indices;
-    
+
 //     vertices = {
 //         /* 0 - 2*/
 //         Vertex(glm::vec3(0,0,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
@@ -188,15 +158,15 @@ void Mesh::buildCube(float size) {
 //         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
 //         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0))
 //     };
-//     
+//
 //     indices = {
 //         glm::ivec3(0, 9, 21),
 //         glm::ivec3(0, 21, 12),
-//         
+//
 //         glm::ivec3(3, 9, 12),
 //         glm::ivec3(0, 21, 12),
 //     };
-        
+
     numFaces = indices.size();
     sendGeometryToGPU(vertices, indices);
 }
@@ -218,10 +188,7 @@ bool Mesh::setUniformsId(glimac::Program& shader) {
 
 void Mesh::render() {
     glBindVertexArray(vao);
-    glBindTexture(GL_TEXTURE_2D, tex);
-    glUniform1i(uTexture,0);
     glDrawElements(GL_TRIANGLES, 3*numFaces, GL_UNSIGNED_INT, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }
 
