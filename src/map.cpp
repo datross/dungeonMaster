@@ -206,13 +206,5 @@ std::vector<std::vector<unsigned int>> Map::getDistance(int numPlayer) {
 		distances[link[i].x][link[i].y] = dist[i];
 	}
 
-	/* Affichage pour debeug
-          for (unsigned int i = 0; i < datas.size(); i++) {
-		for (unsigned int j = 0; j < datas[0].size(); j++) {
-			cout << distances[i][j] << " ";
-		}
-		cout << endl;
-	}*/
-
     return distances;
 }

@@ -40,7 +40,6 @@ bool Enemy::near(Character other) {
 Movement Enemy::reach(int targetIndex, Map* map) {
     std::vector<std::vector<unsigned int>> distances = map->getDistance(targetIndex);
 
-	//std::cout << "enemy.cpp - Reach Entry " << std::endl;
 
 	// Get the targeted player
 	int i = 0;

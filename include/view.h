@@ -45,10 +45,10 @@ public:
     /* Rendering function depends on the game state */
     void mainMenu(Game_state& game_state);
     void renderGame(Game_state& game_state);
-	void HUD(Game_state& game_state);
+    void HUD(Game_state& game_state);
 
     void setAssets(Assets&);
-// private:
+
     void updateEvent();
 
     /* update every camera */

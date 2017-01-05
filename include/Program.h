@@ -10,7 +10,6 @@ namespace glimac {
 
 class Program {
 private:
-// 	Program& operator =(const Program&);
 
 	GLuint m_nGLId;
 public:
@@ -22,27 +21,12 @@ public:
 	~Program() {
 		glDeleteProgram(m_nGLId);
 	}
-/*
-	Program(Program&& rvalue): m_nGLId(rvalue.m_nGLId) {
-		rvalue.m_nGLId = 0;
-	}
-*/
 	Program(const Program& p){
 		m_nGLId = p.m_nGLId;
 		vertexShaderPath = p.vertexShaderPath;
 		fragmentShaderPath = p.fragmentShaderPath;
 	}
-	/*
-	Program& operator =(Program&& rvalue) {
- 		m_nGLId = rvalue.m_nGLId;
-		vertexShaderPath = rvalue.vertexShaderPath;
-		fragmentShaderPath = rvalue.fragmentShaderPath;
- 		rvalue.m_nGLId = 0;
- 		rvalue.vertexShaderPath = "";
- 		rvalue.fragmentShaderPath = "";
- 		return *this;
- 	}
-	*/
+	
 	GLuint getGLId() const {
 		return m_nGLId;
 	}

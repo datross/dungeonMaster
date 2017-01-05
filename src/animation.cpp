@@ -61,8 +61,6 @@ bool Animation::execute(T& entity){
 					 float interpolValue = (animProgress- (*it).first)/((*(++it)).first - (*it).first);
 					 entity.position += interpolValue * ((*it).second[0]-(*(++it)).second[0]);
 					 entity.orientation += interpolValue * ((*it).second[1]/(*(++it)).second[1]);
-					 //glm::vec3 tmp_scale = interpolValue * ((*it).second[2]/(*(++it)).second[2]);
-					 //entity.scale = (tmp_scale[0] + tmp_scale[1] + tmp_scale[2])/3.0f;
 				 }
 		}
 	}

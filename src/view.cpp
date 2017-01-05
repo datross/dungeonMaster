@@ -81,7 +81,6 @@ void View::update() {
     updateEvent();
 }
 
-// TODO checker problème de la répétition de touche
 void View::updateEvent() {
     player_input = INPUT_NONE;
     mouse_pos_rel = glm::ivec2(0, 0);
@@ -179,7 +178,6 @@ void View::reshape(unsigned w, unsigned h) {
     float aspect_ratio = (float)w/h;
 
     /* update des matrices de projection des players */
-    // TODO gérer proprement la fov des camera
     for(auto it = assets_ptr->map.players.begin(); it != assets_ptr->map.players.end(); ++it) {
         it->cam.init(70., aspect_ratio);
     }
@@ -192,7 +190,6 @@ void View::render(Game_state& game_state) {
     ImGui_ImplSdlGL3_NewFrame(window);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-//     glDepthFunc(GL_LESS);
     glDepthMask(GL_TRUE);
     if(game_state == STATE_MENU) {
 		SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -700,7 +697,6 @@ void View::HUD(Game_state& game_state) {
 }
 
 void View::renderGame(Game_state& game_state) {
-    // TODO temporaire je sais pas trop où le mettre pour l'instant
     reshape(window_width, window_height);
 
     Mesh& wall = assets_ptr->wall;
@@ -708,7 +704,6 @@ void View::renderGame(Game_state& game_state) {
     Mesh& ceiling = assets_ptr->ceiling;
     Mesh& water = assets_ptr->water;
 
-	//glimac::Program defaultShader = (assets_ptr->shaders.front());
     glimac::Program& shader = assets_ptr->generalShader->program;
 
     wall.setUniformsId(shader);

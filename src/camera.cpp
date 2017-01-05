@@ -15,7 +15,7 @@ glm::mat4 Camera::getVMatrix() {
     
     glm::vec3 local_left = glm::vec3(glm::sin(glm::radians(rotation.x)), 0, -glm::cos(glm::radians(rotation.x)));
     
-    return glm::lookAt(position, position + direction, glm::cross(direction, local_left)); // TODO: CHECK THIS
+    return glm::lookAt(position, position + direction, glm::cross(direction, local_left)); 
 
 }
 

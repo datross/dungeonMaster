@@ -39,7 +39,6 @@ bool Mesh::loadFromFile(std::string file) {
         return false;
     }
 
-    // TODO Checker tout ça.
     // Faces are ONLY triangles
 
     aiMesh * mesh = scene->mMeshes[0];
@@ -147,57 +146,6 @@ void Mesh::buildPlane(float w, float h) {
             
             numFaces = indices.size();
             sendGeometryToGPU(vertices, indices);
-}
-
-void Mesh::buildCube(float size) {
-    std::vector<Vertex> vertices;
-    std::vector<glm::ivec3> indices;
-    
-    //     vertices = {
-    //         /* 0 - 2*/
-    //         Vertex(glm::vec3(0,0,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
-    //         /* 3 - 5 */
-    //         Vertex(glm::vec3(1,0,0), glm::vec3(1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,0,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
-    //         /* 6 - 8 */
-    //         Vertex(glm::vec3(1,1,0), glm::vec3(1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,1,0), glm::vec3(0,1,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,1,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
-    //         /* 9 - 11 */
-    //         Vertex(glm::vec3(0,1,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,-1), glm::vec2(0,0)),
-    //         /* 12 - 14 */
-    //         Vertex(glm::vec3(0,0,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,0,0), glm::vec3(0,0,1), glm::vec2(0,0)),
-    //         /* 15 - 17 */
-    //         Vertex(glm::vec3(1,0,0), glm::vec3(1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,0,0), glm::vec3(0,-1,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,0,0), glm::vec3(0,0,1), glm::vec2(0,0)),
-    //         /* 18 - 20 */
-    //         Vertex(glm::vec3(1,1,0), glm::vec3(1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,1,0), glm::vec3(0,1,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(1,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
-    //         /* 21 - 23 */
-    //         Vertex(glm::vec3(0,1,0), glm::vec3(-1,0,0), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0)),
-    //         Vertex(glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec2(0,0))
-    //     };
-    //
-    //     indices = {
-    //         glm::ivec3(0, 9, 21),
-    //         glm::ivec3(0, 21, 12),
-    //
-    //         glm::ivec3(3, 9, 12),
-    //         glm::ivec3(0, 21, 12),
-    //     };
-    
-    numFaces = indices.size();
-    sendGeometryToGPU(vertices, indices);
 }
 
 bool Mesh::setUniformsId(glimac::Program& shader) {

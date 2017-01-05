@@ -44,7 +44,6 @@ public:
 
     /* basic geometric objects */
     void buildPlane(float w, float h);
-    void buildCube(float size);
 
     void setMVMatrix(glm::mat4);
     void setMVPMatrix(glm::mat4);

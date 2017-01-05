@@ -54,13 +54,11 @@ bool Character::movementAnimationFinished(Uint32 time) {
     return (Uint32)(1000./speed) + anim_start_time < time;
 }
 
-// TODO altitude de la caméra ?
 glm::vec3 Character::getVisualPosition(Uint32 time) {
     if(movementAnimationFinished(time)) { // l'anim de déplacement est terminée
         return glm::vec3(position.x, 0.6, position.y);
     }
 
-//     glm::ivec2 direction_i = computeSteppedDirection(orientation);
     glm::vec3 direction = glm::vec3(position.x - position_prec.x, 0, position.y - position_prec.y);
     return glm::vec3(position_prec.x, 0.6, position_prec.y) + direction * (float)(0.001 * speed *(time - anim_start_time));
 }

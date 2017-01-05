@@ -59,7 +59,6 @@ void Assets::load(string fileName, bool isNewGame){
     }
     wall.loadFromFile("res/meshes/cube.obj");
     ground.loadFromFile("res/meshes/ground.obj");
-//     ground.loadFromFile("res/meshes/spider.obj");
     ceiling.loadFromFile("res/meshes/ceiling.obj");
     water.loadFromFile("res/meshes/water.obj");
 
